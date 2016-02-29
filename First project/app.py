@@ -18,7 +18,7 @@ while True:
 
         while True:
             command = connection.recv(16)
-            print command
+
             if command == "CPU":
                 message = 'CPU: 123'
             elif command == "MEM":
@@ -26,16 +26,10 @@ while True:
             else:
                 message = 'There was an error with your request.'
 
-            if len(sys.argv) > 1:
-                address = ('localhost', int(sys.argv[1]))
-                try:
-                    connection.sendto(message, address)
-                except:
-                    break
-            else:
-                try:
-                    connection.sendall(message)
-                except:
-                    break
+            try:
+                connection.sendto(message, ('localhost', int(sys.argv[1]))) \
+                if len(sys.argv) > 1 else connection.sendall(message)
+            except:
+                break
     finally:
         connection.close()

@@ -8,18 +8,16 @@ print 'Attempting to connect to port %s' % server_address[1]
 socket.connect(server_address)
 
 try:
-    socket.sendto('CPU', server_address)
-    data, server = socket.recvfrom(4096)
-    print data
+    while True:
+        command = raw_input('\nEnter your command and I\'ll print the result (Type exit to leave): ')
 
-    socket.sendto('MEM', server_address)
-    data, server = socket.recvfrom(4096)
-    print data
-
-    socket.sendto('Wrong', server_address)
-    data, server = socket.recvfrom(4096)
-    print data
+        if command == 'exit':
+            break
+        else:
+            socket.sendto(command, server_address)
+            data, server = socket.recvfrom(4096)
+            print data
 
 finally:
-    print 'Closing socket'
+    print '\nClosing socket\n'
     socket.close()
