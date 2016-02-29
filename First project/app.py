@@ -1,17 +1,17 @@
 import socket
 import sys
 
-socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 server_address = ('localhost', 10000)
 
 print 'Python server listening on port %s' % server_address[1]
 
-socket.bind(server_address)
-socket.listen(1)
+sock.bind(server_address)
+sock.listen(1)
 
 while True:
-    connection, client_address = socket.accept()
+    connection, client_address = sock.accept()
 
     try:
         print 'There\'s a new connection from:', client_address
@@ -20,11 +20,11 @@ while True:
             command = connection.recv(16)
 
             if command == "CPU":
-                message = 'CPU: 123'
+                message = 'CPU: 123%'
             elif command == "MEM":
-                message = 'MEM: 123'
+                message = 'MEM: 123%'
             else:
-                message = 'There was an error with your request.'
+                message = 'ERR: unknown command'
 
             try:
                 connection.sendto(message, ('localhost', int(sys.argv[1]))) \
