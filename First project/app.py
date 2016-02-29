@@ -4,27 +4,38 @@ import sys
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 server_address = ('localhost', 10000)
-print >>sys.stderr, 'starting up on %s port %s' % server_address
-socket.bind(server_address)
 
+print 'Python server listening on port %s' % server_address[1]
+
+socket.bind(server_address)
 socket.listen(1)
 
 while True:
-    print >>sys.stderr, 'Waiting for a connection'
     connection, client_address = socket.accept()
 
     try:
-        print >>sys.stderr, 'Connection from', client_address
+        print 'There\'s a new connection from:', client_address
 
         while True:
-            data = connection.recv(16)
-            print >>sys.stderr, 'Received "%s"' % data
-            if data:
-                print >>sys.stderr, 'Sending data back to the client'
-                connection.sendall(data)
+            command = connection.recv(16)
+            print command
+            if command == "CPU":
+                message = 'CPU: 123'
+            elif command == "MEM":
+                message = 'MEM: 123'
             else:
-                print >>sys.stderr, 'No more data from', client_address
-                break
+                message = 'There was an error with your request.'
 
+            if len(sys.argv) > 1:
+                address = ('localhost', int(sys.argv[1]))
+                try:
+                    connection.sendto(message, address)
+                except:
+                    break
+            else:
+                try:
+                    connection.sendall(message)
+                except:
+                    break
     finally:
         connection.close()

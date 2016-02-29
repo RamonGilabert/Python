@@ -4,23 +4,22 @@ import sys
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 server_address = ('localhost', 10000)
-print >>sys.stderr, 'connecting to %s port %s' % server_address
+print 'Attempting to connect to port %s' % server_address[1]
 socket.connect(server_address)
 
 try:
+    socket.sendto('CPU', server_address)
+    data, server = socket.recvfrom(4096)
+    print data
 
-    message = 'This is the message.  It will be repeated.'
-    print >>sys.stderr, 'sending "%s"' % message
-    socket.sendall(message)
+    socket.sendto('MEM', server_address)
+    data, server = socket.recvfrom(4096)
+    print data
 
-    amount_received = 0
-    amount_expected = len(message)
-
-    while amount_received < amount_expected:
-        data = socket.recv(16)
-        amount_received += len(data)
-        print >>sys.stderr, 'received "%s"' % data
+    socket.sendto('Wrong', server_address)
+    data, server = socket.recvfrom(4096)
+    print data
 
 finally:
-    print >>sys.stderr, 'closing socket'
+    print 'Closing socket'
     socket.close()
