@@ -21,9 +21,9 @@ def send_parameter(ip, command):
 class TestServer(unittest.TestCase):
 
     def test_mem_and_cpu(self):
-        for command in ["MEM", "CPU"]:
+        for command in ["CPU", "MEM"]:
             result = send_parameter('localhost', command)
-            t = re.match("^%s\:(\d*)%s$" % (command, "%"),result)
+            t = re.match("^%s\: (\d*)%s$" % (command, "%"), result)
             self.assertEqual(True, t is not None)
 
     def test_error(self):
