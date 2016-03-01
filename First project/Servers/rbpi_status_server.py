@@ -5,7 +5,7 @@ import os
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-address = str(sys.argv[1]) if len(sys.argv) > 1 else '0.0.0.0'
+address = str(sys.argv[1]) if len(sys.argv) > 1 else '0.0.0.0' # Where 0.0.0.0 means all the interfaces available, same thing in all the files.
 server_address = (address, 10000)
 
 print 'Python server listening on port %s' % server_address[1]
