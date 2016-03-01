@@ -3,17 +3,14 @@ import socket
 import re, sys
 
 def send_parameter(ip, command):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     server_address = (ip, 10000)
     message = command
 
-    sock.connect(server_address)
-
     try:
-        sock.sendto(message, server_address)
+        sent = sock.sendto(message, server_address)
         data, server = sock.recvfrom(4096)
-
         return data
     finally:
         sock.close()
