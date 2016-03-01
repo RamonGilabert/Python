@@ -5,7 +5,8 @@ import os
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-server_address = ('localhost', 10000)
+address = str(sys.argv[1]) if len(sys.argv) > 1 else '0.0.0.0'
+server_address = (address, 10000)
 
 print 'Python server listening on port %s' % server_address[1]
 
@@ -31,8 +32,7 @@ while True:
             message = 'ERR: unknown command'
 
         try:
-            sock.sendto(message, ('localhost', int(sys.argv[1]))) \
-            if len(sys.argv) > 1 else sock.sendto(message, address)
+            sock.sendto(message, address)
         except:
             print 'There was an error sending back the request'
 

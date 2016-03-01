@@ -23,7 +23,7 @@ class TestServer(unittest.TestCase):
 
     def test_mem_and_cpu(self):
         for cmd in ["MEM","CPU"]:
-            result = send_parameter("localhost",cmd)
+            result = send_parameter("localhost", cmd)
             t = re.match("^%s\: (\d*)%s$" % (cmd,"%"),result)
             self.assertEqual(True,t is not None)
 

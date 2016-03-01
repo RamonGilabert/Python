@@ -17,19 +17,15 @@ def send_parameter(ip,command):
 
 class TestServer(unittest.TestCase):
     def test_mem_and_cpu(self):
-        for cmd in ["MEM","CPU"]:
-            result = send_parameter("localhost",cmd)
-            t = re.match("^%s\:(\d*)%s$" % (cmd,"%"),result)
+        for cmd in ["MEM", "CPU"]:
+            result = send_parameter("192.168.0.7", cmd)
+            t = re.match("^%s\: (\d*)%s$" % (cmd,"%"),result)
             self.assertEqual(True,t is not None)
 
     def test_error(self):
-        result = send_parameter("localhost","wrong command")
+        result = send_parameter("192.168.0.7", "wrong command")
         t = re.match("ERR: unknown command" ,result)
         self.assertEqual(True,t is not None)
 
-
-def main():
-    unittest.main()
-
 if __name__ == '__main__':
-    main()
+    unittest.main()

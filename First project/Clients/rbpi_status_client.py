@@ -3,7 +3,9 @@ import sys
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-server_address = ('localhost', 10000)
+address = str(sys.argv[1]) if len(sys.argv) > 1 else '0.0.0.0'
+server_address = (address, 10000)
+
 print 'Attempting to connect to port %s' % server_address[1]
 
 try:
