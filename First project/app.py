@@ -1,6 +1,7 @@
 import socket
 import sys
 import subprocess
+import os
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -13,13 +14,18 @@ sock.bind(server_address)
 sock.listen(1)
 
 while True:
-    connection, client_address = sock.accept()
 
-    try:
-        print 'There\'s a new connection from:', client_address
+    while True:
+        try:
+            connection, client_address = sock.accept()
+        except:
+            print 'There was a problem accepting the incoming socket.'
 
-        while True:
-            command = connection.recv(16)
+        command = connection.recv(16)
+
+        pid = os.fork()
+        if pid == 0:
+            sock.close()
 
             if command == "CPU":
                 usage = subprocess.Popen('top -bn1 | grep "Cpu(s)" | sed "s/.*, *\([0-9.]*\)%* id.*/\1/" | awk \'{ print 100 - $1"%" }\'', stdout = subprocess.PIPE, shell = True)
@@ -28,6 +34,8 @@ while True:
                 totalMemory = float(subprocess.Popen('cat /proc/meminfo | grep MemTotal | awk \'{print $2}\'', stdout = subprocess.PIPE, shell = True).communicate()[0])
                 freeMemory = float(subprocess.Popen('cat /proc/meminfo | grep MemFree | awk \'{print $2}\'', stdout = subprocess.PIPE, shell = True).communicate()[0])
                 message = 'MEM: ' + str(int((totalMemory - freeMemory) * 100 / totalMemory)) + '%'
+            elif command == "NET":
+                message = str(subprocess.Popen('netstat -i', stdout = subprocess.PIPE, shell = True).communicate()[0])
             else:
                 message = 'ERR: unknown command'
 
@@ -36,5 +44,7 @@ while True:
                 if len(sys.argv) > 1 else connection.sendall(message)
             except:
                 break
-    finally:
+
+            os._exit(0)
+
         connection.close()

@@ -16,10 +16,15 @@ def send_parameter(ip,command):
 
 
 class TestServer(unittest.TestCase):
+    def test_net(self):
+        result = send_parameter("localhost", "NET")
+        t = re.match("^Kernel.*",result)
+        self.assertEqual(True,t is not None)
+
     def test_mem_and_cpu(self):
         for cmd in ["MEM","CPU"]:
             result = send_parameter("localhost",cmd)
-            t = re.match("^%s\:(\d*)%s$" % (cmd,"%"),result)
+            t = re.match("^%s\: (\d*)%s$" % (cmd,"%"),result)
             self.assertEqual(True,t is not None)
 
     def test_error(self):
@@ -27,9 +32,5 @@ class TestServer(unittest.TestCase):
         t = re.match("ERR: unknown command" ,result)
         self.assertEqual(True,t is not None)
 
-
-def main():
-    unittest.main()
-
 if __name__ == '__main__':
-    main()
+    unittest.main()
