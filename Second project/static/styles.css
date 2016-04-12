@@ -227,3 +227,29 @@ th, td {
 #welcome-title-insert {
   padding-top: 0px;
 }
+
+#inserted-container {
+  position: fixed;
+  width: 100%;
+  height: 60px;
+  left: 0;
+  bottom: -60px;
+  opacity: 0;
+  background-color: #D6D6D2;
+}
+
+#inserted {
+  font-weight: 400;
+  font-size: 17px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 18.5px;
+  color: #FAFAF7;
+}
+
+#inserted-container:after {
+  -webkit-transition: all 3s;
+  transition: all 3s;
+  bottom: 0px;
+  opacity: 1;
+}
