@@ -109,3 +109,58 @@ html, body {
 	-moz-transform: translateX(0px);
 	transform: translateX(0px);
 }
+
+/* Log in */
+
+#login-form {
+  display: block;
+  margin-top: -30px;
+}
+
+.login-input {
+  border: 1.5px solid #D6D6D2;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 17px;
+  text-align: center;
+  margin-left: 50%;
+  margin-top: 30px;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 60px;
+}
+
+#welcome-login-title {
+  margin-top: 10vh;
+}
+
+#button-login {
+  font-weight: 400;
+  font-size: 20px;
+  text-align: center;
+  background-color: #151718;
+  border: 0;
+  padding: 0;
+  border-radius: 4px;
+  margin-left: 50%;
+  margin-top: 60px;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 70px;
+  letter-spacing: 4px;
+}
+
+#button-login a {
+  text-transform: uppercase;
+  color: #FAFAF7;
+  text-decoration: none;
+}
+
+#back-button {
+  position: absolute;
+  margin: 0 auto;
+  left: 50%;
+  bottom: 3.5%;
+  text-align: center;
+  transform: translateX(-50%);
+}
