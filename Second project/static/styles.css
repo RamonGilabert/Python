@@ -8,7 +8,6 @@ html, body {
   width: 100vw;
   height: 100vh;
   font-family: 'Lato', sans-serif;
-  overflow: hidden;
   background-color: #FAFAF7;
 }
 
@@ -134,7 +133,7 @@ html, body {
   margin-top: 10vh;
 }
 
-#button-login {
+.button-login {
   font-weight: 400;
   font-size: 20px;
   text-align: center;
@@ -147,7 +146,17 @@ html, body {
   transform: translateX(-50%);
   width: 500px;
   height: 70px;
-  letter-spacing: 4px;
+  letter-spacing: 2px;
+}
+
+#button-logout {
+  visibility: hidden;
+}
+
+#button-logout a {
+  text-transform: uppercase;
+  color: #FAFAF7;
+  text-decoration: none;
 }
 
 #button-login a {
@@ -164,3 +173,5 @@ html, body {
   text-align: center;
   transform: translateX(-50%);
 }
+
+/* Show users */
