@@ -211,3 +211,19 @@ th {
 th, td {
   width: 30vw;
 }
+
+/* Insert view */
+
+#back-button-insert {
+  position: absolute;
+  margin: 0 auto;
+  padding: 0 auto;
+  margin-top: 90px;
+  padding-bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#welcome-title-insert {
+  padding-top: 0px;
+}
