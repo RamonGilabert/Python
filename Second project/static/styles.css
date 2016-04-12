@@ -175,3 +175,39 @@ html, body {
 }
 
 /* Show users */
+
+#back-button-show {
+  position: absolute;
+  margin: 0 auto;
+  padding: 0 auto;
+  margin-top: 60px;
+  padding-bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+table {
+  margin: 0 auto;
+  margin-top: -5px;
+  padding: 0 auto;
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+tr {
+  height: 80px;
+}
+
+th {
+  font-weight: 700;
+  font-size: 22px;
+  border-bottom: 1px solid #151718;
+}
+
+th, td {
+  width: 30vw;
+}
