@@ -28,7 +28,7 @@ html, body {
 }
 
 #welcome-title {
-  padding-top: 5vh;
+  padding-top: 10vh;
 }
 
 .separator {
@@ -60,7 +60,7 @@ html, body {
   position: absolute;
   margin: 0 auto;
   padding: 0;
-  margin-top: 50px;
+  margin-top: 60px;
   left: 50%;
   transform: translateX(-50%);
   align: center;
