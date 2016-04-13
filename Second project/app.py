@@ -1,33 +1,22 @@
 import sqlite3
 from flask import Flask, request, session, g, \
-redirect, url_for, abort, render_template, flash
-from contextlib import closing
+redirect, url_for, abort, render_template
+from connection import Connection
 
 DATABASE = '/tmp/users.db'
 SECRET_KEY = 'NbrIvaX9a78KxVlTFs9YmVqIgg7uCzAG'
 USERNAME = 'admin'
 PASSWORD = '123'
+MESSAGE = None
+ERROR = None
 
 app = Flask(__name__)
 app.config.from_object(__name__)
-
-def get_users():
-    execution = g.db.execute('SELECT * FROM Users')
-    users = [dict(name=row[2], email=row[3], username=row[1]) for row in execution.fetchall()]
-    return users
-
-def connect_database():
-    return sqlite3.connect(app.config['DATABASE'])
-
-def init_database():
-    with closing(connect_database()) as database:
-        with app.open_resource('schema.sql', mode='r') as f:
-            database.cursor().executescript(f.read())
-            database.commit()
+connection = Connection(app)
 
 @app.before_request
 def before_request():
-    g.db = connect_database()
+    g.db = connection.connect_database()
 
 @app.teardown_request
 def teardown_request(exception):
@@ -37,11 +26,15 @@ def teardown_request(exception):
 
 @app.route("/")
 def main_view():
-    return render_template("index.html")
+    sending = app.config['MESSAGE']
+    app.config['MESSAGE'] = None
+    return render_template("index.html", message=sending)
 
 @app.route("/insert_user")
 def insert_view():
-    return render_template("insert.html")
+    sending = app.config['ERROR']
+    app.config['ERROR'] = None
+    return render_template("insert.html", error=sending)
 
 @app.route("/post_user", methods=['POST', 'GET'])
 def post_new_user():
@@ -51,7 +44,8 @@ def post_new_user():
     for field in fields:
         if not field:
             error = 'You have some blank fields. Check them and submit again.'
-            return render_template("insert.html", error=error)
+            app.config['ERROR'] = error
+            return redirect(url_for('insert_view'))
             abort(400)
 
     execution = g.db.execute('SELECT * FROM Users')
@@ -59,21 +53,29 @@ def post_new_user():
 
     if username in usernames:
         error = 'This username is being used already.'
-        return render_template("insert.html", error=error)
+        app.config['ERROR'] = error
+        return redirect(url_for('insert_view'))
         abort(400)
 
     g.db.execute('INSERT INTO Users (username, name, email, password) VALUES (?, ?, ?, ?)', fields)
     g.db.commit()
 
-    return render_template('show.html', users=get_users(), message='Your new user has been added.')
+    app.config['MESSAGE'] = 'Your new user has been added.'
+    return redirect(url_for('show_users'))
 
 @app.route("/show_users")
 def show_users():
-    return render_template('show.html', users=get_users())
+    sending = app.config['MESSAGE']
+    app.config['MESSAGE'] = None
+    return render_template('show.html', users=connection.get_users(), message=sending)
 
 @app.route("/login")
 def login_view():
-    return render_template("login.html")
+    sending_error = app.config['ERROR']
+    sending_message = app.config['MESSAGE']
+    app.config['ERROR'] = None
+    app.config['MESSAGE'] = None
+    return render_template("login.html", error=sending_error, message=sending_message)
 
 @app.route("/login_user", methods=['POST'])
 def login():
@@ -89,16 +91,20 @@ def login():
 
     if error == None:
         session['logged_in'] = True
-        return render_template("index.html", message="You are now logged in.")
+        app.config['MESSAGE'] = 'You are now logged in.'
+        return redirect(url_for('main_view'))
 
-    return render_template('login.html', error=error, message=message)
+    app.config['ERROR'] = error
+    app.config['MESSAGE'] = message
+    return redirect(url_for('login_view'))
     abort(401)
 
 @app.route("/logout", methods=['POST', 'GET'])
 def logout():
     session.pop('logged_in', None)
-    return render_template("index.html", message="You are now logged out.")
+    app.config['MESSAGE'] = 'You are now logged out.'
+    return redirect(url_for('main_view'))
 
 if __name__ == "__main__":
-    init_database()
+    connection.init_database()
     app.run()
