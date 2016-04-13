@@ -41,7 +41,8 @@ def post_new_user():
                  [request.form['username'], request.form['name'], request.form['email'], request.form['password']])
     g.db.commit()
     print 'Your new user has been added.'
-    return redirect(url_for('show_users'))
+    print session['logged_in']
+    return redirect(url_for('show_users') if session['logged_in'] == True else url_for('login_view'))
 
 @app.route("/show_users")
 def show_users():
@@ -61,9 +62,9 @@ def login():
         error = 'Invalid password.'
     else:
         session['logged_in'] = True
-        flash('You were logged in.')
+        print 'You are logged in.'
         return redirect(url_for('main_view'))
-        
+
     return redirect(url_for('login_view'))
 
 @app.route("/logout", methods=['POST', 'GET'])

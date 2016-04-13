@@ -6,3 +6,5 @@ CREATE TABLE Users (
   email TEXT NOT NULL,
   password TEXT NOT NULL
 );
+
+INSERT INTO Users (username, name, email, password) VALUES ("Ramon", "Ramon", "ramon@hyper.no", "123")
