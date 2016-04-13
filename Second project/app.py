@@ -11,6 +11,11 @@ PASSWORD = '123'
 app = Flask(__name__)
 app.config.from_object(__name__)
 
+def get_users():
+    execution = g.db.execute('SELECT * FROM Users')
+    users = [dict(name=row[2], email=row[3], username=row[1]) for row in execution.fetchall()]
+    return users
+
 def connect_database():
     return sqlite3.connect(app.config['DATABASE'])
 
@@ -60,15 +65,11 @@ def post_new_user():
     g.db.execute('INSERT INTO Users (username, name, email, password) VALUES (?, ?, ?, ?)', fields)
     g.db.commit()
 
-
-    print 'Your new user has been added.'
-    return redirect(url_for('show_users'))
+    return render_template('show.html', users=get_users(), message='Your new user has been added.')
 
 @app.route("/show_users")
 def show_users():
-    execution = g.db.execute('SELECT * FROM Users')
-    users = [dict(name=row[2], email=row[3], username=row[1]) for row in execution.fetchall()]
-    return render_template('show.html', users=users)
+    return render_template('show.html', users=get_users())
 
 @app.route("/login")
 def login_view():
@@ -88,16 +89,15 @@ def login():
 
     if error == None:
         session['logged_in'] = True
-        print 'You are logged in.'
-        return redirect(url_for('main_view'))
+        return render_template("index.html", message="You are now logged in.")
 
-    return render_template('login.html', error=error)
+    return render_template('login.html', error=error, message=message)
     abort(401)
 
 @app.route("/logout", methods=['POST', 'GET'])
 def logout():
     session.pop('logged_in', None)
-    return redirect(url_for('main_view'))
+    return render_template("index.html", message="You are now logged out.")
 
 if __name__ == "__main__":
     init_database()

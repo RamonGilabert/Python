@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
   </head>
 
-  <body>
+  {% block body %}
     <div>
       <h1 class="main-title", id="welcome-title">Welcome</h1>
       <div class="separator"></div>
@@ -29,5 +29,21 @@
         <a href="/insert_user", class="main-buttons">Insert users</a>
       </div>
     </div>
-  </body>
+
+    {% if message %}
+      <div id="inserted-container">
+        <h3 id="inserted">{{ message }}</h3>
+      </div>
+
+      <script>
+        var insertedContainer = document.getElementById('inserted-container');
+        insertedContainer.style.animationName = "animationIn";
+        insertedContainer.style.animationDuration = "0.4s";
+
+        window.setTimeout(function() {
+          insertedContainer.style.opacity = 0;
+        }, 2000);
+      </script>
+    {% endif  %}
+  {% endblock %}
 </html>

@@ -8,9 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
   </head>
   <div>
-  <!-- {% for message in get_flashed_messages() %}
-    <div class=flash>{{ message }}</div>
-  {% endfor %} -->
   {% if not session.logged_in %}
     <h3 class="subtitle", id="main-subtitle">You don't seem to be logged in, you cannot see this content.</h3>
     <div class="button-container">
@@ -18,6 +15,22 @@
       <a href="{{ url_for('login_view') }}", class="main-buttons">Login</a>
     </div>
   {% else %}
+    {% if message %}
+      <div id="inserted-container">
+        <h3 id="inserted">{{ message }}</h3>
+      </div>
+
+      <script>
+        var insertedContainer = document.getElementById('inserted-container');
+        insertedContainer.style.animationName = "animationIn";
+        insertedContainer.style.animationDuration = "0.4s";
+
+        window.setTimeout(function() {
+          insertedContainer.style.opacity = 0;
+        }, 2000);
+      </script>
+    {% endif  %}
+
     {% block body %}{% endblock %}
   {% endif %}
 </html>
