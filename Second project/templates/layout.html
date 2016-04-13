@@ -3,14 +3,14 @@
 <html>
   <head>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-    <meta property="og:title" content="Maestro" />
+    <meta property="og:title" content="Layout" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
   </head>
   <div>
-  {% for message in get_flashed_messages() %}
+  <!-- {% for message in get_flashed_messages() %}
     <div class=flash>{{ message }}</div>
-  {% endfor %}
+  {% endfor %} -->
   {% if not session.logged_in %}
     <h3 class="subtitle", id="main-subtitle">You don't seem to be logged in, you cannot see this content.</h3>
     <div class="button-container">

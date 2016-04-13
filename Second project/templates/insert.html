@@ -12,7 +12,7 @@
         <input class='login-input' autocorrect='off' spellcheck='false'
         type='text' name='name' placeholder='Enter the name'>
 
-        <input class='login-input' autocorrect='off' spellcheck='false' autocomplete=off
+        <input class='login-input' autocorrect='off' spellcheck='false'
         type='text' name='email' placeholder='Enter the email'>
 
         <input class='login-input' autocorrect='off' spellcheck='false'
@@ -24,4 +24,11 @@
       <a href="/", class="main-buttons", id="back-button-insert">Main</a>
     </div>
   </div>
+
+  {% if error %}
+    <script>
+      var error = '{{ error }}';
+      alert(error);
+    </script>
+  {% endif %}
 {% endblock %}

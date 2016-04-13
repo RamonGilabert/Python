@@ -40,9 +40,27 @@ def insert_view():
 
 @app.route("/post_user", methods=['POST', 'GET'])
 def post_new_user():
-    g.db.execute('INSERT INTO Users (username, name, email, password) VALUES (?, ?, ?, ?)',
-                 [request.form['username'], request.form['name'], request.form['email'], request.form['password']])
+    username = request.form['username']
+    fields = [username, request.form['name'], request.form['email'], request.form['password']]
+
+    for field in fields:
+        if not field:
+            error = 'You have some blank fields. Check them and submit again.'
+            return render_template("insert.html", error=error)
+            abort(400)
+
+    execution = g.db.execute('SELECT * FROM Users')
+    usernames = [row[1] for row in execution.fetchall()]
+
+    if username in usernames:
+        error = 'This username is being used already.'
+        return render_template("insert.html", error=error)
+        abort(400)
+
+    g.db.execute('INSERT INTO Users (username, name, email, password) VALUES (?, ?, ?, ?)', fields)
     g.db.commit()
+
+
     print 'Your new user has been added.'
     return redirect(url_for('show_users'))
 
@@ -59,16 +77,22 @@ def login_view():
 @app.route("/login_user", methods=['POST'])
 def login():
     error = None
-    if request.form['username'] != app.config['USERNAME']:
+    if not request.form['username']:
+        error = 'Your username cannot be blank.'
+    elif not request.form['password']:
+        error = 'Your password cannot be blank.'
+    elif request.form['username'] != app.config['USERNAME']:
         error = 'Invalid username.'
     elif request.form['password'] != app.config['PASSWORD']:
         error = 'Invalid password.'
-    else:
+
+    if error == None:
         session['logged_in'] = True
         print 'You are logged in.'
         return redirect(url_for('main_view'))
 
-    return redirect(url_for('login_view'))
+    return render_template('login.html', error=error)
+    abort(401)
 
 @app.route("/logout", methods=['POST', 'GET'])
 def logout():
