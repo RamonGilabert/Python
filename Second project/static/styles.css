@@ -190,6 +190,10 @@ html, body {
 
 /* Show users */
 
+#users {
+  margin-top: 75px;
+}
+
 #back-button-show {
   position: absolute;
   margin: 0 auto;
@@ -261,7 +265,7 @@ th, td {
 }
 
 #welcome-title-insert {
-  padding-top: 0px;
+  margin-top: 75px;
 }
 
 #inserted {

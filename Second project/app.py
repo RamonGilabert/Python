@@ -4,6 +4,9 @@ redirect, url_for, abort, render_template, flash
 from contextlib import closing
 
 DATABASE = '/tmp/users.db'
+SECRET_KEY = 'NbrIvaX9a78KxVlTFs9YmVqIgg7uCzAG'
+USERNAME = 'admin'
+PASSWORD = '123'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -41,8 +44,7 @@ def post_new_user():
                  [request.form['username'], request.form['name'], request.form['email'], request.form['password']])
     g.db.commit()
     print 'Your new user has been added.'
-    print session['logged_in']
-    return redirect(url_for('show_users') if session['logged_in'] == True else url_for('login_view'))
+    return redirect(url_for('show_users'))
 
 @app.route("/show_users")
 def show_users():
@@ -54,8 +56,9 @@ def show_users():
 def login_view():
     return render_template("login.html")
 
-@app.route("/login_user", methods=['POST', 'GET'])
+@app.route("/login_user", methods=['POST'])
 def login():
+    error = None
     if request.form['username'] != app.config['USERNAME']:
         error = 'Invalid username.'
     elif request.form['password'] != app.config['PASSWORD']:
