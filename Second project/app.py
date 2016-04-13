@@ -8,8 +8,11 @@ SECRET_KEY = 'NbrIvaX9a78KxVlTFs9YmVqIgg7uCzAG'
 USERNAME = 'admin'
 PASSWORD = '123'
 
-global message = None
-global error = None
+global message
+global error
+
+message = None
+error = None
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -27,24 +30,29 @@ def teardown_request(exception):
 
 @app.route("/")
 def main_view():
-    sending = global message
-    global message = None
+    global message
+    sending = message
+    message = None
     return render_template("index.html", message=sending)
 
 @app.route("/insert_user")
 def insert_view():
-    sending = global error
-    global error = None
+    global error
+    sending = error
+    error = None
     return render_template("insert.html", error=sending)
 
 @app.route("/post_user", methods=['POST', 'GET'])
 def post_new_user():
+    global error
+    global message
+
     username = request.form['username']
     fields = [username, request.form['name'], request.form['email'], request.form['password']]
 
     for field in fields:
         if not field:
-            global error = 'You have some blank fields. Check them and submit again.'
+            error = 'You have some blank fields. Check them and submit again.'
             return redirect(url_for('insert_view'))
             abort(400)
 
@@ -52,32 +60,38 @@ def post_new_user():
     usernames = [row[1] for row in execution.fetchall()]
 
     if username in usernames:
-        global error = 'This username is being used already.'
+        error = 'This username is being used already.'
         return redirect(url_for('insert_view'))
         abort(400)
 
     g.db.execute('INSERT INTO Users (username, name, email, password) VALUES (?, ?, ?, ?)', fields)
     g.db.commit()
 
-    global message = 'Your new user has been added.'
+    message = 'Your new user has been added.'
     return redirect(url_for('show_users'))
 
 @app.route("/show_users")
 def show_users():
-    sending = global message
-    global message = None
+    global message
+    sending = message
+    message = None
     return render_template('show.html', users=connection.get_users(), message=sending)
 
 @app.route("/login")
 def login_view():
-    sending_error = global error
-    sending_message = global message
-    global error = None
-    global message = None
+    global error
+    global message
+    sending_error = error
+    sending_message = message
+    error = None
+    message = None
     return render_template("login.html", error=sending_error, message=sending_message)
 
 @app.route("/login_user", methods=['POST'])
 def login():
+    global error
+    global message
+    
     error = None
     if not request.form['username']:
         error = 'Your username cannot be blank.'
@@ -90,18 +104,17 @@ def login():
 
     if error == None:
         session['logged_in'] = True
-        global message = 'You are now logged in.'
+        message = 'You are now logged in.'
         return redirect(url_for('main_view'))
 
-    global error = error
-    global message = message
     return redirect(url_for('login_view'))
     abort(401)
 
 @app.route("/logout", methods=['POST', 'GET'])
 def logout():
     session.pop('logged_in', None)
-    global message = 'You are now logged out.'
+    global message
+    message = 'You are now logged out.'
     return redirect(url_for('main_view'))
 
 if __name__ == "__main__":
