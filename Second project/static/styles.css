@@ -11,6 +11,12 @@ html, body {
   background-color: #FAFAF7;
 }
 
+.empty-state {
+  text-align: center;
+  padding-top: 50px;
+  padding-bottom: 35px;
+}
+
 /* Main screen */
 
 .main-title {

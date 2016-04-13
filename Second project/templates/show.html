@@ -9,28 +9,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
   </head>
 
-  <body>
+  {% block body %}
     <div>
-      <h1 class="main-title", class="users">Users</h1>
+      <h1 class="main-title", class="users", class="display">Users</h1>
 
-      users = zip(x['name'], x['email'], x['username'])
-
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Username</th>
-        </tr>
-        {% for user in users %}
+      {% if variable is defined %}
+        <table>
           <tr>
-            <td>{{ user[0] }}</td>
-            <td>{{ user[1] }}</td>
-            <td>{{ user[2] }}</td>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Username</th>
           </tr>
-        {% endfor %}
-      </table>
+          {% for user in users %}
+            <tr>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.username }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <h2 class="empty-state">Bummer! No users so far. Start by adding one below.</h2>
+      {% endif %}
 
-      <a href="/", class="main-buttons", id="back-button-show">Back</a>
+      <div id="buttons-container">
+        {% if variable is not defined %}
+          <a href="/insert_user", class="main-buttons">Insert users</a>
+        {% endif %}
+        <a href="/", class="main-buttons", id="back-button-show">Back</a>
+      </div>
     </div>
-  </body>
+  {% endblock %}
 </html>

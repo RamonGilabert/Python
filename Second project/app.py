@@ -15,7 +15,7 @@ def init_database():
     with closing(connect_database()) as database:
         with app.open_resource('schema.sql', mode='r') as f:
             database.cursor().executescript(f.read())
-        database.commit()
+            database.commit()
 
 @app.before_request
 def before_request():
@@ -44,11 +44,11 @@ def insert_user():
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
 
-@app.route("/show_users", methods=['GET'])
+@app.route("/show_users")
 def show_users():
-    execution = g.db.execute('SELECT name, email, username FROM Users order by id desc')
-    entries = [dict(name=row[2], email=row[3], username=row[1]) for row in execution.fetchall()]
-    return render_template('show.html', entries=entries)
+    execution = g.db.execute('SELECT * FROM Users')
+    users = [dict(name=row[2], email=row[3], username=row[1]) for row in execution.fetchall()]
+    return render_template('show.html', users=users)
 
 @app.route("/login", methods=['POST', 'GET'])
 def login_view():
