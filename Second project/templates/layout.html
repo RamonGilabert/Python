@@ -2,11 +2,22 @@
 
 <html>
   <head>
-    <title>Second | Show users</title>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
     <meta property="og:title" content="Maestro" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
   </head>
-  {% block body %}{% endblock %}
+  <div>
+  {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  {% endfor %}
+  {% if not session.logged_in %}
+    <h3 class="subtitle", id="main-subtitle">You don't seem to be logged in, you cannot see this content.</h3>
+    <div class="button-container">
+      <a href="/", class="main-buttons">Main</a>
+      <a href="{{ url_for('login_view') }}", class="main-buttons">Login</a>
+    </div>
+  {% else %}
+    {% block body %}{% endblock %}
+  {% endif %}
 </html>

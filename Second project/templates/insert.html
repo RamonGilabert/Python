@@ -1,43 +1,30 @@
-<!DOCTYPE html>
+<title>Second | Insert users</title>
 
-<html>
-  <head>
-    <title>Second | Insert users</title>
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-    <meta property="og:title" content="Maestro" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
-    <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
-  </head>
-
-  <body>
+{% extends "layout.html" %}
+{% block body %}
+  <div>
     <div>
-      <div>
-        <h1 class="main-title", id="welcome-title-insert">Insert</h1>
-        <form id="login-form">
-          <input class='login-input' autocorrect='off' spellcheck='false'
-          type='text' name='username' placeholder='Enter the username'>
+      <h1 class="main-title", id="welcome-title-insert">Insert</h1>
+      <form action="{{ url_for('post_new_user') }}" method="post" class=post_new_user id="login-form">
+        <input class='login-input' autocorrect='off' spellcheck='false'
+        type='text' name='username' placeholder='Enter the username'>
 
-          <input class='login-input' autocorrect='off' spellcheck='false'
-          type='text' name='name' placeholder='Enter the name'>
+        <input class='login-input' autocorrect='off' spellcheck='false'
+        type='text' name='name' placeholder='Enter the name'>
 
-          <input class='login-input' autocorrect='off' spellcheck='false'
-          type='text' name='email' placeholder='Enter the email'>
+        <input class='login-input' autocorrect='off' spellcheck='false' autocomplete=off
+        type='text' name='email' placeholder='Enter the email'>
 
-          <input class='login-input' autocorrect='off' spellcheck='false'
-          type='password' name='password' placeholder='Enter the password'>
-        </form>
-
-        <button class='button-login', id='button-insert'>
-          <a href="">Insert user</a>
-        </button>
-      </div>
-      <div>
-        <a href="/", class="main-buttons", id="back-button-insert">Back</a>
-      </div>
-      <div id="inserted-container">
-        <h3 id="inserted">User inserted in the database</h3>
-      </div>
+        <input class='login-input' autocorrect='off' spellcheck='false'
+        type='password' name='password' placeholder='Enter the password'>
+        <button class='button-login', id='button-insert'>Insert user</button>
+      </form>
     </div>
-  </body>
-</html>
+    <div>
+      <a href="/", class="main-buttons", id="back-button-insert">Main</a>
+    </div>
+    <div id="inserted-container">
+      <h3 id="inserted">User inserted in the database</h3>
+    </div>
+  </div>
+{% endblock %}

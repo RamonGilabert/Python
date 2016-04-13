@@ -17,6 +17,11 @@ html, body {
   padding-bottom: 35px;
 }
 
+#main-subtitle {
+  margin-top: 200px;
+  margin-bottom: -15px;
+}
+
 /* Main screen */
 
 .main-title {
@@ -153,6 +158,9 @@ html, body {
   width: 500px;
   height: 70px;
   letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #FAFAF7;
+  text-decoration: none;
 }
 
 #button-logout {
@@ -186,10 +194,32 @@ html, body {
   position: absolute;
   margin: 0 auto;
   padding: 0 auto;
+  margin-top: 100px;
+  padding-bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#insert-button-show {
+  position: absolute;
+  margin: 0 auto;
+  padding: 0 auto;
+  margin-top: 40px;
+  padding-bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.button-container {
+  display: table;
+  position: absolute;
+  margin: 0 auto;
+  padding: 0;
   margin-top: 60px;
   padding-bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
+  align: center;
 }
 
 table {

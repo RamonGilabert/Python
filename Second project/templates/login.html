@@ -9,26 +9,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
   </head>
 
-  <body>
+  {% block body %}
     <div>
       <h1 class="main-title", id="welcome-login-title">Login</h1>
-      <form id="login-form">
+      <form action="{{ url_for('login') }}" method="post" class=login id="login-form">
         <input class='login-input' id='first-login-field' autocorrect='off' spellcheck='false'
         type='text' name='username' placeholder='Enter your username'>
 
         <input class='login-input' id='second-login-field' autocorrect='off' spellcheck='false'
         type='password' name='password' placeholder='Enter your password'>
-      </form>
 
-      <button class='button-login', id='button-login'>
-        <a href="/login">Login</a>
-      </button>
+        <button class='button-login', id='button-login'>Login</button>
+      </form>
 
       <button class='button-login', id='button-logout'>
         <a href="/login">Logout</a>
       </button>
 
-      <a href="/", class="main-buttons", id="back-button">Back</a>
+      <a href="/", class="main-buttons", id="back-button">Main</a>
     </div>
-  </body>
+  {% endblock %}
 </html>

@@ -1,43 +1,32 @@
-<!DOCTYPE html>
+<title>Second | Show users</title>
 
-<html>
-  <head>
-    <title>Second | Show users</title>
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-    <meta property="og:title" content="Maestro" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
-  </head>
+{% extends "layout.html" %}
+{% block body %}
+  <div>
+    <h1 class="main-title", class="users", class="display">Users</h1>
 
-  {% block body %}
-    <div>
-      <h1 class="main-title", class="users", class="display">Users</h1>
-
-      {% if variable is defined %}
-        <table>
+    {% if users %}
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Username</th>
+        </tr>
+        {% for user in users %}
           <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Username</th>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.username }}</td>
           </tr>
-          {% for user in users %}
-            <tr>
-              <td>{{ user.name }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.username }}</td>
-            </tr>
-          {% endfor %}
-        </table>
-      {% else %}
-        <h2 class="empty-state">Bummer! No users so far. Start by adding one below.</h2>
-      {% endif %}
+        {% endfor %}
+      </table>
+    {% else %}
+      <h2 class="empty-state">Bummer! No users so far. Start by adding one below.</h2>
+    {% endif %}
 
-      <div id="buttons-container">
-        {% if variable is not defined %}
-          <a href="/insert_user", class="main-buttons">Insert users</a>
-        {% endif %}
-        <a href="/", class="main-buttons", id="back-button-show">Back</a>
-      </div>
+    <div class="button-container">
+      <a href="/insert_user", class="main-buttons">Insert users</a>
+      <a href="/", class="main-buttons">Main</a>
     </div>
-  {% endblock %}
-</html>
+  </div>
+{% endblock %}

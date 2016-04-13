@@ -21,7 +21,11 @@
           into the app.</h3>
       <div id="buttons-container">
         <a href="/show_users", class="main-buttons">Show users</a>
-        <a href="/login", class="main-buttons">Login</a>
+        {% if not session.logged_in %}
+          <a href="{{ url_for('login_view') }}", class="main-buttons">Login</a>
+        {% else %}
+          <a href="{{ url_for('logout') }}", class="main-buttons">Logout</a>
+        {% endif %}
         <a href="/insert_user", class="main-buttons">Insert users</a>
       </div>
     </div>

@@ -31,18 +31,17 @@ def teardown_request(exception):
 def main_view():
     return render_template("index.html")
 
-@app.route("/insert_user", methods=['POST', 'GET'])
+@app.route("/insert_user")
 def insert_view():
     return render_template("insert.html")
 
-def insert_user():
-    if not session.get('logged_in'):
-        abort(401)
-    g.db.execute('insert into entries (title, text) values (?, ?)',
-                 [request.form['title'], request.form['text']])
+@app.route("/post_user", methods=['POST', 'GET'])
+def post_new_user():
+    g.db.execute('INSERT INTO Users (username, name, email, password) VALUES (?, ?, ?, ?)',
+                 [request.form['username'], request.form['name'], request.form['email'], request.form['password']])
     g.db.commit()
-    flash('New entry was successfully posted')
-    return redirect(url_for('show_entries'))
+    print 'Your new user has been added.'
+    return redirect(url_for('show_users'))
 
 @app.route("/show_users")
 def show_users():
@@ -50,9 +49,27 @@ def show_users():
     users = [dict(name=row[2], email=row[3], username=row[1]) for row in execution.fetchall()]
     return render_template('show.html', users=users)
 
-@app.route("/login", methods=['POST', 'GET'])
+@app.route("/login")
 def login_view():
     return render_template("login.html")
+
+@app.route("/login_user", methods=['POST', 'GET'])
+def login():
+    if request.form['username'] != app.config['USERNAME']:
+        error = 'Invalid username.'
+    elif request.form['password'] != app.config['PASSWORD']:
+        error = 'Invalid password.'
+    else:
+        session['logged_in'] = True
+        flash('You were logged in.')
+        return redirect(url_for('main_view'))
+        
+    return redirect(url_for('login_view'))
+
+@app.route("/logout", methods=['POST', 'GET'])
+def logout():
+    session.pop('logged_in', None)
+    return redirect(url_for('main_view'))
 
 if __name__ == "__main__":
     init_database()
