@@ -1,7 +1,8 @@
 import sqlite3
 from flask import Flask, request, session, g, \
 redirect, url_for, abort, render_template
-from connection import Connection
+from orm_connection import database_session, init_database
+from models import User
 
 # This is the configuration of the database and the admin, you can login with
 # the credentials below. The secret key is needed to create a log in system.
@@ -24,19 +25,10 @@ error = None
 # letters, with also the connection of the app.
 app = Flask(__name__)
 app.config.from_object(__name__)
-connection = Connection(app)
 
-# Before the requests we'll create a connection to the database to make sure
-# that the database is ready.
-@app.before_request
-def before_request():
-    g.db = connection.connect_database()
-
-@app.teardown_request
-def teardown_request(exception):
-    db = getattr(g, 'db', None)
-    if db is not None:
-        db.close()
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    database_session.remove()
 
 # Below we'll define our routes.
 
@@ -73,8 +65,7 @@ def post_new_user():
             return redirect(url_for('insert_view'))
             abort(400)
 
-    execution = g.db.execute('SELECT * FROM Users')
-    usernames = [row[1] for row in execution.fetchall()]
+    usernames = [user.username for user in User.query.all()]
 
     # Since the username needs to be unique, we check for that here if it exists
     # already, if it does we show the error in the same view.
@@ -85,8 +76,9 @@ def post_new_user():
 
     # We haven't found any problem, thus, we'll insert the user into the
     # database and commit the result of it.
-    g.db.execute('INSERT INTO Users (username, name, email, password) VALUES (?, ?, ?, ?)', fields)
-    g.db.commit()
+    user = User(username, fields[1], fields[2], fields[3])
+    database_session.add(user)
+    database_session.commit()
 
     message = 'Your new user has been added.'
     return redirect(url_for('show_users'))
@@ -96,7 +88,8 @@ def show_users():
     global message
     sending = message
     message = None
-    return render_template('show.html', users=connection.get_users(), message=sending)
+
+    return render_template('show.html', users=User.query.all(), message=sending)
 
 @app.route("/login")
 def login_view():
@@ -145,5 +138,5 @@ def logout():
 
 if __name__ == "__main__":
     # Basic instantiation of the database and running of the app.
-    connection.init_database()
+    init_database()
     app.run()
