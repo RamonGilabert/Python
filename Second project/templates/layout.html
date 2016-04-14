@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 
+<!-- The template contains all the meta information of the head as well as a
+general rule, if the user is not logged in it will show a message with the
+login options. -->
 <html>
   <head>
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
@@ -15,7 +18,7 @@
       <a href="{{ url_for('login_view') }}", class="main-buttons">Login</a>
     </div>
   {% else %}
-    {% if message %}
+    {% if message %} <!-- If it has a message, display it with animations -->
       <div id="inserted-container">
         <h3 id="inserted">{{ message }}</h3>
       </div>
@@ -31,6 +34,6 @@
       </script>
     {% endif  %}
 
-    {% block body %}{% endblock %}
+    {% block body %}{% endblock %} <!-- Configure the body block here. -->
   {% endif %}
 </html>

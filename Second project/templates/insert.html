@@ -5,6 +5,8 @@
   <div>
     <div>
       <h1 class="main-title", id="welcome-title-insert">Insert</h1>
+      <!-- This form will contain the name for the login with an action
+      that Flask will understand, which is post the new user. -->
       <form action="{{ url_for('post_new_user') }}" method="post" class=post_new_user id="login-form">
         <input class='login-input' autocorrect='off' spellcheck='false'
         type='text' name='username' placeholder='Enter the username'>
