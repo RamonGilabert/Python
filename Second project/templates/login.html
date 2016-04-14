@@ -1,37 +1,28 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
 
-<html>
-  <head>
-    <title>Second | Login</title>
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-    <meta property="og:title" content="Login" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
-  </head>
+{% block body %}
+  <div>
+    <h1 class="main-title", id="welcome-login-title">Login</h1>
+    <!-- This form will contain the name for the login with an action
+    that Flask will understand, which is post the new user. -->
+    <form action="{{ url_for('login') }}" method="post" class=login id="login-form">
+      <input class='login-input' id='first-login-field' autocorrect='off' spellcheck='false'
+      type='text' name='username' placeholder='Enter your username'>
 
-  {% block body %}
-    <div>
-      <h1 class="main-title", id="welcome-login-title">Login</h1>
-      <!-- This form will contain the name for the login with an action
-      that Flask will understand, which is post the new user. -->
-      <form action="{{ url_for('login') }}" method="post" class=login id="login-form">
-        <input class='login-input' id='first-login-field' autocorrect='off' spellcheck='false'
-        type='text' name='username' placeholder='Enter your username'>
+      <input class='login-input' id='second-login-field' autocorrect='off' spellcheck='false'
+      type='password' name='password' placeholder='Enter your password'>
 
-        <input class='login-input' id='second-login-field' autocorrect='off' spellcheck='false'
-        type='password' name='password' placeholder='Enter your password'>
+      <button class='button-login', id='button-login'>Login</button>
+    </form>
 
-        <button class='button-login', id='button-login'>Login</button>
-      </form>
+    <a href="/", class="main-buttons", id="back-button">Main</a>
+  </div>
 
-      <a href="/", class="main-buttons", id="back-button">Main</a>
-    </div>
-
-    {% if error %}
-      <script>
-        var error = '{{ error }}';
-        alert(error);
-      </script>
-    {% endif %}
-  {% endblock %}
-</html>
+  {% if error %}
+    <script>
+      var error = '{{ error }}';
+      alert(error);
+    </script>
+  {% endif %}
+{% endblock %}

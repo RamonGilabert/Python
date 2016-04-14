@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block login %}
+<h3 class="subtitle", id="main-subtitle">You don't seem to be logged in, you cannot see this content.</h3>
+<div class="button-container">
+  <a href="/", class="main-buttons">Main</a>
+  <a href="{{ url_for('login_view') }}", class="main-buttons">Login</a>
+</div>
+{% endblock %}

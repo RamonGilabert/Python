@@ -1,31 +1,35 @@
-<title>Second | Insert users</title>
+{% extends "inside.html" %}
+{% block title %}Insert users{% endblock %}
 
-{% extends "layout.html" %}
 {% block body %}
-  <div>
+  {% if not session.logged_in %}
+    {% block login %}{{ super() }}{% endblock %}
+  {% else %}
     <div>
-      <h1 class="main-title", id="welcome-title-insert">Insert</h1>
-      <!-- This form will contain the name for the login with an action
-      that Flask will understand, which is post the new user. -->
-      <form action="{{ url_for('post_new_user') }}" method="post" class=post_new_user id="login-form">
-        <input class='login-input' autocorrect='off' spellcheck='false'
-        type='text' name='username' placeholder='Enter the username'>
+      <div>
+        <h1 class="main-title", id="welcome-title-insert">Insert</h1>
+        <!-- This form will contain the name for the login with an action
+        that Flask will understand, which is post the new user. -->
+        <form action="{{ url_for('post_new_user') }}" method="post" class=post_new_user id="login-form">
+          <input class='login-input' autocorrect='off' spellcheck='false'
+          type='text' name='username' placeholder='Enter the username'>
 
-        <input class='login-input' autocorrect='off' spellcheck='false'
-        type='text' name='name' placeholder='Enter the name'>
+          <input class='login-input' autocorrect='off' spellcheck='false'
+          type='text' name='name' placeholder='Enter the name'>
 
-        <input class='login-input' autocorrect='off' spellcheck='false'
-        type='text' name='email' placeholder='Enter the email'>
+          <input class='login-input' autocorrect='off' spellcheck='false'
+          type='text' name='email' placeholder='Enter the email'>
 
-        <input class='login-input' autocorrect='off' spellcheck='false'
-        type='password' name='password' placeholder='Enter the password'>
-        <button class='button-login', id='button-insert'>Insert user</button>
-      </form>
+          <input class='login-input' autocorrect='off' spellcheck='false'
+          type='password' name='password' placeholder='Enter the password'>
+          <button class='button-login', id='button-insert'>Insert user</button>
+        </form>
+      </div>
+      <div>
+        <a href="/", class="main-buttons", id="back-button-insert">Main</a>
+      </div>
     </div>
-    <div>
-      <a href="/", class="main-buttons", id="back-button-insert">Main</a>
-    </div>
-  </div>
+  {% endif %}
 
   {% if error %}
     <script>

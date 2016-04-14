@@ -1,32 +1,36 @@
-<title>Second | Show users</title>
+{% extends "inside.html" %}
+{% block title %}Show users{% endblock %}
 
-{% extends "layout.html" %}
 {% block body %}
-  <div>
-    <h1 class="main-title", class="users", class="display", id="users">Users</h1>
+  {% if not session.logged_in %}
+    {% block login %}{{ super() }}{% endblock %}
+  {% else %}
+    <div>
+      <h1 class="main-title", class="users", class="display", id="users">Users</h1>
 
-    {% if users %}
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Username</th>
-        </tr>
-        {% for user in users %}
+      {% if users %}
+        <table>
           <tr>
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.username }}</td>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Username</th>
           </tr>
-        {% endfor %}
-      </table>
-    {% else %}
-      <h2 class="empty-state">Bummer! No users so far. Start by adding one below.</h2>
-    {% endif %}
+          {% for user in users %}
+            <tr>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.username }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      {% else %}
+        <h2 class="empty-state">Bummer! No users so far. Start by adding one below.</h2>
+      {% endif %}
 
-    <div class="button-container">
-      <a href="/insert_user", class="main-buttons">Insert users</a>
-      <a href="/", class="main-buttons">Main</a>
+      <div class="button-container">
+        <a href="/insert_user", class="main-buttons">Insert users</a>
+        <a href="/", class="main-buttons">Main</a>
+      </div>
     </div>
-  </div>
+  {% endif %}
 {% endblock %}

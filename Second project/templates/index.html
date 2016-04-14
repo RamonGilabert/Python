@@ -1,49 +1,40 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
+{% block title %}Main{% endblock %}
 
-<html>
-  <head>
-    <title>Second project</title>
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
-    <meta property="og:title" content="Second" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
-  </head>
-
-  {% block body %}
-    <div>
-      <h1 class="main-title", id="welcome-title">Welcome</h1>
-      <div class="separator"></div>
+{% block body %}
+  <div>
+    <h1 class="main-title", id="welcome-title">Welcome</h1>
+    <div class="separator"></div>
+  </div>
+  <div>
+    <h3 class="subtitle">This is the landing page of the second project,
+       the following links are available for you to interact with the app.
+        You can <strong>Insert a user</strong>, <strong>Show the users</strong> or <strong>Login</strong>
+        into the app.</h3>
+    <div id="buttons-container">
+      <a href="/show_users", class="main-buttons">Show users</a>
+      {% if not session.logged_in %}
+        <a href="{{ url_for('login_view') }}", class="main-buttons">Login</a>
+      {% else %}
+        <a href="{{ url_for('logout') }}", class="main-buttons">Logout</a>
+      {% endif %}
+      <a href="/insert_user", class="main-buttons">Insert users</a>
     </div>
-    <div>
-      <h3 class="subtitle">This is the landing page of the second project,
-         the following links are available for you to interact with the app.
-          You can <strong>Insert a user</strong>, <strong>Show the users</strong> or <strong>Login</strong>
-          into the app.</h3>
-      <div id="buttons-container">
-        <a href="/show_users", class="main-buttons">Show users</a>
-        {% if not session.logged_in %}
-          <a href="{{ url_for('login_view') }}", class="main-buttons">Login</a>
-        {% else %}
-          <a href="{{ url_for('logout') }}", class="main-buttons">Logout</a>
-        {% endif %}
-        <a href="/insert_user", class="main-buttons">Insert users</a>
-      </div>
+  </div>
+
+  {% if message %}
+    <div id="inserted-container">
+      <h3 id="inserted">{{ message }}</h3>
     </div>
 
-    {% if message %}
-      <div id="inserted-container">
-        <h3 id="inserted">{{ message }}</h3>
-      </div>
+    <script>
+      var insertedContainer = document.getElementById('inserted-container');
+      insertedContainer.style.animationName = "animationIn";
+      insertedContainer.style.animationDuration = "0.4s";
 
-      <script>
-        var insertedContainer = document.getElementById('inserted-container');
-        insertedContainer.style.animationName = "animationIn";
-        insertedContainer.style.animationDuration = "0.4s";
-
-        window.setTimeout(function() {
-          insertedContainer.style.opacity = 0;
-        }, 2000);
-      </script>
-    {% endif  %}
-  {% endblock %}
-</html>
+      window.setTimeout(function() {
+        insertedContainer.style.opacity = 0;
+      }, 2000);
+    </script>
+  {% endif  %}
+{% endblock %}
