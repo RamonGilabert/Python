@@ -13,21 +13,20 @@ login options. -->
   </head>
   <div>
 
-  {% if message %} <!-- If it has a message, display it with animations -->
-    <div id="inserted-container">
-      <h3 id="inserted">{{ message }}</h3>
-    </div>
+  {% block body %}
+    {% if message %} <!-- If it has a message, display it with animations -->
+      <div id="inserted-container">
+        <h3 id="inserted">{{ message }}</h3>
+      </div>
 
-    <script>
-      var insertedContainer = document.getElementById('inserted-container');
-      insertedContainer.style.animationName = "animationIn";
-      insertedContainer.style.animationDuration = "0.4s";
+      <script>
+        var insertedContainer = document.getElementById('inserted-container');
+        insertedContainer.style.animationName = "animationIn";
 
-      window.setTimeout(function() {
-        insertedContainer.style.opacity = 0;
-      }, 2000);
-    </script>
-  {% endif  %}
-
-  {% block body %}{% endblock %} <!-- Configure the body block here. -->
+        window.setTimeout(function() {
+          insertedContainer.style.opacity = 0;
+        }, 2000);
+      </script>
+    {% endif  %}
+  {% endblock %} <!-- Configure the body block here. -->
 </html>
