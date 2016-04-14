@@ -5,6 +5,7 @@
   {% if not session.logged_in %}
     {% block login %}{{ super() }}{% endblock %}
   {% else %}
+  {{ super() }}
     <div>
       <h1 class="main-title", class="users", class="display", id="users">Users</h1>
 
