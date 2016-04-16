@@ -1,7 +1,7 @@
 import sqlite3
 from database import Database
 
-def Temperature(Database):
+class Temperature(Database):
 
     def __init__(self, database):
         self.database = sqlite3.connect(database)
@@ -12,19 +12,19 @@ def Temperature(Database):
     def add(self, temperature, created, difference, user_id):
         print "Adding a new tempreature."
 
-        # self.cursor.execute('INSERT INTO Temperature (temperature, created, difference, user_id)' +
-        # 'VALUES (?, ?, ?, ?)', (temperature, created, difference, user_id))
-        # self.database.commit()
+        self.cursor.execute('INSERT INTO Temperature (temperature, created, \
+        difference, user_id)' + 'VALUES (?, ?, ?, ?)',
+        (temperature, created, difference, user_id))
+        self.database.commit()
 
     def save(self):
         print "Saving a new Temperature."
 
-    def get_users(self):
+    def get_objects(self):
         print "Getting all the temperatures."
 
-        # self.cursor.execute('SELECT * FROM Temperature')
-        #
-        # return self.cursor.fetchall()
+        self.cursor.execute('SELECT * FROM Temperature')
+        return self.cursor.fetchall()
 
     # Specific getters and setters.
 
@@ -55,12 +55,15 @@ def Temperature(Database):
     # Private methods
 
     def _create_table(self):
+        print 'Creating the Temperature table.'
+
         self.cursor.execute(
             '''CREATE TABLE IF NOT EXISTS Temperature (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               temperature FLOAT NOT NULL UNIQUE,
               created DATE NOT NULL,
               difference FLOAT,
+              user_id INT NOT NULL,
               FOREIGN KEY (user_id) REFERENCES Users(id)
             );'''
         )
