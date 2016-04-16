@@ -7,7 +7,7 @@ def Temperature:
         self.database.row_factory = sqlite3.Row
         self.cursor = self.db.cursor()
 
-    def add(self, name, nfc):
+    def add(self, temperature, created, difference, user):
         print "Adding a new tempreature."
 
         # self.cursor.execute('INSERT INTO Temperature (name, nfc)' +
@@ -43,3 +43,9 @@ def Temperature:
 
     def set_created(self):
         print "Setting the difference."
+
+    def get_user(self):
+        print "Getting the user"
+
+    def set_user(self):
+        print "Setting the user"
