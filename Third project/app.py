@@ -7,6 +7,8 @@
 
 from sensors.nfcsensor import NFCSensor
 from sensors.thsensor import THSensor
+from communication.voice import voice
+from communication.text import text
 
 if __name__ == '__main__':
     nfc = NFCSensor()

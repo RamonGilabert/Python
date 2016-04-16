@@ -3,13 +3,13 @@
 
 from notification import Notification
 
-class Voice(Notification):
+class Text(Notification):
 
     def __init__(self):
         print "Notification instantiated"
 
     def notify():
-        print "Voice notify called."
+        print "Text notify called."
 
     def broadcast():
-        print "Voice broadcast called."
+        print "Text broadcast called."
