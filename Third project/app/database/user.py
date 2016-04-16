@@ -11,7 +11,7 @@ def User:
         print "Adding a new user."
 
         # self.cursor.execute('INSERT INTO User (name, nfc)' +
-        # 'VALUES (?, ?, ?)', (name, nfc))
+        # 'VALUES (?, ?)', (name, nfc))
         # self.database.commit()
 
     def save(self):
