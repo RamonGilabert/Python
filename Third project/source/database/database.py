@@ -1,12 +1,9 @@
 import sqlite3
 
-def Database:
+class Database:
 
     def __init__(self, database):
-        self.database = sqlite3.connect(database)
-        self.database.row_factory = sqlite3.Row
-        self.cursor = self.database.cursor()
-        self._create_table()
+        print 'Initializing the database.'
 
     def save(self):
         print 'Saving a new object.'

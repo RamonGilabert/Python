@@ -9,8 +9,8 @@ from sensors.nfcsensor import NFCSensor
 from sensors.thsensor import THSensor
 from communication.voice import Voice
 from communication.text import Text
-from app.database.user import User
-from app.database.user import Temperature
+from source.database.user import User
+from source.database.temperature import Temperature
 
 DATABASE = '/tmp/third.db'
 

@@ -1,7 +1,7 @@
 import sqlite3
 from database import Database
 
-class Temperature(Database):
+def Temperature(Database):
 
     def __init__(self, database):
         self.database = sqlite3.connect(database)
