@@ -7,8 +7,10 @@
 
 from sensors.nfcsensor import NFCSensor
 from sensors.thsensor import THSensor
-from communication.voice import voice
-from communication.text import text
+from communication.voice import Voice
+from communication.text import Text
+from app.database.user import User
+from app.database.user import Temperature
 
 if __name__ == '__main__':
     nfc = NFCSensor()
