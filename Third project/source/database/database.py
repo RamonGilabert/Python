@@ -8,10 +8,6 @@ class Database(object):
         self.cursor = self.database.cursor()
         self.table = table
 
-    def save(self, command):
-        self.cursor.execute(command)
-        self.database.commit()
-
     def get_objects(self):
         self.cursor.execute('SELECT * FROM ' + self.table)
         return self.cursor.fetchall()
@@ -22,7 +18,7 @@ class Database(object):
     # Private methods
 
     def _create_table(self):
-        print 'Creating the database with a private method.'
+        print 'Create the table in the database.'
 
     def _instantiate_variables(self):
         print 'Add the initial behavior of the variables.'
