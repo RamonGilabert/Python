@@ -1,18 +1,21 @@
 import sqlite3
 
-class Database:
+class Database(object):
 
     def __init__(self, database):
-        print 'Initializing the database.'
+        self.database = sqlite3.connect(database)
+        self.database.row_factory = sqlite3.Row
+        self.cursor = self.database.cursor()
 
     def save(self):
         print 'Saving a new object.'
 
-    def get_objects(self):
-        print 'Doing a general query in the database.'
+    def get_objects(self, table):
+        self.cursor.execute('SELECT * FROM ' + table)
+        return self.cursor.fetchall()
 
-    def remove_objects(self):
-        print 'Removing all objects.'
+    def remove_objects(self, table):
+        self.cursor.execute('DELETE FROM ' + table)
 
     # Private methods
 

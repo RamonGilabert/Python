@@ -4,9 +4,7 @@ from database import Database
 class User(Database):
 
     def __init__(self, database):
-        self.database = sqlite3.connect(database)
-        self.database.row_factory = sqlite3.Row
-        self.cursor = self.database.cursor()
+        super(User, self).__init__(database)
         self._create_table()
         self._instantiate_variables()
 
@@ -26,15 +24,10 @@ class User(Database):
         return None
 
     def get_objects(self):
-        print "Getting all the users."
-
-        self.cursor.execute('SELECT * FROM Users')
-
-        return self.cursor.fetchall()
+        return super(User, self).get_objects('Users')
 
     def remove_objects(self):
-        print 'Removing all temperatures.'
-        self.cursor.execute('DELETE FROM Users')
+        super(User, self).remove_objects('Users')
 
     # Specific getters and setters.
 

@@ -4,9 +4,7 @@ from database import Database
 class Temperature(Database):
 
     def __init__(self, database):
-        self.database = sqlite3.connect(database)
-        self.database.row_factory = sqlite3.Row
-        self.cursor = self.database.cursor()
+        super(Temperature, self).__init__(database)
         self._create_table()
         self._instantiate_variables()
 
@@ -31,14 +29,10 @@ class Temperature(Database):
         return None
 
     def get_objects(self):
-        print "Getting all the temperatures."
-
-        self.cursor.execute('SELECT * FROM Temperatures')
-        return self.cursor.fetchall()
+        return super(Temperature, self).get_objects('Temperatures')
 
     def remove_objects(self):
-        print 'Removing all temperatures.'
-        self.cursor.execute('DELETE FROM Temperatures')
+        super(User, self).remove_objects('Temperatures')
 
     # Specific getters and setters.
 

@@ -22,6 +22,8 @@ if __name__ == '__main__':
     user_model = User(DATABASE)
     temperature_model = Temperature(DATABASE)
 
+    print user_model.get_objects()
+
     # try:
     #     while True:
     #         command = raw_input('\nEnter your command and I\'ll print the result (Type exit to leave): ')
