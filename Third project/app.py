@@ -12,6 +12,8 @@ from communication.text import Text
 from app.database.user import User
 from app.database.user import Temperature
 
+DATABASE = '/tmp/third.db'
+
 if __name__ == '__main__':
     nfc = NFCSensor()
     temperature = THSensor()

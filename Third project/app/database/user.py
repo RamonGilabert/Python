@@ -1,11 +1,13 @@
 import sqlite3
+from database import Database
 
-def User:
+def User(Database):
 
     def __init__(self, database):
         self.database = sqlite3.connect(database)
         self.database.row_factory = sqlite3.Row
-        self.cursor = self.db.cursor()
+        self.cursor = self.database.cursor()
+        self._create_table()
 
     def add(self, name, nfc):
         print "Adding a new user."
@@ -37,3 +39,14 @@ def User:
 
     def set_nfc(self):
         print "Setting the NFC."
+
+    # Private methods
+
+    def _create_table(self):
+        self.cursor.execute(
+            '''CREATE TABLE IF NOT EXISTS Users (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT NOT NULL UNIQUE,
+              nfc TEXT NOT NULL
+            );'''
+        )

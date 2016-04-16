@@ -1,11 +1,13 @@
 import sqlite3
+from database import Database
 
-def Temperature:
+def Temperature(Database):
 
     def __init__(self, database):
         self.database = sqlite3.connect(database)
         self.database.row_factory = sqlite3.Row
-        self.cursor = self.db.cursor()
+        self.cursor = self.database.cursor()
+        self._create_table()
 
     def add(self, temperature, created, difference, user_id):
         print "Adding a new tempreature."
@@ -49,3 +51,16 @@ def Temperature:
 
     def set_user(self):
         print "Setting the user"
+
+    # Private methods
+
+    def _create_table(self):
+        self.cursor.execute(
+            '''CREATE TABLE IF NOT EXISTS Temperature (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              temperature FLOAT NOT NULL UNIQUE,
+              created DATE NOT NULL,
+              difference FLOAT,
+              FOREIGN KEY (user_id) REFERENCES Users(id)
+            );'''
+        )
