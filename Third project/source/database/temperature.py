@@ -26,12 +26,6 @@ class Temperature(Database):
             self._instantiate_variables()
         return None
 
-    def get_objects(self):
-        return super(Temperature, self).get_objects()
-
-    def remove_objects(self):
-        super(User, self).remove_objects()
-
     # Specific getters and setters.
 
     def get_temperature(self):
