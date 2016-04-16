@@ -11,6 +11,9 @@ class Database:
     def get_objects(self):
         print 'Doing a general query in the database.'
 
+    def remove_objects(self):
+        print 'Removing all objects.'
+
     # Private methods
 
     def _create_table(self):
