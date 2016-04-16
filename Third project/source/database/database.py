@@ -18,3 +18,6 @@ class Database:
 
     def _create_table(self):
         print 'Creating the database with a private method.'
+
+    def _instantiate_variables(self):
+        print 'Add the initial behavior of the variables.'

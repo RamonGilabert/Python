@@ -8,27 +8,26 @@ class Temperature(Database):
         self.database.row_factory = sqlite3.Row
         self.cursor = self.database.cursor()
         self._create_table()
-        self._temperature = None
-        self._created = None
-        self._difference = None
-        self._user_id = None
+        self._instantiate_variables()
 
-    def add(self, temperature, created, difference, user_id):
+    def add(self, temperature, created, difference, user_nfc):
         print "Adding a new tempreature."
 
         self.cursor.execute('INSERT INTO Temperatures (temperature, created, \
-        difference, user_id)' + 'VALUES (?, ?, ?, ?)', \
-        (temperature, created, difference, user_id))
+        difference, user_nfc)' + 'VALUES (?, ?, ?, ?)', \
+        (temperature, created, difference, user_nfc))
         self.database.commit()
 
     def save(self):
         if self._temperature == None \
         or self._created == None \
         or self._difference == None \
-        or self._user_id == None:
+        or self._user_nfc == None:
             return 'You need to set all the properties.'
         else:
-            print 'Sup'
+            self.add(self._temperature, self._created, \
+            self._difference, self._user_nfc)
+            self._instantiate_variables()
         return None
 
     def get_objects(self):
@@ -64,8 +63,8 @@ class Temperature(Database):
     def get_user(self):
         return self._user_id
 
-    def set_user(self, user_id):
-        self._user_id = user_id
+    def set_user(self, user_nfc):
+        self._user_nfc = _user_nfc
 
     # Private methods
 
@@ -82,3 +81,9 @@ class Temperature(Database):
               FOREIGN KEY (user_nfc) REFERENCES Users(nfc)
             );'''
         )
+
+    def _instantiate_variables(self):
+        self._temperature = None
+        self._created = None
+        self._difference = None
+        self._user_nfc = None

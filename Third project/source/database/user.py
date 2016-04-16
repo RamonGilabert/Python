@@ -8,8 +8,7 @@ class User(Database):
         self.database.row_factory = sqlite3.Row
         self.cursor = self.database.cursor()
         self._create_table()
-        self._name = None
-        self._nfc = None
+        self._instantiate_variables()
 
     def add(self, name, nfc):
         print "Adding a new user."
@@ -22,7 +21,8 @@ class User(Database):
         if self._name == None or self._nfc == None:
             return 'You need to set all the properties.'
         else:
-            print 'Hey'
+            self.add(self._name, self._nfc)
+            self._instantiate_variables()
         return None
 
     def get_objects(self):
@@ -61,3 +61,7 @@ class User(Database):
               name TEXT NOT NULL
             );'''
         )
+
+    def _instantiate_variables(self):
+        self._name = None
+        self._nfc = None
