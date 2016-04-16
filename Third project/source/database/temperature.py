@@ -4,13 +4,11 @@ from database import Database
 class Temperature(Database):
 
     def __init__(self, database):
-        super(Temperature, self).__init__(database)
+        super(Temperature, self).__init__(database, 'Temperatures')
         self._create_table()
         self._instantiate_variables()
 
     def add(self, temperature, created, difference, user_nfc):
-        print "Adding a new tempreature."
-
         self.cursor.execute('INSERT INTO Temperatures (temperature, created, \
         difference, user_nfc)' + 'VALUES (?, ?, ?, ?)', \
         (temperature, created, difference, user_nfc))
@@ -29,10 +27,10 @@ class Temperature(Database):
         return None
 
     def get_objects(self):
-        return super(Temperature, self).get_objects('Temperatures')
+        return super(Temperature, self).get_objects()
 
     def remove_objects(self):
-        super(User, self).remove_objects('Temperatures')
+        super(User, self).remove_objects()
 
     # Specific getters and setters.
 

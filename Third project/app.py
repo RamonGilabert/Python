@@ -22,6 +22,10 @@ if __name__ == '__main__':
     user_model = User(DATABASE)
     temperature_model = Temperature(DATABASE)
 
+    user_model.set_name('Ramon')
+    user_model.set_nfc('1231323s')
+    user_model.save()
+
     print user_model.get_objects()
 
     # try:

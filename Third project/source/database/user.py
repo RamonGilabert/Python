@@ -4,15 +4,13 @@ from database import Database
 class User(Database):
 
     def __init__(self, database):
-        super(User, self).__init__(database)
+        super(User, self).__init__(database, 'Users')
         self._create_table()
         self._instantiate_variables()
 
     def add(self, name, nfc):
-        print "Adding a new user."
-
-        self.cursor.execute('INSERT INTO Users (name, nfc)' +
-        'VALUES (?, ?)', (name, nfc))
+        self.cursor.execute('INSERT INTO Users (name, nfc)'
+        + 'VALUES (?, ?)', (name, nfc))
         self.database.commit()
 
     def save(self):
@@ -24,10 +22,10 @@ class User(Database):
         return None
 
     def get_objects(self):
-        return super(User, self).get_objects('Users')
+        return super(User, self).get_objects()
 
     def remove_objects(self):
-        super(User, self).remove_objects('Users')
+        super(User, self).remove_objects()
 
     # Specific getters and setters.
 
