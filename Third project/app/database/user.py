@@ -10,9 +10,9 @@ def User:
     def add(self, name, nfc):
         print "Adding a new user."
 
-        self.cursor.execute('INSERT INTO User (name, nfc)' +
-        'VALUES (?, ?, ?)', (name, nfc))
-        self.database.commit()
+        # self.cursor.execute('INSERT INTO User (name, nfc)' +
+        # 'VALUES (?, ?, ?)', (name, nfc))
+        # self.database.commit()
 
     def save(self):
         print "Saving a new User."
@@ -20,9 +20,10 @@ def User:
     def get_users(self):
         print "Getting all the users."
 
-        self.cursor.execute('SELECT * FROM Users')
+        # self.cursor.execute('SELECT * FROM Users')
+        #
+        # return self.cursor.fetchall()
 
-        return self.cursor.fetchall()
     # Specific getters and setters.
 
     def get_name(self):
