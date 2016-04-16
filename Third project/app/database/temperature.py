@@ -12,19 +12,19 @@ class Temperature(Database):
     def add(self, temperature, created, difference, user_id):
         print "Adding a new tempreature."
 
-        # self.cursor.execute('INSERT INTO Temperature (temperature, created, difference, user_id)' +
-        # 'VALUES (?, ?, ?, ?)', (temperature, created, difference, user_id))
-        # self.database.commit()
+        self.cursor.execute('INSERT INTO Temperature (temperature, created, \
+        difference, user_id)' + 'VALUES (?, ?, ?, ?)',
+        (temperature, created, difference, user_id))
+        self.database.commit()
 
     def save(self):
         print "Saving a new Temperature."
 
-    def get_users(self):
+    def get_objects(self):
         print "Getting all the temperatures."
 
-        # self.cursor.execute('SELECT * FROM Temperature')
-        #
-        # return self.cursor.fetchall()
+        self.cursor.execute('SELECT * FROM Temperature')
+        return self.cursor.fetchall()
 
     # Specific getters and setters.
 
@@ -55,6 +55,8 @@ class Temperature(Database):
     # Private methods
 
     def _create_table(self):
+        print 'Creating the Temperature table.'
+        
         self.cursor.execute(
             '''CREATE TABLE IF NOT EXISTS Temperature (
               id INTEGER PRIMARY KEY AUTOINCREMENT,

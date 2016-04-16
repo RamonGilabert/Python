@@ -15,8 +15,12 @@ from source.database.temperature import Temperature
 DATABASE = '/tmp/third.db'
 
 if __name__ == '__main__':
-    nfc = NFCSensor()
-    temperature = THSensor()
+    # Initialization of the main variables.
+
+    nfc_sensor = NFCSensor()
+    th_sensor = THSensor()
+    user_model = User(DATABASE)
+    temperature_model = Temperature(DATABASE)
 
     # try:
     #     while True:

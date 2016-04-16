@@ -12,19 +12,19 @@ class User(Database):
     def add(self, name, nfc):
         print "Adding a new user."
 
-        # self.cursor.execute('INSERT INTO User (name, nfc)' +
-        # 'VALUES (?, ?)', (name, nfc))
-        # self.database.commit()
+        self.cursor.execute('INSERT INTO User (name, nfc)' +
+        'VALUES (?, ?)', (name, nfc))
+        self.database.commit()
 
     def save(self):
         print "Saving a new User."
 
-    def get_users(self):
+    def get_objects(self):
         print "Getting all the users."
 
-        # self.cursor.execute('SELECT * FROM Users')
-        #
-        # return self.cursor.fetchall()
+        self.cursor.execute('SELECT * FROM Users')
+
+        return self.cursor.fetchall()
 
     # Specific getters and setters.
 
@@ -43,6 +43,8 @@ class User(Database):
     # Private methods
 
     def _create_table(self):
+        print 'Creating the Users table.'
+
         self.cursor.execute(
             '''CREATE TABLE IF NOT EXISTS Users (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
