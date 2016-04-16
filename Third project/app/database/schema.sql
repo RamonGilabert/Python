@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS Temperature (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   temperature FLOAT NOT NULL UNIQUE,
   created DATE NOT NULL,
-  difference FLOAT
+  difference FLOAT,
+  FOREIGN KEY (user_id) REFERENCES Users(id)
 );

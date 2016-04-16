@@ -1,6 +1,6 @@
 import sqlite3
 
-def User:
+def Temperature:
 
     def __init__(self, database):
         self.database = sqlite3.connect(database)
