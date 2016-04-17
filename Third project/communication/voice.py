@@ -6,10 +6,4 @@ from notification import Notification
 class Voice(Notification):
 
     def __init__(self):
-        print "Notification instantiated"
-
-    def notify():
-        print "Voice notify called."
-
-    def broadcast():
-        print "Voice broadcast called."
+        super(Voice, self).__init__("say")

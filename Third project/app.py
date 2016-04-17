@@ -7,8 +7,7 @@
 
 from sensors.nfcsensor import NFCSensor
 from sensors.thsensor import THSensor
-from communication.voice import Voice
-from communication.text import Text
+from communication.notify import Notify
 from source.database.user import User
 from source.database.temperature import Temperature
 
@@ -19,10 +18,11 @@ if __name__ == '__main__':
 
     nfc_sensor = NFCSensor()
     th_sensor = THSensor()
+    notify = Notify()
     user_model = User(DATABASE)
     temperature_model = Temperature(DATABASE)
 
-    print user_model.get_objects()
+    notify.broadcast(25)
 
     # try:
     #     while True:

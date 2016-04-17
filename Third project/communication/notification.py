@@ -1,13 +1,13 @@
 # This is the main notification class. This is just to show a rough estimate of
 # what the subclasses of it can be. Basically a header file.
 
-class Notification:
+import os
 
-    def __init__(self):
-        print "Notification instantiated"
+class Notification(object):
 
-    def notify():
-        print "Notify called."
+    def __init__(self, command):
+        self.command = command
 
-    def broadcast():
-        print "Broadcast called."
+    def broadcast(self, temperature):
+        message = 'The temperature is ' + str(temperature) + ' degrees Celcius.'
+        os.system(self.command + ' ' + message)

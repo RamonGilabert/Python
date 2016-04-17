@@ -6,10 +6,4 @@ from notification import Notification
 class Text(Notification):
 
     def __init__(self):
-        print "Notification instantiated"
-
-    def notify():
-        print "Text notify called."
-
-    def broadcast():
-        print "Text broadcast called."
+        super(Text, self).__init__("echo")
