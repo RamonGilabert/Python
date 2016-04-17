@@ -32,7 +32,6 @@ html, body {
   font-size: 36px;
   text-align: center;
   color: white;
-  margin-top: 25vh;
   margin-left: 50%;
   transform: translateX(-50%);
 }
@@ -92,6 +91,10 @@ html, body {
 
 /* Main */
 
+#index-title {
+  margin-top: 27.5vh;
+}
+
 #main-background {
   position: fixed;
   background-image: url('./resources/main-background.png');
@@ -114,4 +117,31 @@ html, body {
   margin-left: 50%;
   padding-bottom: 10px;
   transform: translateX(-50%);
+}
+
+/* Temperatures */
+
+#temperatures-container {
+  margin: 0 auto;
+  background-color: #FAFAF7;
+  width: 100vw;
+  height: 100vh;
+}
+
+#temperatures-title {
+  padding-top: 12.5vh;
+  color: #151718;
+}
+
+#temperatures-separator {
+  background-color: #151718;
+  margin-top: 25px;
+}
+
+#temperatures-table {
+
+}
+
+#empty-state {
+
 }

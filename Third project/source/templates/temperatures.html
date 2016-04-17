@@ -1,12 +1,29 @@
 {% extends "layout.html" %}
 {% block title %}Show{% endblock %}
 {% block body %}
-  <h1 class='main-title'>Temperatures</h1>
-  <div class='separator'></div>
-  <table>
-    
-  </table>
-  <div class='thin-separator'></div>
-  <div class='buttons-container'>
+  <div id='temperatures-container'>
+    <h1 class='main-title' id='temperatures-title'>Temperatures</h1>
+    <div class='separator' id='temperatures-separator'></div>
+    {% if temperatures %}
+      <table id='temperatures-table'>
+        <tr>
+          <th>Temperature</th>
+          <th>Created</th>
+          <th>Difference</th>
+        </tr>
+        {% for user in users %}
+          <tr>
+            <td>{{ user.temperature }}</td>
+            <td>{{ user.created }}</td>
+            <td>{{ user.difference }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <h2 id='empty-state'>Bummer! Still no temperatures here.</h2>
+    {% endif %}
+    <div class='thin-separator'></div>
+    <div class='buttons-container'>
+    </div>
   </div>
 {% endblock %}
