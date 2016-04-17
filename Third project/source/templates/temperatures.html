@@ -4,34 +4,20 @@
   <div id='temperatures-container'>
     <h1 class='main-title' id='temperatures-title'>Temperatures</h1>
     <div class='separator' id='temperatures-separator'></div>
-    {% if not temperatures %}
+    {% if temperatures %}
       <table id='temperatures-table'>
         <tr>
           <th>Temperature</th>
           <th>Created</th>
           <th>Difference</th>
         </tr>
-        <tr>
-          <td>27</td>
-          <td>27-05-2015</td>
-          <td>2</td>
-        </tr>
-        <tr>
-          <td>27</td>
-          <td>27-05-2015</td>
-          <td>2</td>
-        </tr>
-        <tr>
-          <td>27</td>
-          <td>27-05-2015</td>
-          <td>2</td>
-        </tr>
-        <tr>
-          <td>27</td>
-          <td>27-05-2015</td>
-          <td>2</td>
-        </tr>
-
+        {% for temperature in temperatures %}
+          <tr>
+            <td>{{ temperature.temperature }}</td>
+            <td>{{ temperature.created }}</td>
+            <td>{{ temperature.difference }}</td>
+          </tr>
+        {% endfor %}
       </table>
     {% else %}
       <h2 id='empty-state'>Bummer! Still no temperatures here.</h2>
