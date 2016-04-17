@@ -1,5 +1,8 @@
 # This will be the main implementation of the NFC Sensor.
 
+# IMPORTANT: FOR NOW EVERYTHING IS MOCKED, THIS WILL CHANGE WHEN HAVING
+# THE ACTUAL SENSOR WITH THE ACTUAL DATA.
+
 from sensor import Sensor
 import random, string
 

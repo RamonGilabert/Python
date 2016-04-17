@@ -41,7 +41,15 @@ class App(object):
 
         try:
             while True:
-                print self.nfc_sensor.get_data()
+                data = self.nfc_sensor.get_data()
+                if data is not None:
+                    temperature = self.th_sensor.get_data()
+                    date = time.strftime('%d.%m.%Y at %H:%M')
+
+                    self.notify.broadcast(temperature)
+                    self.user_model.add(data['name'], data['nfc'])
+                    self.temperature_model.add(temperature, date, 2, data['nfc'])
+
                 time.sleep(2) # TODO: Delete this when implementing.
         finally:
             print 'Closing the app.'
