@@ -10,6 +10,7 @@ from sensors.thsensor import THSensor
 from communication.notify import Notify
 from source.database.user import User
 from source.database.temperature import Temperature
+from source.app import app
 
 DATABASE = '/tmp/third.db'
 
@@ -22,6 +23,7 @@ if __name__ == '__main__':
     user_model = User(DATABASE)
     temperature_model = Temperature(DATABASE)
 
+    app.run()
 
     # try:
     #     while True:
