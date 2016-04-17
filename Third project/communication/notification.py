@@ -11,3 +11,5 @@ class Notification(object):
     def broadcast(self, temperature):
         message = 'The temperature is ' + str(temperature) + ' degrees Celcius.'
         os.system(self.command + ' ' + message)
+
+        return message

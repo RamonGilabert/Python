@@ -25,4 +25,4 @@ The third project will use parts of the second project to build the website and 
 - Database storing the temperature, when was it read and the change of temperature. Also one to store Users.
 - NFC and Temperature sensors that will have their own class each.
 - Notifications, fully configurable to add more if needed.
-- Try to add some tests for it.
+- Some tests when it makes sense.
