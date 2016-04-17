@@ -41,7 +41,7 @@ class App(object):
 
         try:
             while True:
-                print 'Running the app.'
-                time.sleep(5) # TODO: Delete this when implementing.
+                print self.nfc_sensor.get_data()
+                time.sleep(2) # TODO: Delete this when implementing.
         finally:
             print 'Closing the app.'

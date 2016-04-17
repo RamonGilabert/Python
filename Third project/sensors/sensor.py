@@ -11,3 +11,9 @@ class Sensor(object):
 
     def get_data():
         print "Getting the data from the sensor."
+
+    def get_cumulative():
+        print 'ERROR: This sensor does not support cumulative readings.'
+
+    def reset_cumulative():
+        print 'ERROR: This sensor does not support cumulative readings.'
