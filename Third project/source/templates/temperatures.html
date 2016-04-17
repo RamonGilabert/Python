@@ -4,27 +4,43 @@
   <div id='temperatures-container'>
     <h1 class='main-title' id='temperatures-title'>Temperatures</h1>
     <div class='separator' id='temperatures-separator'></div>
-    {% if temperatures %}
+    {% if not temperatures %}
       <table id='temperatures-table'>
         <tr>
           <th>Temperature</th>
           <th>Created</th>
           <th>Difference</th>
         </tr>
-        {% for user in users %}
-          <tr>
-            <td>{{ user.temperature }}</td>
-            <td>{{ user.created }}</td>
-            <td>{{ user.difference }}</td>
-          </tr>
-        {% endfor %}
+        <tr>
+          <td>27</td>
+          <td>27-05-2015</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>27</td>
+          <td>27-05-2015</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>27</td>
+          <td>27-05-2015</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>27</td>
+          <td>27-05-2015</td>
+          <td>2</td>
+        </tr>
+
       </table>
     {% else %}
       <h2 id='empty-state'>Bummer! Still no temperatures here.</h2>
     {% endif %}
     <div class='separator' id='temperatures-separator'></div>
-    <div class='buttons-container'>
-      <a href="{{ url_for('main_view') }}" class='button' id='temperatures-button'>Main</a>
+    <div id='temperatures-button-container'>
+      <div class='buttons-container'>
+        <a href="{{ url_for('main_view') }}" class='button' id='temperatures-button'>Main</a>
+      </div>
     </div>
   </div>
 {% endblock %}

@@ -9,8 +9,6 @@
 }
 
 html, body {
-  width: 100vw;
-  height: 100vh;
   padding: 0;
   margin: 0;
   background-color: black;
@@ -133,9 +131,8 @@ html, body {
 
 #temperatures-container {
   margin: 0 auto;
-  background-color: #FAFAF7;
   width: 100vw;
-  height: 100vh;
+  background-color: #FAFAF7;
 }
 
 #temperatures-title {
@@ -149,7 +146,28 @@ html, body {
 }
 
 #temperatures-table {
+  width: 90%;
+  color: #151718;
+  vertical-align: center;
+  margin-top: 50px;
+  margin-left: 50%;
+  padding-bottom: 50px;
+  transform: translateX(-50%);
+}
 
+#temperatures-table tr {
+  height: 80px;
+}
+
+#temperatures-table tr th {
+  width: 30%;
+  text-align: center;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+}
+
+#temperatures-table tr td {
+  text-align: center;
 }
 
 #empty-state {
@@ -166,6 +184,10 @@ html, body {
   vertical-align: center;
 }
 
+#temperatures-button-container {
+  padding-bottom: 100px;
+}
+
 #temperatures-button {
   color: #151718;
 }
@@ -175,6 +197,6 @@ html, body {
 }
 
 #temperatures-button:hover:before {
-  left: 42.5%;
-  right: 42.5%;
+  left: 45%;
+  right: 45%;
 }
