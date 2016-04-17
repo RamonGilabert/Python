@@ -22,8 +22,9 @@
     {% else %}
       <h2 id='empty-state'>Bummer! Still no temperatures here.</h2>
     {% endif %}
-    <div class='thin-separator'></div>
+    <div class='separator' id='temperatures-separator'></div>
     <div class='buttons-container'>
+      <a href="{{ url_for('main_view') }}" class='button' id='temperatures-button'>Main</a>
     </div>
   </div>
 {% endblock %}

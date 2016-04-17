@@ -34,6 +34,7 @@ html, body {
   color: white;
   margin-left: 50%;
   transform: translateX(-50%);
+  vertical-align: center;
 }
 
 .separator {
@@ -89,6 +90,15 @@ html, body {
   right: 32.5%;
 }
 
+.thin-separator {
+  width: 90vw;
+  height: 1px;
+  vertical-align: center;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  background-color: #151718;
+}
+
 /* Main */
 
 #index-title {
@@ -129,7 +139,7 @@ html, body {
 }
 
 #temperatures-title {
-  padding-top: 12.5vh;
+  padding-top: 17.5vh;
   color: #151718;
 }
 
@@ -143,5 +153,28 @@ html, body {
 }
 
 #empty-state {
+  margin-left: 50%;
+  margin-top: 15vh;
+  padding-bottom: 10vh;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 30px;
+  font-size: 17.5px;
+  transform: translateX(-50%);
+  text-align: center;
+  vertical-align: center;
+}
 
+#temperatures-button {
+  color: #151718;
+}
+
+#temperatures-button:before {
+  background: #151718;
+}
+
+#temperatures-button:hover:before {
+  left: 42.5%;
+  right: 42.5%;
 }
