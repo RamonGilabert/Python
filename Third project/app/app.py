@@ -6,8 +6,8 @@ import time
 
 sys.path.append('./../')
 
-# from sensors.nfcsensor import NFCSensor
-# from sensors.thsensor import THSensor
+from sensors.nfcsensor import NFCSensor
+from sensors.thsensor import THSensor
 from communication.notify import Notify
 from source.database.user import User
 from source.database.temperature import Temperature
@@ -19,8 +19,8 @@ class App(object):
 
     def __init__(self):
         # TODO: Parse the configuration file and start the program.
-        # self.nfc_sensor = NFCSensor()
-        # self.th_sensor = THSensor()
+        self.nfc_sensor = NFCSensor()
+        self.th_sensor = THSensor()
         self.notify = Notify()
         self.user_model = User(DATABASE)
         self.temperature_model = Temperature(DATABASE)
@@ -41,7 +41,7 @@ class App(object):
 
         try:
             while True:
-                print 'Hello'
-                time.sleep(2)
+                print 'Running the app.'
+                time.sleep(5) # TODO: Delete this when implementing.
         finally:
             print 'Closing the app.'
