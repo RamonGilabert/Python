@@ -11,7 +11,7 @@ from sensors.thsensor import THSensor
 from communication.notify import Notify
 from source.database.user import User
 from source.database.temperature import Temperature
-from source.app import app
+from source.app import app, reload_temperatures
 
 DATABASE = '/tmp/third.db'
 
@@ -46,9 +46,12 @@ class App(object):
                     temperature = self.th_sensor.get_data()
                     date = time.strftime('%d.%m.%Y at %H:%M')
 
-                    self.notify.broadcast(temperature)
                     self.user_model.add(data['name'], data['nfc'])
                     self.temperature_model.add(temperature, date, 2, data['nfc'])
+
+                    reload_temperatures()
+
+                    self.notify.broadcast(temperature)
 
                 time.sleep(2) # TODO: Delete this when implementing.
         finally:

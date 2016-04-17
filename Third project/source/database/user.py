@@ -9,9 +9,18 @@ class User(Database):
         self._instantiate_variables()
 
     def add(self, name, nfc):
-        self.cursor.execute('INSERT INTO Users (name, nfc)'
-        + 'VALUES (?, ?)', (name, nfc))
-        self.database.commit()
+        users = self.get_objects()
+        should_add_user = True
+
+        for user in users:
+            if user['nfc'] == nfc:
+                should_add_user = False
+                break
+
+        if should_add_user:
+            self.cursor.execute('INSERT INTO Users (name, nfc)'
+            + 'VALUES (?, ?)', (name, nfc))
+            self.database.commit()
 
     def save(self):
         if self._name == None or self._nfc == None:
@@ -40,6 +49,7 @@ class User(Database):
     def _create_table(self):
         print 'Creating the Users table.'
 
+        self.cursor.execute('DROP TABLE Users') # TODO: DELETE THIS.
         self.cursor.execute(
             '''CREATE TABLE IF NOT EXISTS Users (
               nfc TEXT PRIMARY KEY NOT NULL,

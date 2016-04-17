@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Users (
 CREATE TABLE IF NOT EXISTS Temperatures (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   temperature FLOAT NOT NULL,
-  created DATE NOT NULL,
+  created TEXT NOT NULL,
   difference FLOAT,
   user_nfc INT NOT NULL,
   FOREIGN KEY (user_nfc) REFERENCES Users(nfc)

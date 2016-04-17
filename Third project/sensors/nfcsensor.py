@@ -4,7 +4,7 @@
 # THE ACTUAL SENSOR WITH THE ACTUAL DATA.
 
 from sensor import Sensor
-import random, string
+import random
 
 class NFCSensor(Sensor):
 
@@ -20,8 +20,5 @@ class NFCSensor(Sensor):
     def get_data(self):
         # TODO: Remove the mocked data.
         value = random.randint(0, 3)
-        return { 'name' : 'Ramon', 'nfc' : self._random_word(20) } \
+        return { 'name' : 'Ramon', 'nfc' : 'safqwr21oi3asd' } \
             if value == 0 else None
-
-    def _random_word(self, length):
-        return ''.join(random.choice(string.lowercase) for i in range(length))
