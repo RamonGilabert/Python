@@ -1,1 +1,44 @@
 /* This will be the style of the simple web app */
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
+
+/* General */
+
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  margin: 0;
+  background-color: orange;
+}
+
+.container {
+  position: fixed;
+  top: 12.5px;
+  right: 12.5px;
+  bottom: 12.5px;
+  left: 12.5px;
+  border: 1px solid white;
+}
+
+.main-title {
+  margin: 0 auto;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 40px;
+  text-align: center;
+  color: white;
+  margin-top: 32.5vh;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Main */
+
+#main-view {
+
+}
