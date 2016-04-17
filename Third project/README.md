@@ -1,4 +1,4 @@
-# Third project
+![Third](https://github.com/RamonGilabert/Python/blob/master/Resources/third.png)
 
 The third project will use parts of the second project to build the website and have it up and running. It will have different parts and will be basically a system where you can go with an NFC phone and make a Raspberry Pi read the temperature sensor, after that, save it to the database and send a notification with a command to say it loud from the command line.
 
