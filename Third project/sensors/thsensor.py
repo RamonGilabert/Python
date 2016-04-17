@@ -1,20 +1,24 @@
 # This will be the main implementation of the DHT11 Sensor.
 
 from sensor import Sensor
+import RPi.GPIO as GPIO
+import Adafruit_DHT as DHT
 
 class THSensor(Sensor):
 
     def __init__(self):
         print "DHT11 Sensor instantiated."
+        self._temperature = None
 
-    def setup():
-        print "Preparing the sensor."
+    def get_data(self):
+        humidity, self._temperature = DHT.read_retry(DHT.DHT11, 22)
+        return self._temperature
 
-    def get_data():
-        print "Getting the data from the sensor."
+    def get_cumulative(self):
+        initial_temperature = self._temperature
+        final_temperature = self.get_data()
 
-    def get_cumulative():
-        print "Getting the cumulative values."
+        return final_temperature - initial_temperature
 
-    def reset_cumulative():
-        print "Resetting the cumulatie values."
+    def reset_cumulative(self):
+        self._temperature = None
