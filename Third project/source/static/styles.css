@@ -32,17 +32,42 @@ html, body {
   font-size: 36px;
   text-align: center;
   color: white;
-  margin-top: 32.5vh;
+  margin-top: 29vh;
   margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+.separator {
+  width: 2px;
+  height: 30px;
+  background-color: white;
+  margin-left: 50%;
+  margin-top: 10px;
+  opacity: 0.7;
   transform: translateX(-50%);
 }
 
 /* Main */
 
 #main-background {
+  position: fixed;
   background-image: url('./resources/main-background.png');
   background-size: 100vw 100vh;
   margin: 0 auto;
   width: 100vw;
   height: 100vh;
+}
+
+#index-explanation {
+  font-weight: 300;
+  font-size: 16px;
+  width: 50vw;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  margin-left: 50%;
+  padding-bottom: 10px;
+  transform: translateX(-50%);
 }
