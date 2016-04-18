@@ -26,3 +26,7 @@ As for now, everything is mocked, thing that will change a bit later. The NFC re
 ##### Source
 
 There's a website (with an image above) that will represent the temperatures when any. It has also an empty state.
+
+##### Tests
+
+I added one test that checks if the Text broadcaster works as it should, I'll try to keep adding more and more when it makes sense. Tests are my weakness at work too, that's why I kind of need to get better at it.

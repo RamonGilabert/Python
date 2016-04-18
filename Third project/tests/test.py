@@ -4,6 +4,10 @@ import re, sys, socket, imp
 sys.path.append('./../')
 from communication.text import Text
 
+# This is the first test I've done in Python pretty much, so wanted to keep
+# it as simple as possible. It just tests if the output is what it should
+# be when we broadcast a Text.
+
 def broadcast_temperature(temperature, difference):
     return Text().broadcast(temperature, difference)
 
