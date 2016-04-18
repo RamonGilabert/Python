@@ -28,6 +28,8 @@ class App(object):
         self._prepare_threads()
         self._main_loop()
 
+    # Private methods
+
     def _prepare_threads(self):
         self.app_thread = threading.Thread(target=self._run_web_app)
         self.app_thread.daemon = True
