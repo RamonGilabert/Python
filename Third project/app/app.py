@@ -49,7 +49,7 @@ class App(object):
 
         reload_temperatures()
 
-        self.notify.broadcast(initial_temperature)
+        self.notify.broadcast(initial_temperature, difference)
 
     def _main_loop(self):
         print 'Starting the main loop'

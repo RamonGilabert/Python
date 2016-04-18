@@ -9,7 +9,8 @@ class Notification(object):
         self.command = command
 
     def broadcast(self, temperature):
-        message = 'The temperature is ' + str(temperature) + ' degrees Celcius.'
+        message = 'The temperature is ' + str(temperature) + ' degrees Celcius \
+            with a difference of ' + str(difference) + ' degrees.'
         os.system(self.command + ' ' + message)
 
         return message
