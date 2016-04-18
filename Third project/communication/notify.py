@@ -8,6 +8,6 @@ class Notify:
         self.text = Text()
         self.voice = Voice()
 
-    def broadcast(self, temperature):
+    def broadcast(self, temperature, difference):
         for channel in [self.text, self.voice]:
-            channel.broadcast(temperature)
+            channel.broadcast(temperature, difference)
