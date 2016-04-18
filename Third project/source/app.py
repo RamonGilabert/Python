@@ -12,10 +12,6 @@ app.config.from_object(__name__)
 
 connection = Connection(app)
 
-def reload_temperatures():
-    print 'Reload automatically.' # TODO: Implement this.
-    # return redirect(url_for('temperatures_view'))
-
 @app.before_request
 def before_request():
     g.db = connection.connect_database()

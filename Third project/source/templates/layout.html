@@ -15,4 +15,12 @@ login options. -->
 
   {% block body %}
   {% endblock %} <!-- Configure the body block here. -->
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <script type="text/javascript" charset="utf-8">
+        location.reload();
+      </script>
+    {% endif %}
+  {% endwith %}
 </html>
