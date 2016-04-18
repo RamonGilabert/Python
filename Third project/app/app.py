@@ -36,22 +36,37 @@ class App(object):
     def _run_web_app(self):
         app.run()
 
+    def _perform_changes(self):
+        initial_temperature = self._readings[0]
+        final_temperature = self.th_sensor.get_data()
+        difference = final_temperature - initial_temperature
+        date = time.strftime('%d.%m.%Y at %H:%M')
+
+        self.user_model.add(self._initial_data['name'], \
+            self._initial_data['nfc'])
+        self.temperature_model.add(initial_temperature, date, \
+            difference, self._initial_data['nfc'])
+
+        reload_temperatures()
+
+        self.notify.broadcast(initial_temperature)
+
     def _main_loop(self):
         print 'Starting the main loop'
+
+        self._initial_data = None
+        self._readings = []
 
         try:
             while True:
                 data = self.nfc_sensor.get_data()
-                if data is not None:
-                    temperature = self.th_sensor.get_data()
-                    date = time.strftime('%d.%m.%Y at %H:%M')
-
-                    self.user_model.add(data['name'], data['nfc'])
-                    self.temperature_model.add(temperature, date, 2, data['nfc'])
-
-                    reload_temperatures()
-
-                    self.notify.broadcast(temperature)
+                if data is not None and len(self._readings) == 0:
+                    self._initial_data = data
+                    self._readings.append(self.th_sensor.get_data())
+                elif data is None and len(self._readings) == 1:
+                    self._perform_changes()
+                    self._initial_data = None
+                    self._readings = []
 
                 time.sleep(2) # TODO: Delete this when implementing.
         finally:

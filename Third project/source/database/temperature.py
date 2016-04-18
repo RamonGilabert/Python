@@ -57,7 +57,6 @@ class Temperature(Database):
     def _create_table(self):
         print 'Creating the Temperature table.'
         
-        self.cursor.execute('DROP TABLE Temperatures') # TODO: DELETE THIS.
         self.cursor.execute(
             '''CREATE TABLE IF NOT EXISTS Temperatures (
               id INTEGER PRIMARY KEY AUTOINCREMENT,

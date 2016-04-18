@@ -49,7 +49,6 @@ class User(Database):
     def _create_table(self):
         print 'Creating the Users table.'
 
-        self.cursor.execute('DROP TABLE Users') # TODO: DELETE THIS.
         self.cursor.execute(
             '''CREATE TABLE IF NOT EXISTS Users (
               nfc TEXT PRIMARY KEY NOT NULL,
