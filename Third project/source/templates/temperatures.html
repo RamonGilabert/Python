@@ -7,15 +7,17 @@
     {% if temperatures %}
       <table id='temperatures-table'>
         <tr>
-          <th>Temperature</th>
+          <th>Initial temperature</th>
+          <th>Final temperature</th>
           <th>Created</th>
           <th>Difference</th>
         </tr>
         {% for temperature in temperatures %}
           <tr>
-            <td>{{ temperature.temperature }}</td>
+            <td>{{ temperature.temperature }} °C</td>
+            <td>{{ temperature.temperature + temperature.difference }} °C</td>
             <td>{{ temperature.created }}</td>
-            <td>{{ temperature.difference }}</td>
+            <td>{{ temperature.difference }} °C</td>
           </tr>
         {% endfor %}
       </table>
