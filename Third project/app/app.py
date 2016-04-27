@@ -4,6 +4,8 @@ import sys
 import threading
 import time
 
+from ConfigParser import SafeConfigParser as Parser
+
 sys.path.append('./../')
 
 from sensors.nfcsensor import NFCSensor
@@ -13,21 +15,21 @@ from source.database.user import User
 from source.database.temperature import Temperature
 from source.app import app
 
-DATABASE = '/tmp/third.db'
-
 class App(object):
 
     def __init__(self):
-        # TODO: Parse the configuration file and start the program.
+        parser = Parser()
+        parser.read('configuration.ini')
 
         # We instantiate the main variables of our program and the models with
         # the path of our DATABASE (that way we just have it in one place).
 
+        self._database = parser.get('database', 'path')
         self.nfc_sensor = NFCSensor()
         self.th_sensor = THSensor()
         self.notify = Notify()
-        self.user_model = User(DATABASE)
-        self.temperature_model = Temperature(DATABASE)
+        self.user_model = User(self._database)
+        self.temperature_model = Temperature(self._database)
 
         self._prepare_threads()
         self._main_loop()

@@ -7,7 +7,5 @@
 
 from app.app import App
 
-DATABASE = '/tmp/third.db'
-
 if __name__ == '__main__':
-    app = App() # TODO: Pass the parser
+    app = App()
