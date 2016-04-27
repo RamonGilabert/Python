@@ -25,9 +25,11 @@ class App(object):
         # the path of our DATABASE (that way we just have it in one place).
 
         self._database = parser.get('database', 'path')
+        self._channels = {'voice' : parser.getboolean('notifications', 'voice'),
+            'text' : parser.getboolean('notifications', 'text')}
         self.nfc_sensor = NFCSensor()
         self.th_sensor = THSensor()
-        self.notify = Notify()
+        self.notify = Notify(self._channels)
         self.user_model = User(self._database)
         self.temperature_model = Temperature(self._database)
 
