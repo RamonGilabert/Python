@@ -71,6 +71,7 @@ class App(object):
         try:
             while True:
                 data = self.nfc_sensor.get_data()
+                print data
 
                 # It enters in the first if statement when a user reaches the
                 # NFC, that is no readings yet, now we are going to save the
