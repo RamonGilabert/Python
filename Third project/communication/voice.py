@@ -26,7 +26,6 @@ class Voice(Notification):
         def onEnd(name, completed):
             self.engine.stop()
 
-        self.engine = Engine.init()
         self.engine.connect('finished-utterance', onEnd)
         self.engine.say(self._message)
         self.engine.runAndWait()
