@@ -25,8 +25,8 @@ class App(object):
         # the path of our DATABASE (that way we just have it in one place).
 
         self._database = parser.get('database', 'path')
-        self._channels = {'voice' : parser.getboolean('notifications', 'voice'),
-            'text' : parser.getboolean('notifications', 'text')}
+        self._channels = ['voice' : parser.getboolean('notifications', 'voice'),
+            'text' : parser.getboolean('notifications', 'text')]
         self.nfc_sensor = NFCSensor()
         self.th_sensor = THSensor()
         self.notify = Notify(self._channels)
@@ -71,7 +71,6 @@ class App(object):
         try:
             while True:
                 data = self.nfc_sensor.get_data()
-                print data
 
                 # It enters in the first if statement when a user reaches the
                 # NFC, that is no readings yet, now we are going to save the

@@ -19,6 +19,6 @@ class NFCSensor(Sensor):
 
     def get_data(self):
         # TODO: Remove the mocked data.
-        value = random.randint(0, 3)
+        value = random.randint(0, 2)
         return { 'name' : 'Ramon', 'nfc' : 'safqwr21oi3asd' } \
             if value == 0 else None
