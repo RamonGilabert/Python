@@ -13,7 +13,7 @@ The third project will use parts of the second project to build the website and 
 
 ##### Notifications
 
-This program will notify the user via a command, in OS X 'say', that will change when doing the actual implementation for the Raspberry Pi. This means that, for now, the notifications will be basically via text and voice if there's an OS X computer around. As discussed, no Telegram will be involved.
+From the configuration file you'll be able to add which outputs you want, using the library pyttsx we are going to output the voice. Note that there are some problems using the library in OS X Yosemite and El Capitan, that's why initially, the configuration file adds a False in the initialization of the voice.
 
 ##### Database
 
