@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Show{% endblock %}
+{% block body %}
+  <div id='temperatures-container'>
+    <h1 class='main-title' id='temperatures-title'>Temperatures</h1>
+    <div class='separator' id='temperatures-separator'></div>
+    {% if temperatures %}
+      <table id='temperatures-table'>
+        <tr>
+          <th>Initial temperature</th>
+          <th>Final temperature</th>
+          <th>Created</th>
+          <th>Difference</th>
+        </tr>
+        {% for temperature in temperatures %}
+          <tr>
+            <td>{{ temperature.temperature }} °C</td>
+            <td>{{ temperature.temperature + temperature.difference }} °C</td>
+            <td>{{ temperature.created }}</td>
+            <td>{{ temperature.difference }} °C</td>
+          </tr>
+        {% endfor %}
+      </table>
+    {% else %}
+      <h2 id='empty-state'>Bummer! Still no temperatures here.</h2>
+    {% endif %}
+    <div class='separator' id='temperatures-separator'></div>
+    <div id='temperatures-button-container'>
+      <div class='buttons-container'>
+        <a href="{{ url_for('main_view') }}" class='button' id='temperatures-button'>Main</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

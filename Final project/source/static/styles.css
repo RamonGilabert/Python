@@ -1,0 +1,203 @@
+/* This will be the style of the simple web app */
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
+
+/* General */
+
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+  background-color: black;
+}
+
+.container {
+  position: fixed;
+  top: 12.5px;
+  right: 12.5px;
+  bottom: 12.5px;
+  left: 12.5px;
+  border: 1px solid white;
+}
+
+.main-title {
+  margin: 0 auto;
+  text-transform: uppercase;
+  letter-spacing: 8px;
+  font-size: 36px;
+  text-align: center;
+  color: white;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  vertical-align: center;
+}
+
+.separator {
+  width: 1.5px;
+  height: 25px;
+  background-color: white;
+  margin-left: 50%;
+  margin-top: 10px;
+  opacity: 0.7;
+  transform: translateX(-50%);
+}
+
+.buttons-container {
+  margin: 0 auto;
+  padding: 0 auto;
+  margin-top: 30px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.button {
+  cursor: pointer;
+  margin: 0 auto;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+}
+
+.button:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  right: 50%;
+  bottom: -2px;
+  background: white;
+  height: 1px;
+  -webkit-transition-property: left, right;
+  transition-property: left, right;
+  -webkit-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+
+.button:hover:before {
+  left: 32.5%;
+  right: 32.5%;
+}
+
+.thin-separator {
+  width: 90vw;
+  height: 1px;
+  vertical-align: center;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  background-color: #151718;
+}
+
+/* Main */
+
+#index-title {
+  margin-top: 27.5vh;
+}
+
+#main-background {
+  position: fixed;
+  background-image: url('./resources/main-background.png');
+  background-size: 100vw 100vh;
+  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+}
+
+#main-explanation {
+  font-weight: 400;
+  font-size: 16px;
+  width: 50vw;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: white;
+  text-align: center;
+  line-height: 30px;
+  padding-top: 10px;
+  margin-left: 50%;
+  padding-bottom: 10px;
+  transform: translateX(-50%);
+}
+
+/* Temperatures */
+
+#temperatures-container {
+  margin: 0 auto;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #FAFAF7;
+}
+
+#temperatures-title {
+  padding-top: 17.5vh;
+  color: #151718;
+}
+
+#temperatures-separator {
+  background-color: #151718;
+  margin-top: 25px;
+}
+
+#temperatures-table {
+  width: 90%;
+  color: #151718;
+  vertical-align: center;
+  margin-top: 50px;
+  margin-left: 50%;
+  padding-bottom: 50px;
+  transform: translateX(-50%);
+}
+
+#temperatures-table tr {
+  height: 80px;
+}
+
+#temperatures-table tr th {
+  width: 22%;
+  text-align: center;
+  text-transform: uppercase;
+  border-bottom: 1px solid black;
+}
+
+#temperatures-table tr td {
+  text-align: center;
+}
+
+#empty-state {
+  margin-left: 50%;
+  margin-top: 15vh;
+  padding-bottom: 10vh;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 30px;
+  font-size: 17.5px;
+  transform: translateX(-50%);
+  text-align: center;
+  vertical-align: center;
+}
+
+#temperatures-button-container {
+  padding-bottom: 100px;
+}
+
+#temperatures-button {
+  color: #151718;
+}
+
+#temperatures-button:before {
+  background: #151718;
+}
+
+#temperatures-button:hover:before {
+  left: 45%;
+  right: 45%;
+}

@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS Users (
+    nfc TEXT PRIMARY KEY NOT NULL,
+    name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS Temperatures (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  temperature FLOAT NOT NULL,
+  created TEXT NOT NULL,
+  difference FLOAT,
+  user_nfc INT NOT NULL,
+  FOREIGN KEY (user_nfc) REFERENCES Users(nfc)
+);
