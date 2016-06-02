@@ -181,10 +181,33 @@ def api_sensor(sensor_id):
         return jsonify({ 'data' : manipulator.get_temperature(sensor_id) })
 
     elif request.method == 'PATCH':
-        return "ECHO: PACTH\n"
+        sensor = manipulator.get_temperature(sensor_id)
+
+        if not sensor:
+            return make_response(jsonify({ 'error': ['No such sensor'] }), 400)
+
+        if 'mean_temperature' in request.json:
+            sensor.mean_temperature = request.json['mean_temperature']
+
+        database_session.commit()
+
+        return jsonify({ 'message': [sensor.serialize()] }), 200
 
     elif request.method == 'PUT':
-        return "ECHO: PUT\n"
+        if check_errors([], request.json):
+            return make_response(jsonify({ 'error': error }), 400)
+
+        sensor = manipulator.get_temperature(sensor_id)
+
+        if not sensor:
+            return make_response(jsonify({ 'error': ['No such user'] }), 400)
+
+        sensor.mean_temperature = request.json['mean_temperature'] if \
+        'mean_temperature' in request.json else None
+
+        database_session.commit()
+
+        return jsonify({ 'message': [sensor.serialize()] }), 200
 
     elif request.method == 'DELETE':
         manipulator.delete_temperatures(sensor_id)
