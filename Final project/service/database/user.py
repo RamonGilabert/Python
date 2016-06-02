@@ -22,3 +22,13 @@ class User(Base):
 
     def __repr__(self):
         return '<User %r>' % (self.username)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'user_id': self.user_id,
+            'name': self.name,
+            'email': self.email,
+            'mean_temperature': self.mean_temperature
+        }

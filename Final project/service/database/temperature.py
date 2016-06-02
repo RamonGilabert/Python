@@ -14,3 +14,10 @@ class Temperature(Base):
 
     def __repr__(self):
         return '<Temperature %r>' % (self.mean_temperature)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'sensor_id': self.sensor_id,
+            'mean_temperature': self.mean_temperature
+        }

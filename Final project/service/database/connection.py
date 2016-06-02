@@ -36,48 +36,52 @@ class Manipulator:
 
     def get_users_id(self, user_ids=None):
         if not user_ids:
-            return User.query.all()
+            return [user.serialize() for user in User.query.all()]
 
         users = []
         for id in user_ids:
             user = User.query.filter_by(user_id=id).first()
             if user is not None:
-                users.append(user)
+                users.append(user.serialize())
 
         return users
 
     def get_users_username(self, usernames=None):
         if not usernames:
-            return User.query.all()
+            return [user.serialize() for user in User.query.all()]
 
         users = []
         for username in usernames:
             user = User.query.filter_by(username=username).first()
             if user is not None:
-                users.append(user)
+                users.append(user.serialize())
 
         return users
 
     def get_temperatures(self, sensor_ids=None):
         if sensor_ids is None:
-            return Temperature.query.all()
+            return [temperature.serialize() for temperature in Temperature.query.all()]
 
         temperatures = []
         for id in sensor_ids:
             temperature = Temperature.query.filter_by(sensor_id=id).first()
             if temperature is not None:
-                temperatures.append(temperature)
+                temperatures.append(temperature.serialize())
 
         return temperatures
 
     # Delete
 
-    def delete_users(self):
-        # TODO: Add the delete of the users.
-        database_session.delete()
-        database_session.commit()
+    def delete_users(self, user_id=None):
+        users = User.query.filter_by(user_id=user_id).first() if user_id \
+        else User.query.all()
+        self._delete_object(users)
 
-    def delete_temperatures(self):
-        # TODO: Add the delete of the temperatures.
-        database_session.delete()
+    def delete_temperatures(self, user_id=None):
+        temperatures = Temperature.query.all()
+        self._delete_object(temperatures)
+
+    def _delete_object(self, objects):
+        for object in objects:
+            database_session.delete(object)
         database_session.commit()

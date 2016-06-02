@@ -6,6 +6,19 @@ manipulator = Manipulator()
 
 # Errors
 
+def check_errors(keys, request):
+    error = []
+
+    if not request:
+        error.append('You should add a body in your request')
+        return error
+
+    for key in keys:
+        if not key in request:
+            error.append('The ' + key + ' cannot be undefined')
+
+    return error
+
 @app.errorhandler(404) # Not found error.
 def not_found(error):
     return make_response(jsonify({ 'error': 'Not found' }), 404)
@@ -19,21 +32,11 @@ def bad_request(error):
 @app.route('/users', methods = ['GET', 'POST', 'DELETE'])
 def api_users():
     if request.method == 'GET':
-        return jsonify({ 'data' : manipulator.get_users() })
+        return jsonify({ 'data' : manipulator.get_users_id() })
 
     elif request.method == 'POST':
-        error = []
-        if not request.json:
-            error.append('You should add a body in your request')
-            return make_response(jsonify({ 'error': error }), 400)
-        if not 'username' in request.json:
-            error.append('The username cannot be undefined')
-        if not 'user_id' in request.json:
-            error.append('The user_id cannot be undefined')
-        if not 'email' in request.json:
-            error.append('The email cannot be undefined')
-        if not 'name' in request.json:
-            error.append('The name cannot be undefined')
+        error = check_errors(['username', 'user_id', 'email', 'name'], \
+        request.json)
 
         if error:
             return make_response(jsonify({ 'error': error }), 400)
@@ -56,7 +59,8 @@ def api_users():
         return jsonify({ 'user': [user] }), 201
 
     elif request.method == 'DELETE':
-        return "ECHO: DELETE"
+        manipulator.delete_users()
+        return jsonify({ 'message': ['Your data is gone'] }), 200
 
     else:
         abort(404)
@@ -64,10 +68,7 @@ def api_users():
 @app.route('/users/<int:user_id>', methods = ['GET', 'PATCH', 'PUT', 'DELETE'])
 def api_user(user_id):
     if request.method == 'GET':
-        return jsonify({ 'data' : manipulator.get_users([user_id]) })
-
-    elif request.method == 'POST':
-        return "ECHO: POST\n"
+        return jsonify({ 'data' : manipulator.get_users_id([user_id]) })
 
     elif request.method == 'PATCH':
         return "ECHO: PACTH\n"
