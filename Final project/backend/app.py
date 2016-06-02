@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, abort, make_response, request, Response
+from database.connection import database_session, init_database, Manipulator
 
 app = Flask(__name__)
 
@@ -99,4 +100,5 @@ def api_sensor():
         abort(404)
 
 if __name__ == '__main__':
+    init_database()
     app.run()
