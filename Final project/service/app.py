@@ -54,7 +54,7 @@ def api_users():
         }
 
         manipulator.save_user(user['username'], user['user_id'], \
-            user['email'], user['name'])
+            user['name'], user['email'])
 
         return jsonify({ 'user': [user] }), 201
 
@@ -84,13 +84,16 @@ def api_user(user_id):
             else:
                 user.username = request.json['username']
 
-        if 'user_id' in request.json:
-            if manipulator.get_users_id([request.json['user_id']]) \
-            and user.user_id != request.json['user_id']:
-                return make_response(jsonify({ 'error': \
-                ['Such user exists already'] }), 400)
-            else:
-                user.username = request.json['user_id']
+        # This is here as an optional thing. I don't think you should be able
+        # to change the user_id.
+        #
+        # if 'user_id' in request.json:
+        #     if manipulator.get_users_id([request.json['user_id']]) \
+        #     and user.user_id != request.json['user_id']:
+        #         return make_response(jsonify({ 'error': \
+        #         ['Such user exists already'] }), 400)
+        #     else:
+        #         user.user_id = request.json['user_id']
 
         if 'email' in request.json:
             user.email = request.json['email']
@@ -106,7 +109,31 @@ def api_user(user_id):
         return jsonify({ 'message': [user.serialize()] }), 200
 
     elif request.method == 'PUT':
-        return "ECHO: PUT\n"
+        error = check_errors(['username'], request.json)
+
+        if error:
+            return make_response(jsonify({ 'error': error }), 400)
+
+        user = manipulator.get_user(user_id)
+
+        if not user:
+            return make_response(jsonify({ 'error': ['No such user'] }), 400)
+
+        if manipulator.get_users_username([request.json['username']]) \
+        and user.username != request.json['username']:
+            return make_response(jsonify({ 'error': \
+            ['Such user exists already'] }), 400)
+        else:
+            user.username = request.json['username']
+
+        user.email = request.json['email'] if 'email' in request.json else None
+        user.name = request.json['name'] if 'name' in request.json else None
+        user.mean_temperature = request.json['mean_temperature'] \
+        if 'mean_temperature' in request.json else None
+
+        database_session.commit()
+
+        return jsonify({ 'message': [user.serialize()] }), 200
 
     elif request.method == 'DELETE':
         manipulator.delete_users(user_id)

@@ -16,8 +16,8 @@ class User(Base):
 
         self.username = username
         self.user_id = user_id
-        self.email = email
         self.name = name
+        self.email = email
         self.mean_temperature = mean_temperature
 
     def __repr__(self):
