@@ -5,7 +5,7 @@ from connection import Connection
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
 
-DATABASE = '/tmp/third.db'
+DATABASE = '/tmp/final.db'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
