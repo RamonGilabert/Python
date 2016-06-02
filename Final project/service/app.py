@@ -56,7 +56,7 @@ def api_users():
         manipulator.save_user(user['username'], user['user_id'], \
             user['name'], user['email'])
 
-        return jsonify({ 'user': [user] }), 201
+        return jsonify({ 'data': [user] }), 201
 
     elif request.method == 'DELETE':
         manipulator.delete_users()
@@ -150,10 +150,27 @@ def api_sensors():
         return jsonify({ 'data' : manipulator.get_temperatures_id() })
 
     elif request.method == 'POST':
-        return "ECHO: POST\n"
+        error = check_errors(['sensor_id'], request.json)
+
+        if error:
+            return make_response(jsonify({ 'error': error }), 400)
+
+        if manipulator.get_temperatures_id([request.json['sensor_id']]):
+            error.append('Such user exists already')
+            return make_response(jsonify({ 'error': error }), 400)
+
+        sensor = {
+            'sensor_id' : request.json['sensor_id'],
+            'mean_temperature': request.json['mean_temperature']
+        }
+
+        manipulator.save_temperature(sensor['sensor_id'], sensor['mean_temperature'])
+
+        return jsonify({ 'data': [sensor] }), 201
 
     elif request.method == 'DELETE':
-        return "ECHO: DELETE"
+        manipulator.delete_temperatures()
+        return jsonify({ 'message': ['Your data is gone'] }), 200
 
     else:
         abort(404)
@@ -170,7 +187,8 @@ def api_sensor(sensor_id):
         return "ECHO: PUT\n"
 
     elif request.method == 'DELETE':
-        return "ECHO: DELETE"
+        manipulator.delete_temperatures(sensor_id)
+        return jsonify({ 'message': ['Your data is gone'] }), 200
 
     else:
         abort(404)

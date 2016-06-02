@@ -83,8 +83,9 @@ class Manipulator:
         else User.query.all()
         self._delete_object(users)
 
-    def delete_temperatures(self, user_id=None):
-        temperatures = Temperature.query.all()
+    def delete_temperatures(self, sensor_id=None):
+        temperatures = [Temperature.query.filter_by(sensor_id=sensor_id).first()] \
+        if sensor_id else Temperature.query.all()
         self._delete_object(temperatures)
 
     def _delete_object(self, objects):
