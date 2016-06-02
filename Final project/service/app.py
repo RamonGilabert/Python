@@ -178,7 +178,7 @@ def api_sensors():
 @app.route('/sensors/<int:sensor_id>', methods = ['GET', 'PATCH', 'PUT', 'DELETE'])
 def api_sensor(sensor_id):
     if request.method == 'GET':
-        return jsonify({ 'data' : manipulator.get_temperature(sensor_id) })
+        return jsonify({ 'data' : manipulator.get_temperatures_id([sensor_id]) })
 
     elif request.method == 'PATCH':
         sensor = manipulator.get_temperature(sensor_id)

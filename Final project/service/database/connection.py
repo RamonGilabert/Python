@@ -61,7 +61,7 @@ class Manipulator:
 
         return users
 
-    def get_temperature(self, sensor_ids):
+    def get_temperature(self, sensor_id):
         return Temperature.query.filter_by(sensor_id=sensor_id).first()
 
     def get_temperatures_id(self, sensor_ids=None):
