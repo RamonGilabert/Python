@@ -14,10 +14,10 @@ def init_database():
     import temperature, user
     Base.metadata.create_all(bind=engine)
 
-class Manipulator:
+from user import User
+from temperature import Temperature
 
-    from user import User
-    from temperature import Temperature
+class Manipulator:
 
     # Save
 
@@ -34,17 +34,39 @@ class Manipulator:
 
     # Query
 
-    def get_users(self, usernames):
+    def get_users_id(self, user_ids=None):
+        if not user_ids:
+            return User.query.all()
+
         users = []
-        for username in usernames:
-            users.extend(User.query.filter_by(username=username).first())
+        for id in user_ids:
+            user = User.query.filter_by(user_id=id).first()
+            if user is not None:
+                users.append(user)
 
         return users
 
-    def get_temperatures(self, sensor_ids):
+    def get_users_username(self, usernames=None):
+        if not usernames:
+            return User.query.all()
+
+        users = []
+        for username in usernames:
+            user = User.query.filter_by(username=username).first()
+            if user is not None:
+                users.append(user)
+
+        return users
+
+    def get_temperatures(self, sensor_ids=None):
+        if sensor_ids is None:
+            return Temperature.query.all()
+
         temperatures = []
         for id in sensor_ids:
-            temperatures.extend(Temperature.query.filter_by(sensor_id=id).first())
+            temperature = Temperature.query.filter_by(sensor_id=id).first()
+            if temperature is not None:
+                temperatures.append(temperature)
 
         return temperatures
 

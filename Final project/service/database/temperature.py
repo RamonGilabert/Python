@@ -4,7 +4,7 @@ from connection import Base
 class Temperature(Base):
     __tablename__ = 'Tempreatures'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     sensor_id = Column(String(120), unique=True)
     mean_temperature = Column(Float)
 
