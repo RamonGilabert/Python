@@ -61,7 +61,10 @@ class Manipulator:
 
         return users
 
-    def get_temperatures(self, sensor_ids=None):
+    def get_temperature(self, sensor_ids):
+        return Temperature.query.filter_by(sensor_id=sensor_id).first()
+
+    def get_temperatures_id(self, sensor_ids=None):
         if sensor_ids is None:
             return [temperature.serialize() for temperature in Temperature.query.all()]
 

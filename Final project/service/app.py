@@ -144,19 +144,13 @@ def api_user(user_id):
 
 # Sensor requests
 
-@app.route('/sensors', methods = ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'])
+@app.route('/sensors', methods = ['GET', 'POST', 'DELETE'])
 def api_sensors():
     if request.method == 'GET':
-        return "ECHO: GET\n"
+        return jsonify({ 'data' : manipulator.get_temperatures_id() })
 
     elif request.method == 'POST':
         return "ECHO: POST\n"
-
-    elif request.method == 'PATCH':
-        return "ECHO: PACTH\n"
-
-    elif request.method == 'PUT':
-        return "ECHO: PUT\n"
 
     elif request.method == 'DELETE':
         return "ECHO: DELETE"
@@ -164,14 +158,10 @@ def api_sensors():
     else:
         abort(404)
 
-@app.route('/sensors/<int:sensor_id>', methods = ['GET', 'POST', 'PATCH', \
-    'PUT', 'DELETE'])
+@app.route('/sensors/<int:sensor_id>', methods = ['GET', 'PATCH', 'PUT', 'DELETE'])
 def api_sensor(sensor_id):
     if request.method == 'GET':
-        return "ECHO: GET\n"
-
-    elif request.method == 'POST':
-        return "ECHO: POST\n"
+        return jsonify({ 'data' : manipulator.get_temperature(sensor_id) })
 
     elif request.method == 'PATCH':
         return "ECHO: PACTH\n"
