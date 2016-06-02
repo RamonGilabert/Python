@@ -71,13 +71,46 @@ def api_user(user_id):
         return jsonify({ 'data' : manipulator.get_users_id([user_id]) })
 
     elif request.method == 'PATCH':
-        return "ECHO: PACTH\n"
+        user = manipulator.get_user(user_id)
+
+        if not user:
+            return make_response(jsonify({ 'error': ['No such user'] }), 400)
+
+        if 'username' in request.json:
+            if manipulator.get_users_username([request.json['username']]) \
+            and user.username != request.json['username']:
+                return make_response(jsonify({ 'error': \
+                ['Such user exists already'] }), 400)
+            else:
+                user.username = request.json['username']
+
+        if 'user_id' in request.json:
+            if manipulator.get_users_id([request.json['user_id']]) \
+            and user.user_id != request.json['user_id']:
+                return make_response(jsonify({ 'error': \
+                ['Such user exists already'] }), 400)
+            else:
+                user.username = request.json['user_id']
+
+        if 'email' in request.json:
+            user.email = request.json['email']
+
+        if 'name' in request.json:
+            user.name = request.json['name']
+
+        if 'mean_temperature' in request.json:
+            user.mean_temperature = request.json['mean_temperature']
+
+        database_session.commit()
+
+        return jsonify({ 'message': [user.serialize()] }), 200
 
     elif request.method == 'PUT':
         return "ECHO: PUT\n"
 
     elif request.method == 'DELETE':
-        return "ECHO: DELETE"
+        manipulator.delete_users(user_id)
+        return jsonify({ 'message': ['Your data is gone'] }), 200
 
     else:
         abort(404)

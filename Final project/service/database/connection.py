@@ -34,6 +34,9 @@ class Manipulator:
 
     # Query
 
+    def get_user(self, user_id):
+        return User.query.filter_by(user_id=user_id).first()
+
     def get_users_id(self, user_ids=None):
         if not user_ids:
             return [user.serialize() for user in User.query.all()]
@@ -73,7 +76,7 @@ class Manipulator:
     # Delete
 
     def delete_users(self, user_id=None):
-        users = User.query.filter_by(user_id=user_id).first() if user_id \
+        users = [User.query.filter_by(user_id=user_id).first()] if user_id \
         else User.query.all()
         self._delete_object(users)
 
