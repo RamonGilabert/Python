@@ -59,8 +59,7 @@ def sensor_view(id):
 
 @app.route('/new_sensor')
 def new_sensor_view():
-    temperatures = connection.get_temperatures()
-    return render_template('temperatures.html', temperatures=temperatures)
+    return render_template('new_sensor.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
