@@ -5,25 +5,8 @@ from connection import Connection
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash
 
-DATABASE = '/tmp/final.db'
-
 app = Flask(__name__)
 app.config.from_object(__name__)
-
-connection = Connection(app)
-
-@app.before_request
-def before_request():
-    g.db = connection.connect_database()
-
-@app.teardown_request
-def teardown_request(exception):
-    database = getattr(g, 'db', None)
-    if database is not None:
-        database.close()
-
-def connect_database():
-    return sqlite3.connect(app.config['DATABASE'])
 
 @app.route('/')
 def main_view():
