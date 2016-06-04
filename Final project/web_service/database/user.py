@@ -4,6 +4,8 @@ from connection import Base
 class User(Base):
     __tablename__ = 'Users'
 
+    # We make the email not to be unique necessarily but the username to be so,
+    # just design concepts, does not really matter why.
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(120), unique=True)
     user_id = Column(String(120), unique=True)
@@ -23,6 +25,7 @@ class User(Base):
     def __repr__(self):
         return '<User %r>' % (self.username)
 
+    # Serialize returns and object with the self instance.
     def serialize(self):
         return {
             'id': self.id,

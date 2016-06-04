@@ -32,6 +32,11 @@ def check_errors(keys, request):
 
 # The clients will be happy about this.
 
+# Both requests that target to one of the user or sensor take the id as a
+# parameter, not the user_id nor the sensor_id for obvious reasons. When saving
+# an id to the database in a client, I'd prefer as a client developer to
+# be just a simple int and not a hash from an address, etc.
+
 @app.errorhandler(404) # Not found error.
 def not_found(error):
     return make_response(jsonify({ 'error': ['Not found'] }), 404)
@@ -139,18 +144,28 @@ def api_user(id):
 
         manipulator.commit()
 
+        # user.serialize() returns an object from a user.
         return jsonify({ 'message': [user.serialize()] }), 200
 
     elif request.method == 'PUT':
+        # PUT basically puts None if the value is not defined in the request,
+        # that means that the username and the user_id need to be defined in
+        # the body.
+
         error = check_errors(['user_id', 'username'], request.json)
 
         if error:
             return make_response(jsonify({ 'error': error }), 400)
 
+        # We get the user that we're gonna manipulate.
         user = manipulator.get_user(id)
 
         if not user:
             return make_response(jsonify({ 'error': ['No such user'] }), 400)
+
+        # Same thing that we did in the patch, if the username exists in the db
+        # and it's not ours, this is an error, if it exists but it's ours,
+        # everything is good, we can change it.
 
         if manipulator.get_users_username([request.json['username']]) \
         and user.username != request.json['username']:
@@ -166,6 +181,7 @@ def api_user(id):
 
         user.user_id = request.json['user_id']
 
+        # Short if notation to check if it exists, if not, we'll set None.
         user.email = request.json['email'] if 'email' in request.json else None
         user.name = request.json['name'] if 'name' in request.json else None
         user.mean_temperature = request.json['mean_temperature'] \
@@ -184,6 +200,9 @@ def api_user(id):
 
 # Sensor requests
 
+# /sensors is basically the same as users, but changing the database from
+# users to Temperatures.
+
 @app.route('/sensors', methods = ['GET', 'POST', 'DELETE'])
 def api_sensors():
     if request.method == 'GET':
@@ -199,6 +218,7 @@ def api_sensors():
             error.append('Such sensor exists already')
             return make_response(jsonify({ 'error': error }), 400)
 
+        # Object with default values to edit later.
         sensor = {
             'sensor_id' : request.json['sensor_id'],
             'mean_temperature': None
@@ -207,7 +227,9 @@ def api_sensors():
         if 'mean_temperature' in request.json:
             sensor['mean_temperature'] = request.json['mean_temperature']
 
-        manipulator.save_temperature(sensor['sensor_id'], sensor['mean_temperature'])
+        # Save the object we created to the database.
+        manipulator.save_temperature(sensor['sensor_id'], \
+        sensor['mean_temperature'])
 
         return jsonify({ 'data': [sensor] }), 201
 
@@ -259,6 +281,8 @@ def api_sensor(id):
             return make_response(jsonify({ 'error': \
             ['Such sensor exists already'] }), 400)
 
+        # No need to check if the sensor exists because it has been checked
+        # already.
         sensor.sensor_id = request.json['sensor_id']
         sensor.mean_temperature = request.json['mean_temperature'] if \
         'mean_temperature' in request.json else None
@@ -275,5 +299,6 @@ def api_sensor(id):
         abort(404)
 
 if __name__ == '__main__':
+    # Initialize the manipulator and run the app in debug mode.
     manipulator.initialize()
     app.run(debug=True)
