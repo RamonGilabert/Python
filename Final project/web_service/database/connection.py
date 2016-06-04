@@ -34,10 +34,22 @@ class Manipulator:
 
     # Query
 
-    def get_user(self, user_id):
-        return User.query.filter_by(user_id=user_id).first()
+    def get_user(self, id):
+        return User.query.filter_by(id=id).first()
 
-    def get_users_id(self, user_ids=None):
+    def get_users_id(self, ids=None):
+        if not ids:
+            return [user.serialize() for user in User.query.all()]
+
+        users = []
+        for id in ids:
+            user = User.query.filter_by(id=id).first()
+            if user is not None:
+                users.append(user.serialize())
+
+        return users
+
+    def get_users_user_id(self, user_ids=None):
         if not user_ids:
             return [user.serialize() for user in User.query.all()]
 
@@ -90,8 +102,8 @@ class Manipulator:
 
     # Delete
 
-    def delete_users(self, user_id=None):
-        users = [User.query.filter_by(user_id=user_id).first()] if user_id \
+    def delete_users(self, id=None):
+        users = [User.query.filter_by(id=id).first()] if id \
         else User.query.all()
         self._delete_object(users)
 

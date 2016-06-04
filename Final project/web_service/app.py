@@ -21,11 +21,11 @@ def check_errors(keys, request):
 
 @app.errorhandler(404) # Not found error.
 def not_found(error):
-    return make_response(jsonify({ 'error': 'Not found' }), 404)
+    return make_response(jsonify({ 'error': ['Not found'] }), 404)
 
 @app.errorhandler(400) # Bad request from the user.
 def bad_request(error):
-    return make_response(jsonify({ 'error': 'Bad request' }), 400)
+    return make_response(jsonify({ 'error': ['Bad request'] }), 400)
 
 # User requests
 
@@ -35,8 +35,7 @@ def api_users():
         return jsonify({ 'data' : manipulator.get_users_id() })
 
     elif request.method == 'POST':
-        error = check_errors(['username', 'user_id', 'email', 'name'], \
-        request.json)
+        error = check_errors(['username', 'user_id'], request.json)
 
         if error:
             return make_response(jsonify({ 'error': error }), 400)
@@ -49,12 +48,22 @@ def api_users():
         user = {
             'username' : request.json['username'],
             'user_id': request.json['user_id'],
-            'email': request.json['email'],
-            'name': request.json['name']
+            'name': None,
+            'email': None,
+            'mean_temperature': None
         }
 
+        if 'name' in request.json:
+            user['name'] = request.json['name']
+
+        if 'email' in request.json:
+            user['email'] = request.json['email']
+
+        if 'mean_temperature' in request.json:
+            user['mean_temperature'] = request.json['mean_temperature']
+
         manipulator.save_user(user['username'], user['user_id'], \
-            user['name'], user['email'])
+            user['name'], user['email'], user['mean_temperature'])
 
         return jsonify({ 'data': [user] }), 201
 
@@ -65,13 +74,13 @@ def api_users():
     else:
         abort(404)
 
-@app.route('/users/<int:user_id>', methods = ['GET', 'PATCH', 'PUT', 'DELETE'])
-def api_user(user_id):
+@app.route('/users/<int:id>', methods = ['GET', 'PATCH', 'PUT', 'DELETE'])
+def api_user(id):
     if request.method == 'GET':
-        return jsonify({ 'data' : manipulator.get_users_id([user_id]) })
+        return jsonify({ 'data' : manipulator.get_users_id([id]) })
 
     elif request.method == 'PATCH':
-        user = manipulator.get_user(user_id)
+        user = manipulator.get_user(id)
 
         if not user:
             return make_response(jsonify({ 'error': ['No such user'] }), 400)
@@ -81,8 +90,16 @@ def api_user(user_id):
             and user.username != request.json['username']:
                 return make_response(jsonify({ 'error': \
                 ['Such user exists already'] }), 400)
-            else:
-                user.username = request.json['username']
+
+            user.username = request.json['username']
+
+        if 'user_id' in request.json:
+            if manipulator.get_users_user_id([request.json['user_id']]) \
+            and str(user.user_id) != str(request.json['user_id']):
+                return make_response(jsonify({ 'error': \
+                ['Such user exists already'] }), 400)
+
+            user.user_id = request.json['user_id']
 
         if 'email' in request.json:
             user.email = request.json['email']
@@ -98,12 +115,12 @@ def api_user(user_id):
         return jsonify({ 'message': [user.serialize()] }), 200
 
     elif request.method == 'PUT':
-        error = check_errors(['username'], request.json)
+        error = check_errors(['user_id', 'username'], request.json)
 
         if error:
             return make_response(jsonify({ 'error': error }), 400)
 
-        user = manipulator.get_user(user_id)
+        user = manipulator.get_user(id)
 
         if not user:
             return make_response(jsonify({ 'error': ['No such user'] }), 400)
@@ -112,8 +129,15 @@ def api_user(user_id):
         and user.username != request.json['username']:
             return make_response(jsonify({ 'error': \
             ['Such user exists already'] }), 400)
-        else:
-            user.username = request.json['username']
+
+        user.username = request.json['username']
+
+        if manipulator.get_users_user_id([request.json['user_id']]) \
+        and str(user.user_id) != str(request.json['user_id']):
+            return make_response(jsonify({ 'error': \
+            ['Such user exists already'] }), 400)
+
+        user.user_id = request.json['user_id']
 
         user.email = request.json['email'] if 'email' in request.json else None
         user.name = request.json['name'] if 'name' in request.json else None
@@ -125,7 +149,7 @@ def api_user(user_id):
         return jsonify({ 'message': [user.serialize()] }), 200
 
     elif request.method == 'DELETE':
-        manipulator.delete_users(user_id)
+        manipulator.delete_users(id)
         return jsonify({ 'message': ['Your data is gone'] }), 200
 
     else:
@@ -150,8 +174,11 @@ def api_sensors():
 
         sensor = {
             'sensor_id' : request.json['sensor_id'],
-            'mean_temperature': request.json['mean_temperature']
+            'mean_temperature': None
         }
+
+        if 'mean_temperature' in request.json:
+            sensor['mean_temperature'] = request.json['mean_temperature']
 
         manipulator.save_temperature(sensor['sensor_id'], sensor['mean_temperature'])
 
@@ -176,7 +203,8 @@ def api_sensor(id):
             return make_response(jsonify({ 'error': ['No such sensor'] }), 400)
 
         if 'sensor_id' in request.json:
-            if manipulator.get_temperatures_sensors([request.json['sensor_id']]):
+            if manipulator.get_temperatures_sensors([request.json['sensor_id']]) \
+            and str(sensor.sensor_id) != str(request.json['sensor_id']):
                 return make_response(jsonify({ 'error': \
                 ['Such sensor exists already'] }), 400)
 
@@ -194,14 +222,15 @@ def api_sensor(id):
             return make_response(jsonify({ 'error': \
             ['The sensor_id cannot be undefined'] }), 400)
 
-        if manipulator.get_temperatures_sensors([request.json['sensor_id']]):
-            return make_response(jsonify({ 'error': \
-            ['Such sensor exists already'] }), 400)
-
         sensor = manipulator.get_temperature(id)
 
         if not sensor:
             return make_response(jsonify({ 'error': ['No such user'] }), 400)
+
+        if manipulator.get_temperatures_sensors([request.json['sensor_id']]) \
+        and str(sensor.sensor_id) != str(request.json['sensor_id']):
+            return make_response(jsonify({ 'error': \
+            ['Such sensor exists already'] }), 400)
 
         sensor.sensor_id = request.json['sensor_id']
         sensor.mean_temperature = request.json['mean_temperature'] if \
