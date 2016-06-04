@@ -1,3 +1,5 @@
+# Python web service.
+
 from flask import Flask, jsonify, abort, make_response, request, Response
 from database.connection import Manipulator
 
