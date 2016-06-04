@@ -27,12 +27,9 @@
     <div id='show-button-container'>
       <div class='buttons-container'>
         <div class='button-container'><a href="{{ url_for('main_view') }}"
-          class='button' id='show-button'>Main</a></div>
-
-        {% if not sensors %}
-          <div class='button-container'><a href="{{ url_for('new_sensor_view') }}"
-            class='button' id='show-button'>Add sensors</a></div>
-        {% endif %}
+        class='button' id='show-button'>Main</a></div>
+        <div class='button-container'><a href="{{ url_for('new_sensor_view') }}"
+        class='button' id='show-button'>Add sensors</a></div>
       </div>
     </div>
   </div>
