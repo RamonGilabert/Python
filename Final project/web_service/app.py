@@ -303,4 +303,4 @@ def api_sensor(id):
 if __name__ == '__main__':
     # Initialize the manipulator and run the app in debug mode.
     manipulator.initialize()
-    app.run(debug=True)
+    app.run(debug=True, port=8000)

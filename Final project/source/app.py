@@ -1,11 +1,16 @@
 # Python web app.
 
 import sqlite3
+import urllib2
+import json
+
 from flask import Flask, request, session, g, redirect, url_for, \
-     abort, render_template, flash
+     abort, render_template, flash, jsonify
 
 app = Flask(__name__)
 app.config.from_object(__name__)
+
+api_url = 'http://localhost:8000'
 
 # Index
 
@@ -23,18 +28,19 @@ def login_view():
 
 @app.route('/users')
 def users_view():
-    temperatures = connection.get_temperatures()
-    return render_template('temperatures.html', temperatures=temperatures)
+    request = urllib2.urlopen(api_url + '/users')
+    users = json.load(request)
+
+    if 'data' in users:
+        return render_template('users.html', users=users['data'])
 
 @app.route('/users/<int:id>')
 def user_view(id):
-    temperatures = connection.get_temperatures()
-    return render_template('temperatures.html', temperatures=temperatures)
+    return render_template('user.html', users=users)
 
 @app.route('/new_user')
 def new_user_view():
-    temperatures = connection.get_temperatures()
-    return render_template('temperatures.html', temperatures=temperatures)
+    return render_template('new_user.html')
 
 # Sensors
 
