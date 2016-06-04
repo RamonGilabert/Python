@@ -9,10 +9,18 @@
       Raspberry Pi.</h3>
       <div class='separator'></div>
       <div class='buttons-container'>
+        <div class='sub-button-group'>
         <div class='button-container'><a href="{{ url_for('users_view') }}"
           class='button'>Show users</a></div>
-        <div class='button-container'><a href="{{ url_for('sensors_view') }}"
-          class='button'>Show sensors</a></div>
+        <div class='button-container'><a href="{{ url_for('new_user_view') }}"
+          class='button'>New user</a></div>
+        </div>
+        <div class='sub-button-group' id='sub-button-group-bottom'>
+          <div class='button-container'><a href="{{ url_for('sensors_view') }}"
+            class='button'>Show sensors</a></div>
+          <div class='button-container'><a href="{{ url_for('new_sensor_view') }}"
+            class='button'>New sensor</a></div>
+        </div>
       </div>
     </div>
   </div>

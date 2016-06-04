@@ -72,6 +72,7 @@ html, body {
   display: inline-block;
   padding-left: 40px;
   padding-right: 40px;
+  text-align: center;
 }
 
 .button:before {
@@ -105,6 +106,14 @@ html, body {
   background-color: #151718;
 }
 
+#sub-button-group-bottom {
+  padding-top: 25px;
+}
+
+#sub-button {
+  display: grid;;
+}
+
 /* Main */
 
 #index-title {
@@ -135,7 +144,7 @@ html, body {
   transform: translateX(-50%);
 }
 
-/* show */
+/* Show */
 
 #show-container {
   margin: 0 auto;
