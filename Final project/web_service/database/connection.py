@@ -61,16 +61,28 @@ class Manipulator:
 
         return users
 
-    def get_temperature(self, sensor_id):
-        return Temperature.query.filter_by(sensor_id=sensor_id).first()
+    def get_temperature(self, id):
+        return Temperature.query.filter_by(id=id).first()
 
-    def get_temperatures_id(self, sensor_ids=None):
+    def get_temperatures_sensors(self, sensor_ids=None):
         if sensor_ids is None:
             return [temperature.serialize() for temperature in Temperature.query.all()]
 
         temperatures = []
         for id in sensor_ids:
             temperature = Temperature.query.filter_by(sensor_id=id).first()
+            if temperature is not None:
+                temperatures.append(temperature.serialize())
+
+        return temperatures
+
+    def get_temperatures_id(self, ids=None):
+        if ids is None:
+            return [temperature.serialize() for temperature in Temperature.query.all()]
+
+        temperatures = []
+        for id in ids:
+            temperature = Temperature.query.filter_by(id=id).first()
             if temperature is not None:
                 temperatures.append(temperature.serialize())
 
@@ -83,12 +95,17 @@ class Manipulator:
         else User.query.all()
         self._delete_object(users)
 
-    def delete_temperatures(self, sensor_id=None):
-        temperatures = [Temperature.query.filter_by(sensor_id=sensor_id).first()] \
-        if sensor_id else Temperature.query.all()
+    def delete_temperatures(self, id=None):
+        temperatures = [Temperature.query.filter_by(id=id).first()] \
+        if id else Temperature.query.all()
         self._delete_object(temperatures)
 
     def _delete_object(self, objects):
+        if not objects:
+            return
+
         for object in objects:
-            database_session.delete(object)
+            if object:
+                database_session.delete(object)
+
         database_session.commit()

@@ -84,17 +84,6 @@ def api_user(user_id):
             else:
                 user.username = request.json['username']
 
-        # This is here as an optional thing. I don't think you should be able
-        # to change the user_id.
-        #
-        # if 'user_id' in request.json:
-        #     if manipulator.get_users_id([request.json['user_id']]) \
-        #     and user.user_id != request.json['user_id']:
-        #         return make_response(jsonify({ 'error': \
-        #         ['Such user exists already'] }), 400)
-        #     else:
-        #         user.user_id = request.json['user_id']
-
         if 'email' in request.json:
             user.email = request.json['email']
 
@@ -155,8 +144,8 @@ def api_sensors():
         if error:
             return make_response(jsonify({ 'error': error }), 400)
 
-        if manipulator.get_temperatures_id([request.json['sensor_id']]):
-            error.append('Such user exists already')
+        if manipulator.get_temperatures_sensors([request.json['sensor_id']]):
+            error.append('Such sensor exists already')
             return make_response(jsonify({ 'error': error }), 400)
 
         sensor = {
@@ -175,16 +164,23 @@ def api_sensors():
     else:
         abort(404)
 
-@app.route('/sensors/<int:sensor_id>', methods = ['GET', 'PATCH', 'PUT', 'DELETE'])
-def api_sensor(sensor_id):
+@app.route('/sensors/<int:id>', methods = ['GET', 'PATCH', 'PUT', 'DELETE'])
+def api_sensor(id):
     if request.method == 'GET':
-        return jsonify({ 'data' : manipulator.get_temperatures_id([sensor_id]) })
+        return jsonify({ 'data' : manipulator.get_temperatures_id([id]) })
 
     elif request.method == 'PATCH':
-        sensor = manipulator.get_temperature(sensor_id)
+        sensor = manipulator.get_temperature(id)
 
         if not sensor:
             return make_response(jsonify({ 'error': ['No such sensor'] }), 400)
+
+        if 'sensor_id' in request.json:
+            if manipulator.get_temperatures_sensors([request.json['sensor_id']]):
+                return make_response(jsonify({ 'error': \
+                ['Such sensor exists already'] }), 400)
+
+            sensor.sensor_id = request.json['sensor_id']
 
         if 'mean_temperature' in request.json:
             sensor.mean_temperature = request.json['mean_temperature']
@@ -194,14 +190,20 @@ def api_sensor(sensor_id):
         return jsonify({ 'message': [sensor.serialize()] }), 200
 
     elif request.method == 'PUT':
-        if check_errors([], request.json):
-            return make_response(jsonify({ 'error': error }), 400)
+        if not 'sensor_id' in request.json:
+            return make_response(jsonify({ 'error': \
+            ['The sensor_id cannot be undefined'] }), 400)
 
-        sensor = manipulator.get_temperature(sensor_id)
+        if manipulator.get_temperatures_sensors([request.json['sensor_id']]):
+            return make_response(jsonify({ 'error': \
+            ['Such sensor exists already'] }), 400)
+
+        sensor = manipulator.get_temperature(id)
 
         if not sensor:
             return make_response(jsonify({ 'error': ['No such user'] }), 400)
 
+        sensor.sensor_id = request.json['sensor_id']
         sensor.mean_temperature = request.json['mean_temperature'] if \
         'mean_temperature' in request.json else None
 
@@ -210,7 +212,7 @@ def api_sensor(sensor_id):
         return jsonify({ 'message': [sensor.serialize()] }), 200
 
     elif request.method == 'DELETE':
-        manipulator.delete_temperatures(sensor_id)
+        manipulator.delete_temperatures(id)
         return jsonify({ 'message': ['Your data is gone'] }), 200
 
     else:
