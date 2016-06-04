@@ -121,3 +121,11 @@ class Manipulator:
                 database_session.delete(object)
 
         database_session.commit()
+
+    # Database session
+
+    def initialize(self):
+        init_database()
+
+    def commit(self):
+        database_session.commit()
