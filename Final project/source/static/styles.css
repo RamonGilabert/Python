@@ -26,7 +26,7 @@ html, body {
 .main-title {
   margin: 0 auto;
   text-transform: uppercase;
-  letter-spacing: 8px;
+  letter-spacing: 5px;
   font-size: 36px;
   text-align: center;
   color: white;
@@ -135,47 +135,47 @@ html, body {
   transform: translateX(-50%);
 }
 
-/* Temperatures */
+/* show */
 
-#temperatures-container {
+#show-container {
   margin: 0 auto;
   width: 100vw;
   min-height: 100vh;
-  background-color: #FAFAF7;
+  background-color: white;
 }
 
-#temperatures-title {
-  padding-top: 17.5vh;
+#show-title {
+  padding-top: 10vh;
   color: #151718;
 }
 
-#temperatures-separator {
+#show-separator {
   background-color: #151718;
   margin-top: 25px;
 }
 
-#temperatures-table {
+#show-table {
   width: 90%;
-  color: #151718;
+  color: inherit;
   vertical-align: center;
-  margin-top: 50px;
+  margin-top: 25px;
   margin-left: 50%;
-  padding-bottom: 50px;
+  padding-bottom: 100px;
   transform: translateX(-50%);
 }
 
-#temperatures-table tr {
+#show-table tr {
   height: 80px;
 }
 
-#temperatures-table tr th {
+#show-table tr th {
   width: 22%;
   text-align: center;
   text-transform: uppercase;
   border-bottom: 1px solid black;
 }
 
-#temperatures-table tr td {
+#show-table tr td {
   text-align: center;
 }
 
@@ -193,19 +193,21 @@ html, body {
   vertical-align: center;
 }
 
-#temperatures-button-container {
-  padding-bottom: 100px;
+#show-button-container {
+  position: fixed;
+  background-color: inherit;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  width: 100vw;
+  height: 50px;
+  padding-bottom: 20px;
 }
 
-#temperatures-button {
+#show-button {
   color: #151718;
 }
 
-#temperatures-button:before {
+#show-button:before {
   background: #151718;
-}
-
-#temperatures-button:hover:before {
-  left: 45%;
-  right: 45%;
 }

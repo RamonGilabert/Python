@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block title %}Users{% endblock %}
 {% block body %}
-  <div id='temperatures-container'>
-    <h1 class='main-title' id='temperatures-title'>Temperatures</h1>
-    <div class='separator' id='temperatures-separator'></div>
+  <div id='show-container'>
+    <h1 class='main-title' id='show-title'>Users</h1>
+    <div class='separator' id='show-separator'></div>
     {% if users %}
-      <table id='temperatures-table'>
+      <table id='show-table'>
         <tr>
           <th>User ID</th>
           <th>Username</th>
@@ -16,19 +16,31 @@
           <tr>
             <td>{{ user.user_id }}</td>
             <td>{{ user.username }}</td>
+            {% if user.email is not none %}
             <td>{{ user.email }}</td>
+            {% else %}
+            <td>-</td>
+            {% endif %}
+            {% if user.mean_temperature is not none %}
             <td>{{ user.mean_temperature }} °C</td>
+            {% else %}
+            <td>-</td>
+            {% endif %}
           </tr>
         {% endfor %}
       </table>
     {% else %}
       <h2 id='empty-state'>Bummer! Still no users here.</h2>
-      <!-- TODO: Add link to add one. -->
     {% endif %}
-    <div class='separator' id='temperatures-separator'></div>
-    <div id='temperatures-button-container'>
+    <div id='show-button-container'>
       <div class='buttons-container'>
-        <a href="{{ url_for('main_view') }}" class='button' id='temperatures-button'>Main</a>
+        <div class='button-container'><a href="{{ url_for('main_view') }}"
+          class='button' id='show-button'>Main</a></div>
+
+        {% if not users %}
+          <div class='button-container'><a href="{{ url_for('new_user_view') }}"
+            class='button' id='show-button'>Add users</a></div>
+        {% endif %}
       </div>
     </div>
   </div>

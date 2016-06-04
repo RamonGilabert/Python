@@ -46,8 +46,11 @@ def new_user_view():
 
 @app.route('/sensors')
 def sensors_view():
-    temperatures = connection.get_temperatures()
-    return render_template('temperatures.html', temperatures=temperatures)
+    request = urllib2.urlopen(api_url + '/sensors')
+    sensors = json.load(request)
+
+    if 'data' in sensors:
+        return render_template('sensors.html', sensors=sensors['data'])
 
 @app.route('/sensors/<int:id>')
 def sensor_view(id):

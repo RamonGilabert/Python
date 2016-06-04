@@ -1,33 +1,38 @@
 {% extends "layout.html" %}
 {% block title %}Sensors{% endblock %}
 {% block body %}
-  <div id='temperatures-container'>
-    <h1 class='main-title' id='temperatures-title'>Temperatures</h1>
-    <div class='separator' id='temperatures-separator'></div>
-    {% if temperatures %}
-      <table id='temperatures-table'>
+  <div id='show-container'>
+    <h1 class='main-title' id='show-title'>Sensors</h1>
+    <div class='separator' id='show-separator'></div>
+    {% if sensors %}
+      <table id='show-table'>
         <tr>
-          <th>Initial temperature</th>
-          <th>Final temperature</th>
-          <th>Created</th>
-          <th>Difference</th>
+          <th>Sensor ID</th>
+          <th>Mean temperature</th>
         </tr>
-        {% for temperature in temperatures %}
+        {% for sensor in sensors %}
           <tr>
-            <td>{{ temperature.temperature }} °C</td>
-            <td>{{ temperature.temperature + temperature.difference }} °C</td>
-            <td>{{ temperature.created }}</td>
-            <td>{{ temperature.difference }} °C</td>
+            <td>{{ sensor.sensor_id }}</td>
+            {% if sensor.mean_temperature is not none %}
+            <td>{{ sensor.mean_temperature }} °C</td>
+            {% else %}
+            <td>-</td>
+            {% endif %}
           </tr>
         {% endfor %}
       </table>
     {% else %}
-      <h2 id='empty-state'>Bummer! Still no temperatures here.</h2>
+      <h2 id='empty-state'>Bummer! Still no sensors here.</h2>
     {% endif %}
-    <div class='separator' id='temperatures-separator'></div>
-    <div id='temperatures-button-container'>
+    <div id='show-button-container'>
       <div class='buttons-container'>
-        <a href="{{ url_for('main_view') }}" class='button' id='temperatures-button'>Main</a>
+        <div class='button-container'><a href="{{ url_for('main_view') }}"
+          class='button' id='show-button'>Main</a></div>
+
+        {% if not sensors %}
+          <div class='button-container'><a href="{{ url_for('new_sensor_view') }}"
+            class='button' id='show-button'>Add sensors</a></div>
+        {% endif %}
       </div>
     </div>
   </div>
