@@ -221,6 +221,20 @@ html, body {
   background: #151718;
 }
 
+/* Login */
+
+#login-button-container {
+  text-align: center;
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#login-button {
+  text-align: center;
+}
+
 /* New */
 
 .new-form {
