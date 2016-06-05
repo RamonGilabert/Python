@@ -221,6 +221,20 @@ html, body {
   background: #151718;
 }
 
+#edit-button {
+  color: #151718;
+  transition: 0.75s;
+}
+
+#edit-button:hover {
+  color: #C2C1BD;
+}
+
+#edit-button-cell {
+  width: 5%;
+  padding-left: 5%;
+}
+
 /* Login */
 
 #login-button-container {
