@@ -120,7 +120,7 @@ html, body {
   text-align: center;
   text-transform: uppercase;
   margin-top: 18.5px;
-  color: #FAFAF7;
+  color: #151718;
 }
 
 #inserted-container {
@@ -131,7 +131,8 @@ html, body {
   left: 0;
   bottom: 0;
   opacity: 1;
-  background-color: #D6D6D2;
+  padding-bottom: 12.5px;
+  background-color: white;
   transition: all 0.35s ease-in;
 }
 
@@ -312,4 +313,11 @@ html, body {
 .new-button-form:hover {
   color: #151718;
   background-color: white;
+}
+
+/* Animations */
+
+@keyframes animationIn {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
 }

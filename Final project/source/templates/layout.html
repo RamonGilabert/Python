@@ -23,6 +23,11 @@ login options. -->
     <script>
       var insertedContainer = document.getElementById('inserted-container');
       insertedContainer.style.animationName = "animationIn";
+      insertedContainer.style.opacity = 0;
+
+      window.setTimeout(function() {
+        insertedContainer.style.opacity = 1;
+      }, 0000);
 
       window.setTimeout(function() {
         insertedContainer.style.opacity = 0;
