@@ -19,7 +19,9 @@ headers = { 'Content-Type' : 'application/json' }
 
 # Helper methods
 
-def _handle_request(id, endpoint, error_message, redirection, body, file_load, general):
+def _handle_request(id, endpoint, error_message,
+redirection, body, file_load, general):
+
     api_request = None
     flash_message = None
 
