@@ -1,8 +1,14 @@
 {% extends "layout.html" %}
-{% block title %}New sensor{% endblock %}
+{% block title %}Sensor{% endblock %}
 {% block body %}
   <div id='show-container'>
-    <h1 class='main-title' id='show-title'>New sensor</h1>
+    <h1 class='main-title' id='show-title'>
+      {% if sensor %}
+        Edit sensor
+      {% else %}
+        New sensor
+      {% endif %}
+    </h1>
     <div class='separator' id='show-separator'></div>
     <form action="{{ url_for('login_view') }}" method="post" class='new-form'>
       <input class='new-input' autocorrect='off' spellcheck='false'
