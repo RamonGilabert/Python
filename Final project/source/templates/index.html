@@ -22,8 +22,13 @@
             class='button'>New sensor</a></div>
         </div>
       </div>
+      {% if session.logged_in %}
+      <div id='login-button-container'><a href="{{ url_for('logout') }}"
+        class='button', id='login-button'>Log out</a></div>
+      {% else %}
       <div id='login-button-container'><a href="{{ url_for('login_view') }}"
         class='button', id='login-button'>Login</a></div>
+      {% endif %}
     </div>
   </div>
 {% endblock %}

@@ -7,6 +7,10 @@ import json
 from flask import Flask, request, session, g, redirect, url_for, \
      abort, render_template, flash, jsonify
 
+SECRET_KEY = 'NbrIvaX9a78KxVlTFs9YmVqIgg7uCzAG'
+USERNAME = 'admin'
+PASSWORD = '123'
+
 app = Flask(__name__)
 app.config.from_object(__name__)
 
@@ -18,11 +22,28 @@ api_url = 'http://localhost:8000'
 def main_view():
     return render_template('index.html')
 
-# Login
+# Auth
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login_view():
-    return render_template('login.html')
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != app.config['USERNAME']:
+            error = 'Invalid username'
+        elif request.form['password'] != app.config['PASSWORD']:
+            error = 'Invalid password'
+        else:
+            session['logged_in'] = True
+            flash('You were logged in')
+            return redirect(url_for('main_view'))
+
+    return render_template('login.html', error=error)
+
+@app.route('/logout')
+def logout():
+    session.pop('logged_in', None)
+    flash('You were logged out')
+    return redirect(url_for('main_view'))
 
 # Users
 

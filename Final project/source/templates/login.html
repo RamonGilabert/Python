@@ -4,14 +4,14 @@
   <div id='show-container'>
     <h1 class='main-title' id='show-title'>Login</h1>
     <div class='separator' id='show-separator'></div>
-    <form action="{{ url_for('login_view') }}" method="post" class='new-form'>
+    <form action="{{ url_for('login_view') }}" method='post' class='new-form'>
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='text' name='user_id' placeholder='Username'>
+      type='text' name='username' placeholder='Username'>
 
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='password' name='username' placeholder='Password'>
+      type='password' name='password' placeholder='Password'>
 
-      <button class='new-button-form'>Login</button>
+      <button class='new-button-form' type='submit'>Login</button>
     </form>
     <div id='show-button-container'>
       <div class='buttons-container'>

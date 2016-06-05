@@ -26,7 +26,7 @@
             {% else %}
             <td>-</td>
             {% endif %}
-            {% if not session.logged_in %}
+            {% if session.logged_in %}
             <td id='edit-button-cell'><a href="{{ url_for('new_user_view') }}"
             class='button' id='edit-button'>Edit</a></td>
             {% endif %}
