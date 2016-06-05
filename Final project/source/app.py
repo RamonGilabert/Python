@@ -87,7 +87,12 @@ def new_user_view(id=None):
                 flash('Your user has been created')
                 return redirect(url_for('users_view'))
             except urllib2.HTTPError, error:
-                flash(error)
+                errors = json.load(error)
+
+                if 'error' in errors:
+                    flash(errors['error'][0])
+                else:
+                    flash(error)
         else:
             print 'Configure the PATCH.'
 
