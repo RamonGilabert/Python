@@ -63,13 +63,13 @@ def users_view():
 def new_user_view(id=None):
     general_user = None
 
-    if request.method == 'GET':
-        if id is not None:
-            value = urllib2.urlopen(api_url + '/users/' + str(id))
-            response = json.load(value)
-            if 'data' in response:
-                general_user = response['data'][0]
-    elif request.method == 'POST':
+    if id is not None:
+        value = urllib2.urlopen(api_url + '/users/' + str(id))
+        response = json.load(value)
+        if 'data' in response:
+            general_user = response['data'][0]
+
+    if request.method == 'POST':
         user = json.dumps({
             'user_id': request.form['user_id'] if request.form['user_id'] else None,
             'username': request.form['username'] if request.form['username'] else None,
@@ -120,15 +120,18 @@ def sensors_view():
         return render_template('sensors.html', sensors=sensors['data'])
 
 @app.route('/new_sensor', methods=['GET', 'POST'])
-@app.route('/new_sensor/<string:id>', methods=['GET', 'PATCH'])
+@app.route('/new_sensor/<string:id>', methods=['GET', 'POST'])
 def new_sensor_view(id=None):
-    sensor = None
-    if request.method == 'GET':
-        if id is not None:
-            value = urllib2.urlopen(api_url + '/sensors/' + str(id))
-            data = json.load(value)
-            sensor = data['data'][0]
-    elif request.method == 'POST' or request.method == 'PATCH':
+    general_sensor = None
+
+    if id is not None:
+        value = urllib2.urlopen(api_url + '/sensors/' + str(id))
+        response = json.load(value)
+
+        if 'data' in response:
+            general_sensor = response['data'][0]
+
+    if request.method == 'POST':
         sensor = json.dumps({
             'sensor_id': request.form['sensor_id'] if request.form['sensor_id']
             else None,
@@ -136,21 +139,35 @@ def new_sensor_view(id=None):
             if request.form['mean_temperature'] else None
         })
 
-        if request.method == 'POST':
-            value = urllib2.Request(api_url + '/users', user, headers)
-            result = urllib2.urlopen(value)
-            response = json.load(result)
+        api_request = None
+        flash_message = None
 
-            if 'data' in response:
-                user = response['data'][0]
-                flash('Your user has been created')
-                return redirect(url_for('users_view'))
-            elif 'error' in response:
-                flash(response['error'][0])
-        else:
-            print 'Configure the PATCH.'
+        if id is not None:
+            api_request = urllib2.Request(api_url + '/sensors/' + str(id), sensor, headers)
+            api_request.get_method = lambda: 'PATCH'
+            flash_message = 'Your sensor has been saved'
+        elif request.method == 'POST':
+            api_request = urllib2.Request(api_url + '/sensors', sensor, headers)
+            flash_message = 'Your sensor has been created'
 
-    return render_template('new_sensor.html', sensor=sensor)
+        if api_request is not None:
+            try:
+                result = urllib2.urlopen(api_request)
+                response = json.load(result)
+                flash(flash_message)
+
+                return redirect(url_for('sensors_view'))
+            except urllib2.HTTPError, error:
+                errors = json.load(error)
+
+                if 'error' in errors:
+                    flash(errors['error'][0])
+                else:
+                    flash(error)
+            except:
+                flash('There was an unknown error.')
+
+    return render_template('new_sensor.html', sensor=general_sensor)
 
 if __name__ == "__main__":
     app.run(debug=True)

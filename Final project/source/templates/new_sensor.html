@@ -10,16 +10,22 @@
       {% endif %}
     </h1>
     <div class='separator' id='show-separator'></div>
-    <form action="{{ url_for('login_view') }}" method="post" class='new-form'>
+    <form action=
+    {% if sensor %}
+      "{{ url_for('new_sensor_view', id=sensor.id) }}"
+    {% else %}
+      "{{ url_for('new_sensor_view') }}"
+    {% endif %}
+    method="post" class='new-form'>
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='text' name='user_id'
+      type='text' name='sensor_id'
       {% if sensor %}
         value={{ sensor.sensor_id }}
       {% endif %}
       placeholder='Enter the sensor_id'>
 
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='text' name='username'
+      type='text' name='mean_temperature'
       {% if sensor %}
         {% if sensor.mean_temperature is not none %}
           value={{ sensor.mean_temperature }}
