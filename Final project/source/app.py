@@ -58,7 +58,15 @@ def users_view():
 @app.route('/new_user')
 @app.route('/new_user/<int:id>')
 def new_user_view(id=None):
-    return render_template('new_user.html', user=None)
+    user = {
+        "user_id": 21,
+        "username": 'Monrachu',
+        "name": None,
+        "email": None,
+        "mean_temperature": None
+    }
+
+    return render_template('new_user.html', user=user)
 
 # Sensors
 

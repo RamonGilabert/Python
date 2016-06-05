@@ -6,19 +6,44 @@
     <div class='separator' id='show-separator'></div>
     <form action="{{ url_for('login_view') }}" method="post" class='new-form'>
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='text' name='user_id' placeholder='Enter the user_id'>
+      type='text' name='user_id'
+      {% if user %}
+        value={{ user.user_id }}
+      {% endif %}
+      placeholder='Enter the user_id'>
 
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='text' name='username' placeholder='Enter the username'>
+      type='text' name='username'
+      {% if user %}
+        value={{ user.username }}
+      {% endif %}
+      placeholder='Enter the username'>
 
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='text' name='name' placeholder='Enter the name (optional)'>
+      type='text' name='name'
+      {% if user %}
+        {% if user.name is not none %}
+          value={{ user.name }}
+        {% endif %}
+      {% endif %}
+      placeholder='Enter the name (optional)'>
 
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='email' name='email' placeholder='Enter the email (optional)'>
+      type='email' name='email'
+      {% if user %}
+        {% if user.email is not none %}
+          value={{ user.email }}
+        {% endif %}
+      {% endif %}
+      placeholder='Enter the email (optional)'>
 
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='number' name='mean_temperature'
+      type='text' name='mean_temperature'
+      {% if user %}
+        {% if user.mean_temperature is not none %}
+          value={{ user.mean_temperature }}
+        {% endif %}
+      {% endif %}
       placeholder='Enter the mean teamperature (optional)'>
 
       <button class='new-button-form'>Save user</button>
