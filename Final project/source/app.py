@@ -17,6 +17,39 @@ app.config.from_object(__name__)
 api_url = 'http://localhost:8000'
 headers = { 'Content-Type' : 'application/json' }
 
+# Helper methods
+
+def _handle_request(id, endpoint, error_message, redirection, body, file_load, general):
+    api_request = None
+    flash_message = None
+
+    if id is not None:
+        api_request = urllib2.Request(api_url + '/' + endpoint + '/' \
+        + str(id), body, headers)
+        api_request.get_method = lambda: 'PATCH'
+        flash_message = 'Your ' + error_message + ' has been saved'
+    else:
+        api_request = urllib2.Request(api_url + '/' + endpoint, body, headers)
+        flash_message = 'Your ' + error_message + ' has been created'
+
+    if api_request is not None:
+        try:
+            result = urllib2.urlopen(api_request)
+            response = json.load(result)
+            flash(flash_message)
+
+            return redirect(url_for(redirection))
+        except urllib2.HTTPError, error:
+            errors = json.load(error)
+            flash(errors['error'][0]) if 'error' in errors else flash(error)
+        except:
+            flash('There was an unknown error.')
+
+    if file_load == 'new_sensor.html':
+        return render_template(file_load, sensor=general)
+    else:
+        return render_template(file_load, user=general)
+
 # Index
 
 @app.route('/')
@@ -79,33 +112,8 @@ def new_user_view(id=None):
             if request.form['mean_temperature'] else None
         })
 
-        api_request = None
-        flash_message = None
-
-        if id is not None:
-            api_request = urllib2.Request(api_url + '/users/' + str(id), user, headers)
-            api_request.get_method = lambda: 'PATCH'
-            flash_message = 'Your user has been saved'
-        elif request.method == 'POST':
-            api_request = urllib2.Request(api_url + '/users', user, headers)
-            flash_message = 'Your user has been created'
-
-        if api_request is not None:
-            try:
-                result = urllib2.urlopen(api_request)
-                response = json.load(result)
-                flash(flash_message)
-
-                return redirect(url_for('users_view'))
-            except urllib2.HTTPError, error:
-                errors = json.load(error)
-
-                if 'error' in errors:
-                    flash(errors['error'][0])
-                else:
-                    flash(error)
-            except:
-                flash('There was an unknown error.')
+        return _handle_request(id, 'users', 'user', 'users_view', user, \
+        'new_user.html', general_user)
 
     return render_template('new_user.html', user=general_user)
 
@@ -139,33 +147,8 @@ def new_sensor_view(id=None):
             if request.form['mean_temperature'] else None
         })
 
-        api_request = None
-        flash_message = None
-
-        if id is not None:
-            api_request = urllib2.Request(api_url + '/sensors/' + str(id), sensor, headers)
-            api_request.get_method = lambda: 'PATCH'
-            flash_message = 'Your sensor has been saved'
-        elif request.method == 'POST':
-            api_request = urllib2.Request(api_url + '/sensors', sensor, headers)
-            flash_message = 'Your sensor has been created'
-
-        if api_request is not None:
-            try:
-                result = urllib2.urlopen(api_request)
-                response = json.load(result)
-                flash(flash_message)
-
-                return redirect(url_for('sensors_view'))
-            except urllib2.HTTPError, error:
-                errors = json.load(error)
-
-                if 'error' in errors:
-                    flash(errors['error'][0])
-                else:
-                    flash(error)
-            except:
-                flash('There was an unknown error.')
+        return _handle_request(id, 'sensors', 'sensor', 'sensors_view', sensor, \
+        'new_sensor.html', general_sensor)
 
     return render_template('new_sensor.html', sensor=general_sensor)
 
