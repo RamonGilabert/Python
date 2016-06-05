@@ -10,6 +10,9 @@
       {% endif %}
     </h1>
     <div class='separator' id='show-separator'></div>
+
+    <!-- Same thing than in the new_sensor.html, lots of conditions
+    to show whatever is needed depending on the value. -->
     <form action=
     {% if user %}
       "{{ url_for('new_user_view', id=user.id) }}"

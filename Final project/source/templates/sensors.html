@@ -4,6 +4,9 @@
   <div id='show-container'>
     <h1 class='main-title' id='show-title'>Sensors</h1>
     <div class='separator' id='show-separator'></div>
+
+    <!-- If we have sensors, this will iterate over all of them and
+    display them, if not, it will show an empty state. -->
     {% if sensors %}
       <table id='show-table'>
         <tr>

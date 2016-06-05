@@ -4,6 +4,9 @@
   <div id='show-container'>
     <h1 class='main-title' id='show-title'>Login</h1>
     <div class='separator' id='show-separator'></div>
+
+    <!-- A simple form with the username and password entering, with one
+    button at the bottom to go back to the main page again. -->
     <form action="{{ url_for('login_view') }}" method='post' class='new-form'>
       <input class='new-input' autocorrect='off' spellcheck='false'
       type='text' name='username' placeholder='Username'>

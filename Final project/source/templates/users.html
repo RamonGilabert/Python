@@ -4,6 +4,10 @@
   <div id='show-container'>
     <h1 class='main-title' id='show-title'>Users</h1>
     <div class='separator' id='show-separator'></div>
+
+    <!-- If we have users, this will iterate over all of them and
+    display them, if not, it will show an empty state. Same thing as the
+    sensors.html -->
     {% if users %}
       <table id='show-table'>
         <tr>

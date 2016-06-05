@@ -7,6 +7,8 @@
       <h3 id='main-explanation'>Temperatures is an app that will let you
       know the mean temperature of a user and a sensor placed in a
       Raspberry Pi.</h3>
+      <!-- Every button has a small div, it could've been done also
+      creating a table, both work. -->
       <div class='separator'></div>
       <div class='buttons-container'>
         <div class='sub-button-group'>
@@ -22,6 +24,9 @@
             class='button'>New sensor</a></div>
         </div>
       </div>
+
+      <!-- Depending on the logging in and out, we'll display one thing
+      or another. -->
       {% if session.logged_in %}
       <div id='login-button-container'><a href="{{ url_for('logout') }}"
         class='button', id='login-button'>Log out</a></div>
