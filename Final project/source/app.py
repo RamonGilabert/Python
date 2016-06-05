@@ -22,7 +22,7 @@ def main_view():
 
 @app.route('/login')
 def login_view():
-    return render_template('index.html')
+    return render_template('login.html')
 
 # Users
 

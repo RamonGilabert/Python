@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+{% block body %}
+  <div id='show-container'>
+    <h1 class='main-title' id='show-title'>Login</h1>
+    <div class='separator' id='show-separator'></div>
+    <form action="{{ url_for('login_view') }}" method="post" class='new-form'>
+      <input class='new-input' autocorrect='off' spellcheck='false'
+      type='text' name='user_id' placeholder='Username'>
+
+      <input class='new-input' autocorrect='off' spellcheck='false'
+      type='password' name='username' placeholder='Password'>
+
+      <button class='new-button-form'>Login</button>
+    </form>
+    <div id='show-button-container'>
+      <div class='buttons-container'>
+        <div class='button-container'><a href="{{ url_for('main_view') }}"
+          class='button' id='show-button'>Main</a></div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
