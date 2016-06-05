@@ -10,7 +10,12 @@
       {% endif %}
     </h1>
     <div class='separator' id='show-separator'></div>
-    <form action="{{ url_for('login_view') }}" method="post" class='new-form'>
+    <form action=
+    {% if user %}
+      "{{ url_for('new_user_view', id=user.id) }}"
+    {% else %}
+      "{{ url_for('new_user_view') }}"
+    {% endif %} method="post" class='new-form'>
       <input class='new-input' autocorrect='off' spellcheck='false'
       type='text' name='user_id'
       {% if user %}

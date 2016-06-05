@@ -15,6 +15,7 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 
 api_url = 'http://localhost:8000'
+headers = { 'Content-Type' : 'application/json' }
 
 # Index
 
@@ -56,18 +57,38 @@ def users_view():
         return render_template('users.html', users=users['data'])
 
 @app.route('/new_user', methods=['GET', 'POST'])
-@app.route('/new_user/<int:id>', methods=['GET', 'PATCH'])
+@app.route('/new_user/<string:id>', methods=['GET', 'PATCH'])
 def new_user_view(id=None):
     user = None
     if request.method == 'GET':
         if id is not None:
-            request = urllib2.urlopen(api_url + '/users/' + str(id))
-            data = json.load(request)
-            user = data['data'][0]
-    elif request.method == 'POST':
-        print 'Hello'
-    elif request.method == 'PATCH':
-        print 'Hello'
+            value = urllib2.urlopen(api_url + '/users/' + str(id))
+            data = json.load(value)
+            if 'data' in user:
+                user = data['data'][0]
+    elif request.method == 'POST' or request.method == 'PATCH':
+        user = json.dumps({
+            'user_id': request.form['user_id'] if request.form['user_id'] else None,
+            'username': request.form['username'] if request.form['username'] else None,
+            'email': request.form['email'] if request.form['email'] else None,
+            'name': request.form['name'] if request.form['name'] else None,
+            'mean_temperature': float(request.form['mean_temperature'])
+            if request.form['mean_temperature'] else None
+        })
+
+        if request.method == 'POST':
+            value = urllib2.Request(api_url + '/users', user, headers)
+            result = urllib2.urlopen(value)
+            response = json.load(result)
+
+            if 'data' in response:
+                user = response['data'][0]
+                flash('Your user has been created')
+                return redirect(url_for('users_view'))
+            elif 'error' in response:
+                flash(response['error'][0])
+        else:
+            print 'Configure the PATCH.'
 
     return render_template('new_user.html', user=user)
 
@@ -82,13 +103,13 @@ def sensors_view():
         return render_template('sensors.html', sensors=sensors['data'])
 
 @app.route('/new_sensor', methods=['GET', 'POST'])
-@app.route('/new_sensor/<int:id>', methods=['GET', 'PATCH'])
+@app.route('/new_sensor/<string:id>', methods=['GET', 'PATCH'])
 def new_sensor_view(id=None):
     sensor = None
     if request.method == 'GET':
         if id is not None:
-            request = urllib2.urlopen(api_url + '/sensors/' + str(id))
-            data = json.load(request)
+            value = urllib2.urlopen(api_url + '/sensors/' + str(id))
+            data = json.load(value)
             sensor = data['data'][0]
     elif request.method == 'POST':
         print 'Hello'

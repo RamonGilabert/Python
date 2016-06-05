@@ -65,7 +65,7 @@ def api_users():
             return make_response(jsonify({ 'error': error }), 400)
 
         # If the user_id or the username are already taken, error.
-        if manipulator.get_users_id([request.json['user_id']]) or \
+        if manipulator.get_users_user_id([request.json['user_id']]) or \
         manipulator.get_users_username([request.json['username']]):
             error.append('Such user exists already')
             return make_response(jsonify({ 'error': error }), 400)

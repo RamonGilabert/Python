@@ -127,7 +127,7 @@ class Manipulator:
     # Delete calls a private method that will do the deletion in the
     # database_session. It first gets all the users or temperatures
     # and basically deletes them.
-    
+
     def delete_users(self, id=None):
         users = [User.query.filter_by(id=id).first()] if id \
         else User.query.all()
