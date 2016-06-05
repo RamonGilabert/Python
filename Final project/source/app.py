@@ -56,17 +56,20 @@ def users_view():
     if 'data' in users:
         return render_template('users.html', users=users['data'])
 
+# We have to support POST instead of PATCH for the setup that we have in the
+# HTML form that does not support PUT or PATCH as methods.
 @app.route('/new_user', methods=['GET', 'POST'])
-@app.route('/new_user/<string:id>', methods=['GET', 'PATCH'])
+@app.route('/new_user/<string:id>', methods=['GET', 'POST'])
 def new_user_view(id=None):
     general_user = None
+
     if request.method == 'GET':
         if id is not None:
             value = urllib2.urlopen(api_url + '/users/' + str(id))
             response = json.load(value)
             if 'data' in response:
                 general_user = response['data'][0]
-    elif request.method == 'POST' or request.method == 'PATCH':
+    elif request.method == 'POST':
         user = json.dumps({
             'user_id': request.form['user_id'] if request.form['user_id'] else None,
             'username': request.form['username'] if request.form['username'] else None,
@@ -76,15 +79,23 @@ def new_user_view(id=None):
             if request.form['mean_temperature'] else None
         })
 
-        if request.method == 'POST':
-            value = urllib2.Request(api_url + '/users', user, headers)
+        api_request = None
+        flash_message = None
 
+        if id is not None:
+            api_request = urllib2.Request(api_url + '/users/' + str(id), user, headers)
+            api_request.get_method = lambda: 'PATCH'
+            flash_message = 'Your user has been saved'
+        elif request.method == 'POST':
+            api_request = urllib2.Request(api_url + '/users', user, headers)
+            flash_message = 'Your user has been created'
+
+        if api_request is not None:
             try:
-                result = urllib2.urlopen(value)
+                result = urllib2.urlopen(api_request)
                 response = json.load(result)
+                flash(flash_message)
 
-                user = response['data'][0]
-                flash('Your user has been created')
                 return redirect(url_for('users_view'))
             except urllib2.HTTPError, error:
                 errors = json.load(error)
@@ -93,8 +104,8 @@ def new_user_view(id=None):
                     flash(errors['error'][0])
                 else:
                     flash(error)
-        else:
-            print 'Configure the PATCH.'
+            except:
+                flash('There was an unknown error.')
 
     return render_template('new_user.html', user=general_user)
 
