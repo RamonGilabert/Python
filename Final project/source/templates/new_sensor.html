@@ -6,10 +6,20 @@
     <div class='separator' id='show-separator'></div>
     <form action="{{ url_for('login_view') }}" method="post" class='new-form'>
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='text' name='user_id' placeholder='Enter the sensor_id'>
+      type='text' name='user_id'
+      {% if sensor %}
+        value={{ sensor.sensor_id }}
+      {% endif %}
+      placeholder='Enter the sensor_id'>
 
       <input class='new-input' autocorrect='off' spellcheck='false'
-      type='number' name='username' placeholder='Enter the mean_temperature (optional)'>
+      type='text' name='username'
+      {% if sensor %}
+        {% if sensor.mean_temperature is not none %}
+          value={{ sensor.mean_temperature }}
+        {% endif %}
+      {% endif %}
+      placeholder='Enter the mean_temperature (optional)'>
 
       <button class='new-button-form'>Save sensor</button>
     </form>

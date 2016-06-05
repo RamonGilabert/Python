@@ -5,17 +5,20 @@ general rule, if the user is not logged in it will show a message with the
 login options. -->
 <html>
   <head>
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static',
+    filename='styles.css') }}">
     <title>Temperatures | {% block title %}{% endblock %}</title>
     <meta property="og:title" content="Layout" />
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=0.8, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8,
+    maximum-scale=0.8, user-scalable=no" />
   </head>
 
   {% block body %}
   {% endblock %} <!-- Configure the body block here. -->
 
-  {% if message %} <!-- If it has a message, display it with animations -->
+  <!-- If it has a message, display it with animations -->
+  {% for message in get_flashed_messages() %}
     <div id="inserted-container">
       <h3 id="inserted">{{ message }}</h3>
     </div>
@@ -33,5 +36,5 @@ login options. -->
         insertedContainer.style.opacity = 0;
       }, 2000);
     </script>
-  {% endif  %}
+  {% endfor %}
 </html>
