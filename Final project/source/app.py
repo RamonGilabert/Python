@@ -59,13 +59,13 @@ def users_view():
 @app.route('/new_user', methods=['GET', 'POST'])
 @app.route('/new_user/<string:id>', methods=['GET', 'PATCH'])
 def new_user_view(id=None):
-    user = None
+    general_user = None
     if request.method == 'GET':
         if id is not None:
             value = urllib2.urlopen(api_url + '/users/' + str(id))
-            data = json.load(value)
-            if 'data' in user:
-                user = data['data'][0]
+            response = json.load(value)
+            if 'data' in response:
+                general_user = response['data'][0]
     elif request.method == 'POST' or request.method == 'PATCH':
         user = json.dumps({
             'user_id': request.form['user_id'] if request.form['user_id'] else None,
@@ -78,19 +78,20 @@ def new_user_view(id=None):
 
         if request.method == 'POST':
             value = urllib2.Request(api_url + '/users', user, headers)
-            result = urllib2.urlopen(value)
-            response = json.load(result)
 
-            if 'data' in response:
+            try:
+                result = urllib2.urlopen(value)
+                response = json.load(result)
+
                 user = response['data'][0]
                 flash('Your user has been created')
                 return redirect(url_for('users_view'))
-            elif 'error' in response:
-                flash(response['error'][0])
+            except urllib2.HTTPError, error:
+                flash(error)
         else:
             print 'Configure the PATCH.'
 
-    return render_template('new_user.html', user=user)
+    return render_template('new_user.html', user=general_user)
 
 # Sensors
 
@@ -111,10 +112,27 @@ def new_sensor_view(id=None):
             value = urllib2.urlopen(api_url + '/sensors/' + str(id))
             data = json.load(value)
             sensor = data['data'][0]
-    elif request.method == 'POST':
-        print 'Hello'
-    elif request.method == 'PATCH':
-        print 'Hello'
+    elif request.method == 'POST' or request.method == 'PATCH':
+        sensor = json.dumps({
+            'sensor_id': request.form['sensor_id'] if request.form['sensor_id']
+            else None,
+            'mean_temperature': float(request.form['mean_temperature'])
+            if request.form['mean_temperature'] else None
+        })
+
+        if request.method == 'POST':
+            value = urllib2.Request(api_url + '/users', user, headers)
+            result = urllib2.urlopen(value)
+            response = json.load(result)
+
+            if 'data' in response:
+                user = response['data'][0]
+                flash('Your user has been created')
+                return redirect(url_for('users_view'))
+            elif 'error' in response:
+                flash(response['error'][0])
+        else:
+            print 'Configure the PATCH.'
 
     return render_template('new_sensor.html', sensor=sensor)
 

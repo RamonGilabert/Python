@@ -15,7 +15,14 @@
       "{{ url_for('new_user_view', id=user.id) }}"
     {% else %}
       "{{ url_for('new_user_view') }}"
-    {% endif %} method="post" class='new-form'>
+    {% endif %}
+    method=
+    {% if user %}
+      "patch"
+    {% else %}
+      "post"
+    {% endif %}
+    class='new-form'>
       <input class='new-input' autocorrect='off' spellcheck='false'
       type='text' name='user_id'
       {% if user %}
