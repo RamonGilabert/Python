@@ -26,18 +26,18 @@ def main_view():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_view():
-    error = None
+    message = None
     if request.method == 'POST':
         if request.form['username'] != app.config['USERNAME']:
-            error = 'Invalid username'
+            message = 'Invalid username'
         elif request.form['password'] != app.config['PASSWORD']:
-            error = 'Invalid password'
+            message = 'Invalid password'
         else:
             session['logged_in'] = True
             flash('You were logged in')
             return redirect(url_for('main_view'))
 
-    return render_template('login.html', error=error)
+    return render_template('login.html', message=message)
 
 @app.route('/logout')
 def logout():

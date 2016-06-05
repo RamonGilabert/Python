@@ -114,6 +114,27 @@ html, body {
   display: grid;;
 }
 
+#inserted {
+  font-weight: 400;
+  font-size: 17px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 18.5px;
+  color: #FAFAF7;
+}
+
+#inserted-container {
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
+  height: 60px;
+  left: 0;
+  bottom: 0;
+  opacity: 1;
+  background-color: #D6D6D2;
+  transition: all 0.35s ease-in;
+}
+
 /* Main */
 
 #index-title {
