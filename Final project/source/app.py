@@ -55,16 +55,19 @@ def users_view():
     if 'data' in users:
         return render_template('users.html', users=users['data'])
 
-@app.route('/new_user')
-@app.route('/new_user/<int:id>')
+@app.route('/new_user', methods=['GET', 'POST'])
+@app.route('/new_user/<int:id>', methods=['GET', 'PATCH'])
 def new_user_view(id=None):
-    user = {
-        "user_id": 21,
-        "username": 'Monrachu',
-        "name": None,
-        "email": None,
-        "mean_temperature": None
-    }
+    user = None
+    if request.method == 'GET':
+        if id is not None:
+            request = urllib2.urlopen(api_url + '/users/' + str(id))
+            data = json.load(request)
+            user = data['data'][0]
+    elif request.method == 'POST':
+        print 'Hello'
+    elif request.method == 'PATCH':
+        print 'Hello'
 
     return render_template('new_user.html', user=user)
 
@@ -78,13 +81,20 @@ def sensors_view():
     if 'data' in sensors:
         return render_template('sensors.html', sensors=sensors['data'])
 
-@app.route('/new_sensor')
-@app.route('/new_sensor/<int:id>')
+@app.route('/new_sensor', methods=['GET', 'POST'])
+@app.route('/new_sensor/<int:id>', methods=['GET', 'PATCH'])
 def new_sensor_view(id=None):
-    sensor = {
-        "sensor_id": 21,
-        "mean_temperature": None
-    }
+    sensor = None
+    if request.method == 'GET':
+        if id is not None:
+            request = urllib2.urlopen(api_url + '/sensors/' + str(id))
+            data = json.load(request)
+            sensor = data['data'][0]
+    elif request.method == 'POST':
+        print 'Hello'
+    elif request.method == 'PATCH':
+        print 'Hello'
+
     return render_template('new_sensor.html', sensor=sensor)
 
 if __name__ == "__main__":
