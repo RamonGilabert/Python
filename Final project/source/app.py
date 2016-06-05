@@ -19,8 +19,10 @@ api_url = 'http://localhost:8000'
 # Index
 
 @app.route('/')
-def main_view():
-    return render_template('index.html')
+@app.route('/<string:message>')
+def main_view(message=None):
+    global general_message
+    return render_template('index.html', message=message)
 
 # Auth
 
@@ -34,16 +36,16 @@ def login_view():
             message = 'Invalid password'
         else:
             session['logged_in'] = True
-            flash('You were logged in')
-            return redirect(url_for('main_view'))
+            message = 'You were logged in'
+            return redirect(url_for('main_view', message=message))
 
     return render_template('login.html', message=message)
 
 @app.route('/logout')
 def logout():
+    message = 'You were logged out'
     session.pop('logged_in', None)
-    flash('You were logged out')
-    return redirect(url_for('main_view'))
+    return redirect(url_for('main_view', message=message))
 
 # Users
 
