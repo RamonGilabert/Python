@@ -84,7 +84,7 @@ class App(object):
         try:
             while True:
                 data = self.nfc_sensor.get_data()
-                print data
+                temperature_data = self.th_sensor.get_data()
 
                 # It enters in the first if statement when a user reaches the
                 # NFC, that is no readings yet, now we are going to save the
@@ -100,6 +100,6 @@ class App(object):
                 #     self._initial_data = None
                 #     self._readings = []
 
-                # time.sleep(1)
+                time.sleep(1)
         finally:
             print 'Closing the app.'

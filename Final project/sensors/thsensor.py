@@ -4,7 +4,8 @@
 # BE THE ONE THAT WILL BE USED.
 
 from sensor import Sensor
-from libraries import Adafruit_DHT as DHT
+
+import Adafruit_DHT as DHT
 
 class THSensor(Sensor):
 
@@ -13,7 +14,7 @@ class THSensor(Sensor):
         self._temperature = None
 
     def get_data(self):
-        humidity, self._temperature = DHT.read_retry(DHT.DHT11, 22)
+        humidity, self._temperature = DHT.read_retry(DHT.DHT11, 4)
         return self._temperature
 
     def get_cumulative(self):

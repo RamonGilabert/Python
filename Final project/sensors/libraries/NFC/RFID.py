@@ -3,6 +3,8 @@ import spi as SPI
 import signal
 import time
 
+GPIO.setwarnings(False)
+
 class RFID:
     pin_rst = 22
     pin_ce = 0
@@ -179,7 +181,7 @@ class RFID:
         serial_number = []
 
         serial_number_check = 0
-        
+
         self.dev_write(0x0D, 0x00)
         serial_number.append(self.act_anticl)
         serial_number.append(0x20)
@@ -194,7 +196,7 @@ class RFID:
                     error = True
             else:
                 error = True
-        
+
         return (error, back_data)
 
     def calculate_crc(self, data):
@@ -306,7 +308,7 @@ class RFID:
             error = True
 
         return (error, back_data)
-   
+
     def write(self, block_address, data):
         """
         Writes data to block. You should be authenticated before calling write.
@@ -326,7 +328,7 @@ class RFID:
             buf_w = []
             for i in range(16):
                 buf_w.append(data[i])
-               
+
             crc = self.calculate_crc(buf_w)
             buf_w.append(crc[0])
             buf_w.append(crc[1])
