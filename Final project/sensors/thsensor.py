@@ -4,9 +4,7 @@
 # BE THE ONE THAT WILL BE USED.
 
 from sensor import Sensor
-
-import RPi.GPIO as GPIO
-import Adafruit_DHT as DHT
+from libraries import Adafruit_DHT as DHT
 
 class THSensor(Sensor):
 

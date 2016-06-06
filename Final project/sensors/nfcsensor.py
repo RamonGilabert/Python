@@ -4,8 +4,8 @@
 # THE ACTUAL SENSOR WITH THE ACTUAL DATA.
 
 from sensor import Sensor
+from libraries.NFC import RFID
 
-import RFID
 import signal
 import time
 
