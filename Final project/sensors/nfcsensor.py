@@ -4,7 +4,11 @@
 # THE ACTUAL SENSOR WITH THE ACTUAL DATA.
 
 from sensor import Sensor
+
 import random
+import RFID
+import signal
+import time
 
 class NFCSensor(Sensor):
 
@@ -12,13 +16,19 @@ class NFCSensor(Sensor):
         print "NFC Sensor instantiated."
 
     def setup(self):
-        print "Preparing the sensor."
-        # TODO: Here we'll connect the sensor and prepare it. Since I haven't
-        # worked with an NFC sensor, I don't really know the setup that it
-        # needs.
+        print "Preparing the NFC sensor."
+        self.reader = RFID.RFID()
 
     def get_data(self):
-        # TODO: Remove the mocked data.
-        value = random.randint(0, 2)
-        return { 'name' : 'Ramon', 'nfc' : 'safqwr21oi3asd' } \
-            if value == 0 else None
+        (error, data) = self.reader.request()
+        if not error:
+            (error, UID) = self.reader.anticoll()
+            if not error:
+                print ("UID: " + str(UID))
+                if not self.reader.select_tag(UID):
+                    if not self.reader.card_auth(self.reader.auth_a, 10, \
+                    [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF], uid):
+                      print ("Reading block 10: " + str(self.reader.read(10)))
+                      self.reader.stop_crypto()
+
+        # { 'name' : 'Ramon', 'nfc' : 'safqwr21oi3asd' }

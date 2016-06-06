@@ -1,6 +1,5 @@
 # Python web app.
 
-import sqlite3
 import urllib2
 import json
 
