@@ -5,7 +5,6 @@
 
 from sensor import Sensor
 
-import random
 import RFID
 import signal
 import time

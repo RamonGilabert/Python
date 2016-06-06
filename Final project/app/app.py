@@ -84,20 +84,22 @@ class App(object):
         try:
             while True:
                 data = self.nfc_sensor.get_data()
+                print data
 
                 # It enters in the first if statement when a user reaches the
                 # NFC, that is no readings yet, now we are going to save the
                 # temperature and then save the initial data of the user, then
                 # wait for the user to leave, which will be when the data is
                 # None.
-                if data is not None and len(self._readings) == 0:
-                    self._initial_data = data
-                    self._readings.append(self.th_sensor.get_data())
-                elif data is None and len(self._readings) == 1:
-                    self._perform_changes()
-                    self._initial_data = None
-                    self._readings = []
 
-                time.sleep(2) # TODO: Delete this when implementing.
+                # if data is not None and len(self._readings) == 0:
+                #     self._initial_data = data
+                #     self._readings.append(self.th_sensor.get_data())
+                # elif data is None and len(self._readings) == 1:
+                #     self._perform_changes()
+                #     self._initial_data = None
+                #     self._readings = []
+
+                # time.sleep(1)
         finally:
             print 'Closing the app.'
