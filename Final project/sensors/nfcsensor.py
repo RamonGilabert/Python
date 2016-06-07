@@ -24,10 +24,7 @@ class NFCSensor(Sensor):
             (error, UID) = self.reader.anticoll()
             if not error:
                 print 'UID: ' + str(UID)
-                if not self.reader.select_tag(UID):
-                    if not self.reader.card_auth(self.reader.auth_a, 10, \
-                    [0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF], UID):
-                      print 'Reading block 10: ' + str(self.reader.read(10))
-                      self.reader.stop_crypto()
+                return str(UID)
+                self.reader.stop_crypto()
 
-        # { 'name' : 'Ramon', 'nfc' : 'safqwr21oi3asd' }
+        return None

@@ -34,15 +34,43 @@ class App(object):
         self.nfc_sensor = NFCSensor()
         self.th_sensor = THSensor()
         self.notify = Notify(self._channels)
+        self.serial_number = self._get_serial_number()
+        self.current_sensor = None
 
         self._prepare_threads()
-        self._prepare_NFC_sensor()
+        self._prepare_sensor()
         self._main_loop()
 
     # Private methods
 
-    def _prepare_NFC_sensor(self):
-        print 'Preparing the NFC sensor.'
+    def _prepare_sensor(self):
+        print 'Preparing the sensors.'
+
+        request = urllib2.urlopen(api_url + '/sensors')
+        sensors = json.load(request)
+
+        if 'data' in sensors:
+            for sensor in sensors['data']:
+                if sensor['sensor_id'] == self.serial_number:
+                    self.current_sensor = sensor
+                    break
+
+            if current_sensor is None:
+                sensor = json.dumps({
+                    'sensor_id': self.serial_number,
+                    'mean_temperature': None
+                })
+
+                api_request = urllib2.Request(api_url + '/sensors', sensor, headers)
+
+                try:
+                    result = urllib2.urlopen(api_request)
+                    sensor = json.load(result)
+
+                    if 'data' in sensor:
+                        self.current_sensor = sensor['data'][0]
+                except urllib2.HTTPError, error:
+                    print 'There was an error processing the request.'
 
     # Prepare threads is called to not cause a conflict between the main loop
     # and the server that will be running in the port 5000.
@@ -67,12 +95,9 @@ class App(object):
         initial_temperature = self._readings[0]
         final_temperature = self.th_sensor.get_data()
         difference = final_temperature - initial_temperature
-        date = time.strftime('%d.%m.%Y at %H:%M')
-        # TODO.
-        # self.user_model.add(self._initial_data['name'], \
-        #     self._initial_data['nfc'])
-        # self.temperature_model.add(initial_temperature, date, \
-        #     difference, self._initial_data['nfc'])
+
+        # TODO: Do the whole mess.
+
         self.notify.broadcast(initial_temperature, difference)
 
     def _main_loop(self):
@@ -84,7 +109,6 @@ class App(object):
         try:
             while True:
                 data = self.nfc_sensor.get_data()
-                temperature_data = self.th_sensor.get_data()
 
                 # It enters in the first if statement when a user reaches the
                 # NFC, that is no readings yet, now we are going to save the
@@ -92,14 +116,27 @@ class App(object):
                 # wait for the user to leave, which will be when the data is
                 # None.
 
-                # if data is not None and len(self._readings) == 0:
-                #     self._initial_data = data
-                #     self._readings.append(self.th_sensor.get_data())
-                # elif data is None and len(self._readings) == 1:
-                #     self._perform_changes()
-                #     self._initial_data = None
-                #     self._readings = []
+                if data is not None and len(self._readings) == 0:
+                    self._initial_data = data
+                    self._readings.append(self.th_sensor.get_data())
+                elif data is None and len(self._readings) == 1:
+                    self._perform_changes()
+                    self._initial_data = None
+                    self._readings = []
 
                 time.sleep(1)
         finally:
             print 'Closing the app.'
+
+    def _get_serial_number():
+        serial = "0000000000000000"
+        try:
+            file = open('/proc/cpuinfo', 'r')
+            for line in file:
+                if line[0:6]== 'Serial':
+                    serial = line[10:26]
+                    file.close()
+        except:
+            serial = "ERROR000000000"
+
+        return serial
