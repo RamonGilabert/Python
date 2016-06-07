@@ -135,6 +135,9 @@ def new_user_view(id=None):
     # saves it into a property that will be used later.
     general_user = _fetch_parameter(id, 'users')
 
+    if id is not None and 'logged_in' not in session:
+        abort(404)
+
     # We do a security check in order to append in the object None or the actual
     # value. If this exist, we just save it.
     if request.method == 'POST':
