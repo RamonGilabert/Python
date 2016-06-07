@@ -96,7 +96,22 @@ class App(object):
         final_temperature = self.th_sensor.get_data()
         difference = final_temperature - initial_temperature
 
-        # TODO: Do the whole mess.
+        sensor = json.dumps({
+            'mean_temperature': difference
+        })
+
+        api_request = urllib2.Request(api_url + '/sensor/' + \
+        self.current_sensor.id, sensor, headers)
+        api_request.get_method = lambda: 'PATCH'
+
+        try:
+            result = urllib2.urlopen(api_request)
+            sensor = json.load(result)
+
+            if 'message' in sensor:
+                self.current_sensor = sensor['message'][0]
+        except urllib2.HTTPError, error:
+            print 'There was an error processing the request.'
 
         self.notify.broadcast(initial_temperature, difference)
 
