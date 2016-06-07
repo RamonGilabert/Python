@@ -19,6 +19,7 @@ from communication.notify import Notify
 from web_app.app import start as web_app_starter
 from web_service.app import start as web_service_starter
 
+# We create constants that will be used accross the app.
 api_url = 'http://127.0.0.1:8000'
 headers = { 'Content-Type' : 'application/json' }
 
@@ -41,6 +42,10 @@ class App(object):
 
         self._prepare_threads()
 
+        # Since this is a heavy processing in Flask creating the database
+        # and promises, for now and for the purpose of this task are not
+        # a thing, we just put the program to sleep waiting for the web_service
+        # to be instantiated.
         time.sleep(1)
 
         self._prepare_sensor()
@@ -69,6 +74,9 @@ class App(object):
             # will send to us.
             try:
                 result = urllib2.urlopen(api_request)
+
+                # We return the JSON that we get back to parse it in the
+                # method that we want.
                 return json.load(result)
             except urllib2.HTTPError, error:
                 errors = json.load(error)
@@ -79,9 +87,16 @@ class App(object):
     def _prepare_sensor(self):
         print 'Preparing the sensors.'
 
+        # We ping the server, if it's not good, then we sleep more, the server
+        # is working on something.
         if os.system("ping -c 1 " + api_url) != 0:
             time.sleep(3)
 
+        # This works and will work the same way as in the users, basically it
+        # fetches all the sensors and goes through all of them to check if the
+        # current sensor exists already. If it does, everything is fine, it
+        # saves it into a varialbe, if not, it posts one sensor and, when it
+        # gets it back, it saves it into the variable mentioned before.
         request = urllib2.urlopen(api_url + '/sensors')
         sensors = json.load(request)
 
@@ -126,11 +141,11 @@ class App(object):
         final_temperature = self.th_sensor.get_data()
         difference = (final_temperature + initial_temperature) / 2
 
+        # This will basically do a PATCH to our current sensor.
+
         sensor = json.dumps({
             'mean_temperature': difference
         })
-
-        print self.current_sensor
 
         response = self._handle_request('sensors', sensor, \
         self.current_sensor['id'])
@@ -140,6 +155,9 @@ class App(object):
 
         request = urllib2.urlopen(api_url + '/users')
         users = json.load(request)
+
+        # This works the same way as explained before, so it will create a user
+        # if it does not exist or PATCH it if it exists already.
 
         if 'data' in users:
             current_user = None
@@ -194,6 +212,9 @@ class App(object):
         finally:
             print 'Closing the app.'
 
+    # This small helper function gets the serial number (which will be the ID
+    # of the sensor for now) understanding that each sensor is tight to a
+    # Raspberry Pi.
     def _get_serial_number(self):
         serial = "0000000000000000"
         try:

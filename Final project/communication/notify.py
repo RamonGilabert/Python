@@ -8,6 +8,8 @@ class Notify:
 
         self._channels = []
 
+        # Gets the configuration and based on that creates one instance,
+        # another or both.
         if channels['text']:
             self.text = Text()
             self._channels.append(self.text)

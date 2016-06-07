@@ -1,7 +1,4 @@
-# This will be the main implementation of the NFC Sensor.
-
-# IMPORTANT: FOR NOW EVERYTHING IS MOCKED, THIS WILL CHANGE WHEN HAVING
-# THE ACTUAL SENSOR WITH THE ACTUAL DATA.
+# This is the main implementation of the NFC Sensor.
 
 from sensor import Sensor
 from libraries.NFC import RFID
@@ -19,6 +16,8 @@ class NFCSensor(Sensor):
         print 'Preparing the NFC sensor.'
 
     def get_data(self):
+        # Using the NFC library, this basically does a request to the reader
+        # and checks the UID.
         (error, data) = self.reader.request()
         if not error:
             (error, UID) = self.reader.anticoll()

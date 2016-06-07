@@ -1,7 +1,4 @@
-# This will be the main implementation of the DHT11 Sensor.
-
-# IMPORTANT: FOR NOT THIS WILL BE MOCKED, SO THE COMMENTED CODE BELOW WILL
-# BE THE ONE THAT WILL BE USED.
+# This is the main implementation of the DHT11 Sensor.
 
 from sensor import Sensor
 
