@@ -19,6 +19,9 @@ app.config.from_object(__name__)
 api_url = 'http://localhost:8000'
 headers = { 'Content-Type' : 'application/json' }
 
+def start():
+    app.run(port=7000)
+
 # Helper methods
 
 def _fetch_parameter(id, endpoint):

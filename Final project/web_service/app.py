@@ -23,6 +23,10 @@ def check_errors(keys, request):
 
     return error
 
+def start():
+    manipulator.initialize()
+    app.run(port=8000)
+
 # Errors are sent as an array with the key 'error' for consistency even
 # if there is only one error.
 
@@ -93,7 +97,9 @@ def api_users():
         manipulator.save_user(user['username'], user['user_id'], \
             user['name'], user['email'], user['mean_temperature'])
 
-        return jsonify({ 'data': [user] }), 201
+        new_user = manipulator.get_users_user_id([user['user_id']])
+
+        return jsonify({ 'data': new_user }), 201
 
     elif request.method == 'DELETE':
         manipulator.delete_users()
@@ -233,7 +239,9 @@ def api_sensors():
         manipulator.save_temperature(sensor['sensor_id'], \
         sensor['mean_temperature'])
 
-        return jsonify({ 'data': [sensor] }), 201
+        new_sensor = manipulator.get_temperatures_sensors([sensor['sensor_id']])
+
+        return jsonify({ 'data': new_sensor }), 201
 
     elif request.method == 'DELETE':
         manipulator.delete_temperatures()

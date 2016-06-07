@@ -1,5 +1,6 @@
 # Main program.
 
+import os
 import sys
 import threading
 import time
@@ -15,8 +16,8 @@ sys.path.append('./../')
 from sensors.nfcsensor import NFCSensor
 from sensors.thsensor import THSensor
 from communication.notify import Notify
-from web_app.app import app
-from web_service.app import app as web_service_app
+from web_app.app import start as web_app_starter
+from web_service.app import start as web_service_starter
 
 api_url = 'http://127.0.0.1:8000'
 headers = { 'Content-Type' : 'application/json' }
@@ -47,8 +48,39 @@ class App(object):
 
     # Private methods
 
+    def _handle_request(self, endpoint, body, id=None):
+
+        # To generalize, those two variables will handle the api_request and the
+        # message that will be sent after the request.
+        api_request = None
+
+        if id is not None:
+            # We build the URL to do the request with the body and the headers.
+            api_request = urllib2.Request(api_url + '/' + endpoint + '/' + \
+            str(id), body, headers)
+
+            # We specify that this needs to be a PATCH, this is because we have an
+            # id, so the website has a user or a sensor that wants to patch.
+            api_request.get_method = lambda: 'PATCH'
+        else:
+            api_request = urllib2.Request(api_url + '/' + endpoint, body, headers)
+        if api_request is not None:
+            # We have to try to get the response's error that the web service
+            # will send to us.
+            try:
+                result = urllib2.urlopen(api_request)
+                return json.load(result)
+            except urllib2.HTTPError, error:
+                errors = json.load(error)
+
+                if 'error' in errors:
+                    print errors['error'][0]
+
     def _prepare_sensor(self):
         print 'Preparing the sensors.'
+
+        if os.system("ping -c 1 " + api_url) != 0:
+            time.sleep(3)
 
         request = urllib2.urlopen(api_url + '/sensors')
         sensors = json.load(request)
@@ -65,34 +97,27 @@ class App(object):
                     'mean_temperature': None
                 })
 
-                api_request = urllib2.Request(api_url + '/sensors', sensor, \
-                headers)
+                response = self._handle_request('sensors', sensor)
 
-                try:
-                    result = urllib2.urlopen(api_request)
-                    sensor = json.load(result)
-
-                    if 'data' in sensor:
-                        self.current_sensor = sensor['data'][0]
-                except urllib2.HTTPError, error:
-                    print 'There was an error processing the request.'
+                if 'data' in response:
+                    self.current_sensor = response['data'][0]
 
     # Prepare threads is called to not cause a conflict between the main loop
     # and the server that will be running in the port 5000.
     def _prepare_threads(self):
-        self.app_thread = threading.Thread(target=self._run_web_app)
-        self.app_thread.daemon = True # To close the app when we CTRL+C.
-        self.app_thread.start()
-
         self.web_service_thread = threading.Thread(target=self._run_web_service)
         self.web_service_thread.daemon = True # To close the app when we CTRL+C.
         self.web_service_thread.start()
 
-    def _run_web_app(self):
-        app.run(port=7000)
+        self.app_thread = threading.Thread(target=self._run_web_app)
+        self.app_thread.daemon = True # To close the app when we CTRL+C.
+        self.app_thread.start()
 
     def _run_web_service(self):
-        web_service_app.run(port=8000)
+        web_service_starter()
+
+    def _run_web_app(self):
+        web_app_starter()
 
     # We are going to basically save the information to the database and
     # perform all the changes that we've been asked we should do.
@@ -105,20 +130,13 @@ class App(object):
             'mean_temperature': difference
         })
 
-        api_request = urllib2.Request(api_url + '/sensors/' + \
-        str(self.current_sensor['id']), sensor, headers)
-        api_request.get_method = lambda: 'PATCH'
+        print self.current_sensor
 
-        try:
-            result = urllib2.urlopen(api_request)
-            sensor = json.load(result)
+        response = self._handle_request('sensors', sensor, \
+        self.current_sensor['id'])
 
-            if 'message' in sensor:
-                self.current_sensor = sensor['message'][0]
-        except urllib2.HTTPError, error:
-            print 'There was an error processing the request.'
-
-        ######################################################
+        if 'message' in response:
+            self.current_sensor = response['message'][0]
 
         request = urllib2.urlopen(api_url + '/users')
         users = json.load(request)
@@ -138,27 +156,13 @@ class App(object):
                     'mean_temperature': difference
                 })
 
-                api_request = urllib2.Request(api_url + '/users', user, headers)
-
-                try:
-                    result = urllib2.urlopen(api_request)
-                except urllib2.HTTPError, error:
-                    print 'There was an error processing the request.'
+                self._handle_request('users', user)
             else:
                 user = json.dumps({
                     'mean_temperature': difference
                 })
 
-                api_request = urllib2.Request(api_url + '/users/' + \
-                str(current_user['id']), user, headers)
-                api_request.get_method = lambda: 'PATCH'
-
-                try:
-                    result = urllib2.urlopen(api_request)
-                except urllib2.HTTPError, error:
-                    print 'There was an error processing the request.'
-
-        ######################################################
+                self._handle_request('users', user, current_user['id'])
 
         self.notify.broadcast(initial_temperature, difference)
 
