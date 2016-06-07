@@ -135,6 +135,8 @@ def new_user_view(id=None):
     # saves it into a property that will be used later.
     general_user = _fetch_parameter(id, 'users')
 
+    # Only the admin can edit, if you are not logged in, the 404 page will show
+    # up.
     if id is not None and 'logged_in' not in session:
         abort(404)
 
