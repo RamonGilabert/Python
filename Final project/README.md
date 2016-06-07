@@ -1,15 +1,21 @@
-![Third](https://github.com/RamonGilabert/Python/blob/master/Resources/third.png)
+![Third](https://github.com/RamonGilabert/Python/blob/master/Resources/final.png)
 
-The third project will use parts of the second project to build the website and have it up and running. It will be basically a system where you can go with an NFC phone and make the Raspberry Pi read the temperature sensor, after that, save it to the database and send a notification with a command to say it loud from the command line.
+The final project consists basically in an app, a web service and what was the third project of basically an NFC sensor together with a DHT11 sensor that go together.
 
 #### Parts of it
 
-- Database storing the temperature, when was it read and the change of temperature. Also one to store Users.
-- NFC and Temperature sensors that will have their own class each.
+- NFC and Temperature sensors that have their own class.
 - Notifications, fully configurable to add more if needed.
-- Some tests when it makes sense.
+- Web service to provide users and sensors.
+- Web app to display and edit those.
 
 #### Considerations
+
+- When running the main file `final.py` it needs to run in `sudo` for the Adafruit_DHT library to work.
+- The Adafruit_DHT library needs to be installed in order to work.
+- The pyttsx library needs to be installed in order to work.
+- There is a library added that touches the NFC code and all the copyright goes to `ondryaso` even though there has been a small modification in order for the Raspberry Pi to not complain.
+- Everything else uses custom code.
 
 ##### Notifications
 
@@ -17,16 +23,13 @@ From the configuration file you'll be able to add which outputs you want, using 
 
 ##### Database
 
-The database has two major tables, Users and Temperatures, one storing **Name** and **NFC**, since we are not going to use Telegram in here. A part from that, there's the Temperatures table that will hold the values **Initial temperature**, **Date**, **Difference** and **NFC**, that is to create a relation between tables.
+The database is only in the web service and it provides a hub for **Users** and for **Sensors**, those last ones will be temperature sensors. Everything to manipulate it comes from a manipulator class in the connection file.
 
 ##### Sensors
 
-As for now, everything is mocked, thing that will change a bit later. The NFC reader returns a person with the same username and NFC values in a random form. The THSensor returns a random temperature. When implementing, this will change.
+- NFC sensor.
+- DHT11 sensor.
 
 ##### Source
 
-There's a website (with an image above) that will represent the temperatures when any. It has also an empty state.
-
-##### Tests
-
-I added one test that checks if the Text broadcaster works as it should, I'll try to keep adding more and more when it makes sense. Tests are my weakness at work too, that's why I kind of need to get better at it.
+There's a website (with an image above) that represents the temperatures when any. It has also an empty state. It lets you edit, add or display more sensors and users, with a login page and custom messages when needed.

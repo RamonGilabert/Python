@@ -26,3 +26,16 @@ The third project will use parts of the second project to build the website and 
 - NFC and Temperature sensors that will have their own class each.
 - Notifications, fully configurable to add more if needed.
 - Some tests when it makes sense.
+
+### Final project
+
+![Third](https://github.com/RamonGilabert/Python/blob/master/Resources/final.png)
+
+The final project consists basically in an app, a web service and what was the third project of basically an NFC sensor together with a DHT11 sensor that go together.
+
+#### Parts of it
+
+- NFC and Temperature sensors that have their own class.
+- Notifications, fully configurable to add more if needed.
+- Web service to provide users and sensors.
+- Web app to display and edit those.
