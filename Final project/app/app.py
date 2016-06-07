@@ -5,6 +5,8 @@ import threading
 import time
 import urllib2
 import json
+import random
+import string
 
 from ConfigParser import SafeConfigParser as Parser
 
@@ -16,7 +18,7 @@ from communication.notify import Notify
 from web_app.app import app
 from web_service.app import app as web_service_app
 
-api_url = 'http://localhost:8000'
+api_url = 'http://127.0.0.1:8000'
 headers = { 'Content-Type' : 'application/json' }
 
 class App(object):
@@ -28,7 +30,6 @@ class App(object):
         # We instantiate the main variables of our program and the models with
         # the path of our DATABASE (that way we just have it in one place).
 
-        self._database = parser.get('database', 'path')
         self._channels = {'voice' : parser.getboolean('notifications', 'voice'),
             'text' : parser.getboolean('notifications', 'text')}
         self.nfc_sensor = NFCSensor()
@@ -38,6 +39,9 @@ class App(object):
         self.current_sensor = None
 
         self._prepare_threads()
+
+        time.sleep(1)
+
         self._prepare_sensor()
         self._main_loop()
 
@@ -55,13 +59,14 @@ class App(object):
                     self.current_sensor = sensor
                     break
 
-            if current_sensor is None:
+            if self.current_sensor is None:
                 sensor = json.dumps({
                     'sensor_id': self.serial_number,
                     'mean_temperature': None
                 })
 
-                api_request = urllib2.Request(api_url + '/sensors', sensor, headers)
+                api_request = urllib2.Request(api_url + '/sensors', sensor, \
+                headers)
 
                 try:
                     result = urllib2.urlopen(api_request)
@@ -91,17 +96,17 @@ class App(object):
 
     # We are going to basically save the information to the database and
     # perform all the changes that we've been asked we should do.
-    def _perform_changes(self):
+    def _perform_changes(self, data):
         initial_temperature = self._readings[0]
         final_temperature = self.th_sensor.get_data()
-        difference = final_temperature - initial_temperature
+        difference = (final_temperature + initial_temperature) / 2
 
         sensor = json.dumps({
             'mean_temperature': difference
         })
 
-        api_request = urllib2.Request(api_url + '/sensor/' + \
-        self.current_sensor.id, sensor, headers)
+        api_request = urllib2.Request(api_url + '/sensors/' + \
+        str(self.current_sensor['id']), sensor, headers)
         api_request.get_method = lambda: 'PATCH'
 
         try:
@@ -112,6 +117,48 @@ class App(object):
                 self.current_sensor = sensor['message'][0]
         except urllib2.HTTPError, error:
             print 'There was an error processing the request.'
+
+        ######################################################
+
+        request = urllib2.urlopen(api_url + '/users')
+        users = json.load(request)
+
+        if 'data' in users:
+            current_user = None
+            for user in users['data']:
+                if user['user_id'] == data:
+                    current_user = user
+                    break
+
+            if current_user is None:
+                user = json.dumps({
+                    'user_id': data,
+                    'username': ''.join(random.choice(string.ascii_lowercase + \
+                    string.digits) for _ in range(20)),
+                    'mean_temperature': difference
+                })
+
+                api_request = urllib2.Request(api_url + '/users', user, headers)
+
+                try:
+                    result = urllib2.urlopen(api_request)
+                except urllib2.HTTPError, error:
+                    print 'There was an error processing the request.'
+            else:
+                user = json.dumps({
+                    'mean_temperature': difference
+                })
+
+                api_request = urllib2.Request(api_url + '/users/' + \
+                str(current_user['id']), user, headers)
+                api_request.get_method = lambda: 'PATCH'
+
+                try:
+                    result = urllib2.urlopen(api_request)
+                except urllib2.HTTPError, error:
+                    print 'There was an error processing the request.'
+
+        ######################################################
 
         self.notify.broadcast(initial_temperature, difference)
 
@@ -135,22 +182,23 @@ class App(object):
                     self._initial_data = data
                     self._readings.append(self.th_sensor.get_data())
                 elif data is None and len(self._readings) == 1:
-                    self._perform_changes()
+                    self._perform_changes(self._initial_data)
                     self._initial_data = None
                     self._readings = []
 
-                time.sleep(1)
+                time.sleep(0.5)
         finally:
             print 'Closing the app.'
 
-    def _get_serial_number():
+    def _get_serial_number(self):
         serial = "0000000000000000"
         try:
             file = open('/proc/cpuinfo', 'r')
             for line in file:
                 if line[0:6]== 'Serial':
                     serial = line[10:26]
-                    file.close()
+                    break
+            file.close()
         except:
             serial = "ERROR000000000"
 

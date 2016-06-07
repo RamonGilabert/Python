@@ -17,7 +17,7 @@ class Voice(Notification):
     # than the parent's implementation, so it overrides it.
     def broadcast(self, temperature, difference):
         self._message = 'The temperature is ' + str(temperature) + ' degrees ' + \
-            'Celcius with a difference of ' + str(difference) + ' degrees.'
+            'Celcius with a mean temperature of ' + str(difference) + ' degrees.'
         self._prepare_engine()
 
         return self._message

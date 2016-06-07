@@ -12,7 +12,7 @@ class Notification(object):
     # have to change it here and everything looks tidier in the app file.
     def broadcast(self, temperature, difference):
         message = 'The temperature is ' + str(temperature) + ' degrees ' + \
-            'Celcius with a difference of ' + str(difference) + ' degrees.'
+            'Celcius with a mean temperature of ' + str(difference) + ' degrees.'
         os.system(self.command + ' ' + message)
 
         return message

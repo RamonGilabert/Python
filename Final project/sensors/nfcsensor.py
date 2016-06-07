@@ -23,7 +23,6 @@ class NFCSensor(Sensor):
         if not error:
             (error, UID) = self.reader.anticoll()
             if not error:
-                print 'UID: ' + str(UID)
                 return str(UID)
                 self.reader.stop_crypto()
 
